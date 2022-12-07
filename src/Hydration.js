@@ -4,9 +4,7 @@ class Hydration {
   
  }
    findAvrgFluidIntake(id) {
-    const getUserFluidInfo = this.hydrationData.filter((data) => {
-      return data.userID === id;
-    })
+    const getUserFluidInfo = this.hydrationData.filter(data => data.userID === id)
      const calculateAvrgFluids = getUserFluidInfo.reduce((accum, data) => {
       return accum += data.numOunces;
      }, 0) / getUserFluidInfo.length;
@@ -14,9 +12,7 @@ class Hydration {
  }
 
   findDailyFluidIntake(id, day) {
-      const getDailyFluid = this.hydrationData.filter((data) => {
-        return data.date === day;
-      }) 
+      const getDailyFluid = this.hydrationData.filter(data => data.date === day) 
      const findUserOnDate = getDailyFluid.find((data) => {
       return data.userID === id;
      }) 

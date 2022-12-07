@@ -60,8 +60,5 @@ describe("User Repository", () => {
 	it("should find average step goal amongst all users", function () {
 		expect(userRepository.findAvrgStepGoal(userData)).to.equal(6667);
 	});
-  it("should find a random User", function () {
-    // console.log(userRepository.generateRandomUser(userData))
-		// expect(userRepository.generateRandomUser(userData)).to.equal(6667);
-	});
+
 });
