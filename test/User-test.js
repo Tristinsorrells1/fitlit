@@ -2,7 +2,7 @@ import { expect } from "chai";
 import UserRepository from "../src/UserRepository";
 import User from "../src/User";
 
-describe("User Repository", () => {
+describe("User", () => {
 	let user1;
 	let userData;
 
