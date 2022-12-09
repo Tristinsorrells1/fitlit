@@ -130,4 +130,15 @@ describe("Sleep", () => {
   it("should find average sleep quality amongst all users", function () {
 		expect(sleep1.findAllUserSleepQuality(sleepData)).to.equal(4);
 	});
+  it("should create object of x and y", function () {
+		expect(sleep1.getSleepQualityandHours(1)).to.deep.equal([
+      { x: 6.1, y: 2.2 },
+      { x: 7, y: 4.7 },
+      { x: 8, y: 4.8 },
+      { x: 9, y: 4.9 },
+      { x: 7, y: 4.7 },
+      { x: 6, y: 4.6 },
+      { x: 10.5, y: 4.4 }
+    ]);
+	});
 });

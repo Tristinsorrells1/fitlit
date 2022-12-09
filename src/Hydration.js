@@ -22,16 +22,17 @@ class Hydration {
    findWeeklyFluidIntake(id) {
       const userIdInfo = this.hydrationData.filter((data) => {
         return data.userID === id;
-      }) 
+      })
+
       const weeklyFluid = () => {
         let fluidByDay = {}
-        fluidByDay.dayOne = userIdInfo[0].numOunces;
-        fluidByDay.dayTwo = userIdInfo[1].numOunces;
-        fluidByDay.dayThree = userIdInfo[2].numOunces;
-        fluidByDay.dayFour = userIdInfo[3].numOunces;
-        fluidByDay.dayFive = userIdInfo[4].numOunces;
-        fluidByDay.daySix = userIdInfo[5].numOunces;
-        fluidByDay.daySeven = userIdInfo[6].numOunces;
+        fluidByDay.one = userIdInfo[0].numOunces;
+        fluidByDay.two = userIdInfo[1].numOunces;
+        fluidByDay.three = userIdInfo[2].numOunces;
+        fluidByDay.four = userIdInfo[3].numOunces;
+        fluidByDay.five = userIdInfo[4].numOunces;
+        fluidByDay.six = userIdInfo[5].numOunces;
+        fluidByDay.seven = userIdInfo[6].numOunces;
         return fluidByDay;
       };
      return weeklyFluid(); 

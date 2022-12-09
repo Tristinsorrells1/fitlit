@@ -76,6 +76,19 @@ class Sleep {
           }, 0) / data.length;
      return parseInt(calculateAvrgSleepQltyForAll.toFixed(1));
  }
+
+ getSleepQualityandHours(id) {
+  const userSleepInfo = this.sleepData.filter((data) => {
+     return data.userID === id;
+     }) 
+
+  const userSleepWeek = userSleepInfo.slice(0, 7)
+  
+  return userSleepWeek.map((day) => {
+   return  {x: day.hoursSlept, y: day.sleepQuality}
+  })
+ 
+}
 };
 
 export default Sleep;
