@@ -48,8 +48,8 @@ justify-content: space-between;
 .steps,
 .water,
 .sleep{
-  height: 20vh;
-  width: 30vw;
+  height: 30vh;
+  width: 50vw;
   border: 2px solid blue;
   display: flex;
   background-color: #534f52;

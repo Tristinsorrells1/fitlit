@@ -5,6 +5,7 @@
     <title>Fitlit</title>
     <link rel="stylesheet" href="./src/css/styles.css">
     <link href='https://fonts.google.com/specimen/Raleway' rel='stylesheet'>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js"></script> -->
   </head>
   <body>
     <section class="friends-list">Friends List</section>
@@ -13,9 +14,15 @@
       <h1>Welcome</h1>
       <p id="cardInfo">cardInfo</p>
     </div>
-      <div class="steps">steps</div>
-      <div class="water">water</div>
-      <div class="sleep">sleep</div>
+      <div class="steps">steps
+        <canvas id="stepsChart" width="1000" height="600"></canvas>
+      </div>
+      <div class="water">water
+        <canvas id="waterChart" width="1000" height="600"></canvas>
+      </div>
+      <div class="sleep">sleep
+        <canvas id="sleepChart" width="1000" height="600"></canvas>
+      </div>
     </main>
     <section class="previous-activities">
       <form action="/action_page.php">
@@ -30,6 +37,7 @@
           <option value="sunday">Sunday</option>
         </select>
       </form>
+      
       <div class="stride-length">Stride Length</div>
       <div class="step-count">Step Count</div>
       <div class="house-slept">House Slept</div>
