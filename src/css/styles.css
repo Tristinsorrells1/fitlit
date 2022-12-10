@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   text-align: center;
+  color: rgb(219, 208, 208);
 }
 body, html {
   background-image: linear-gradient(to top, #131111 0%, #8d858a 99%, #7f777d 100%);
@@ -16,13 +17,11 @@ body, html {
 .friends-list{
 height: 100vh;
 width: 15vw;
-border: 2px solid green;
 }
 
 .main{
   height: 100vh;
 width: 60vw;
-border: 2px solid green;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
@@ -32,7 +31,6 @@ align-items: center;
 .previous-activities{
   height: 100vh;
 width: 15vw;
-border: 2px solid blue;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
@@ -40,11 +38,12 @@ justify-content: space-between;
 
 .friends-list,
 .previous-activities{
- background-color: #534f52;
+  background-color: #534f52;
+  border: 2px solid blue;
 
 }
 
-.welcome,
+
 .steps,
 .water,
 .sleep{
@@ -53,5 +52,19 @@ justify-content: space-between;
   border: 2px solid blue;
   display: flex;
   background-color: #534f52;
+  justify-content: space-around;
 }
+
+.welcome {
+  flex-direction: column;
+  height: 14vh;
+    width: 50vw;
+    border: 2px solid blue;
+    display: flex;
+    background-color: #534f52;
+    justify-content: space-around;
+}
+
+
+
 

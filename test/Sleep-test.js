@@ -103,28 +103,28 @@ describe("Sleep", () => {
     expect(sleep1.findSleepQualityByDay(1, "2019/06/15")).to.equal(2.2);
   });
 
-  it("should show user's weekly hours slept", function () {
-    expect(sleep1.findWeeklySleepHours(1)).to.deep.equal({
-      dayOne: 6.1,
-      dayTwo: 7,
-      dayThree: 8,
-      dayFour: 9,
-      dayFive: 7,
-      daySix: 6,
-      daySeven: 10.5
-    });
+  it("should show how many hours a user slept each night in a week starting from the first day", function () {
+    expect(sleep1.findWeeklySleepHours(1, "2019/06/21")).to.deep.equal({
+			dayOne: 6.1,
+			dayTwo: 7,
+			dayThree: 8,
+			dayFour: 9,
+			dayFive: 7,
+			daySix: 6,
+			daySeven: 10.5,
+		});
   });
 
   it("should show user's weekly sleep quality", function () {
-    expect(sleep1.findWeeklySleepQuality(1)).to.deep.equal({
-      dayOne: 2.2,
-      dayTwo: 4.7,
-      dayThree: 4.8,
-      dayFour: 4.9,
-      dayFive: 4.7,
-      daySix: 4.6,
-      daySeven: 4.4
-    });
+    expect(sleep1.findWeeklySleepQuality(1, "2019/06/21")).to.deep.equal({
+			dayOne: 2.2,
+			dayTwo: 4.7,
+			dayThree: 4.8,
+			dayFour: 4.9,
+			dayFive: 4.7,
+			daySix: 4.6,
+			daySeven: 4.4,
+		});
   });
 
   it("should find average sleep quality amongst all users", function () {

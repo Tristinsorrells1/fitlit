@@ -1,62 +1,56 @@
 // -----------------imports------------------------
-// An example of how you tell webpack to use a JS file
-
 import userData from "./data/users";
-
 import UserRepository from "./UserRepository";
-
 import User from "./User";
 import Hydration from "./Hydration";
-
 import apiCalls from "./apiCalls";
-
 import fetchData from "./apiCalls";
 import Chart from "chart.js/auto";
-// import { Chart } from "chart.js";
+import Sleep from "./Sleep";
+
 // An example of how you tell webpack to use a CSS file
 import "./css/styles.css";
-import Sleep from "./Sleep";
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 // import './images/turing-logo.png'
 
 // ----------------variables-------------------------
-
-let usersData;
-
-let sleepData;
-
-let hydrationData;
-
 let generatedUser;
-
-let newUserRepository;
-
-let hydrationDataRepository;
-
+let usersData;
+let sleepData;
+let hydrationData;
 let sleepDataRepository;
-
+let newUserRepository;
+let hydrationDataRepository;
 let myWaterChart;
-
 let mySleepChart;
-
 let myStepsChart;
 
+//-----------------querySelectors--------------------
 let gretting = document.querySelector("h1");
-
-let cardInfo = document.querySelector("#cardInfo");
-
+let userAddress = document.querySelector("#address");
+let userEmail = document.querySelector("#email");
+let strideLength = document.querySelector("#srideLength");
+let water = document.querySelector("#water");
+let hoursOfSleep = document.querySelector("#hoursSlept");
+let qualityOfSleep = document.querySelector("#sleepQuality");
+let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
+let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
+let friendsList = document.querySelector(".friends-list");
 const stepsChart = document.getElementById("stepsChart").getContext("2d");
-
 const waterChart = document.getElementById("waterChart").getContext("2d");
-
+Chart.defaults.color = "rgb(219, 208, 208)";
 const sleepChart = document.getElementById("sleepChart").getContext("2d");
+
+// -------------------eventListeners----------------
+window.addEventListener("load", (event) => {
+	fetchApiPromises();
+});
 
 // ------------------functions-----------------------------------
 const fetchApiPromises = () => {
 	apiCalls.fetchData().then((data) => {
 		usersData = data[0].userData;
-		console.log(usersData);
 		sleepData = data[1];
 		hydrationData = data[2];
 		createDashboard();
@@ -65,21 +59,15 @@ const fetchApiPromises = () => {
 
 function createDashboard() {
 	createUserRepository();
-	createUser();
-	greetUser();
-	displayCardInfo();
 	createHydrationRepository();
-	createWaterChart();
 	createSleepDataRepository();
+	generateUser();
+	displayCardInfo();
+	displayLatestStats();
+	displayFriends();
+	createWaterChart();
 	createSleepChart();
 	createStepsChart();
-	testSleep();
-}
-
-function createUser() {
-	return (generatedUser = new User(
-		newUserRepository.generateRandomUser(usersData)
-	));
 }
 
 function createUserRepository() {
@@ -87,17 +75,66 @@ function createUserRepository() {
 	return newUserRepository;
 }
 
-function greetUser() {
-	const generatedUserFirstName = generatedUser.findFirstName();
-	gretting.innerText = `Welcome ${generatedUserFirstName}`;
+function createHydrationRepository() {
+	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 }
+
+function createSleepDataRepository() {
+	sleepDataRepository = new Sleep(sleepData.sleepData);
+}
+
+function generateUser() {
+	return (generatedUser = new User(
+		newUserRepository.generateRandomUser(usersData)
+		));
+	}
 
 function displayCardInfo() {
-	cardInfo.innerText = `id: ${generatedUser.id}, name: ${generatedUser.name}, address: ${generatedUser.address}, email: ${generatedUser.email}, stride length: ${generatedUser.strideLength}, step goal: ${generatedUser.dailyStepGoal}, friends: ${generatedUser.friends}`;
+	const generatedUserFirstName = generatedUser.findFirstName();
+	gretting.innerText = `Welcome, ${generatedUserFirstName}!`;
+	userAddress.innerText = `${generatedUser.address}`;
+	userEmail.innerText = `${generatedUser.email}`;
+}
+
+function displayLatestStats() {
+	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
+		generatedUser.id
+	)["seven"];
+	let usersSleepData = sleepDataRepository.sleepData.filter((data) => {
+		return data.userID === generatedUser.id;
+	});
+
+	strideLength.innerText = `Stride Length: ${generatedUser.strideLength}`;
+
+	water.innerText = `Ounces of Water Consumed: ${waterInfo}`;
+
+	hoursOfSleep.innerText = `Hours Slept: ${
+		usersSleepData[usersSleepData.length - 1].hoursSlept
+	}`;
+
+	qualityOfSleep.innerText = `Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
+	
+	hoursSleptAverage.innerText = `Your average ${sleepDataRepository.findSleepAvrg(
+		generatedUser.id
+	)} hours of sleep a night`;
+
+	
+	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepQualityAvrg(generatedUser.id)}`;
+}
+
+function displayFriends() {
+	console.log(generatedUser)
+	let friends = generatedUser.friends.map((friend) => {
+		return newUserRepository.findUser(friend).name
+	})
+	friendsList.innerText = `You are friends with: ${friends.join(", ")}`
 }
 
 
 
+//-----------------------Chart functions-----------------------------
 function createStepsChart() {
 	const data = {
 		labels: ["Step Goals"],
@@ -133,9 +170,6 @@ function createStepsChart() {
 					},
 				},
 			},
-			// radius: 5,
-			// hitRadius: 30,
-			// hoverRadius: 12,
 			responsive: true,
 			plugins: {
 				legend: {
@@ -151,9 +185,6 @@ function createStepsChart() {
 	myStepsChart = new Chart(stepsChart, config);
 }
 
-function createHydrationRepository() {
-	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
-}
 function createWaterChart() {
 	const labels = [];
 	const data = {
@@ -161,7 +192,15 @@ function createWaterChart() {
 		datasets: [
 			{
 				data: hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id),
-				backgroundColor: ["rgba(210, 39, 48)", "rgba(70, 70, 255)", "rgba(224, 231, 34", "rgba(219, 62, 177", "rgba(255, 173, 0)", "rgba(68, 214, 44)", "rgba(128, 49, 167)"],
+				backgroundColor: [
+					"rgba(210, 39, 48)",
+					"rgba(70, 70, 255)",
+					"rgba(224, 231, 34",
+					"rgba(219, 62, 177",
+					"rgba(255, 173, 0)",
+					"rgba(68, 214, 44)",
+					"rgba(128, 49, 167)",
+				],
 				borderWidth: 1,
 			},
 		],
@@ -184,9 +223,6 @@ function createWaterChart() {
 					},
 				},
 			},
-			// radius: 5,
-			// hitRadius: 30,
-			// hoverRadius: 12,
 			responsive: true,
 			plugins: {
 				legend: {
@@ -200,9 +236,6 @@ function createWaterChart() {
 		},
 	};
 	myWaterChart = new Chart(waterChart, config);
-}
-function createSleepDataRepository() {
-	sleepDataRepository = new Sleep(sleepData.sleepData);
 }
 
 function createSleepChart() {
@@ -252,16 +285,6 @@ function createSleepChart() {
 	};
 	mySleepChart = new Chart(sleepChart, config);
 }
-
-function testSleep() {
-	console.log("avrg", newUserRepository.findAvrgStepGoal(usersData));
-	console.log("user", generatedUser.dailyStepGoal);
-}
-
-// -------------------eventListeners----------------
-window.addEventListener("load", (event) => {
-	fetchApiPromises();
-});
 
 // Do not delete or rename this file ********
 
