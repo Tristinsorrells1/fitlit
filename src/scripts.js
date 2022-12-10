@@ -1,5 +1,5 @@
 // -----------------imports------------------------
-import userData from "./data/users";
+
 import UserRepository from "./UserRepository";
 import User from "./User";
 import Hydration from "./Hydration";
@@ -93,11 +93,11 @@ function displayCardInfo() {
 function displayLatestStats() {
 	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
 		generatedUser.id
-	)["seven"];
-	let usersSleepData = sleepDataRepository.sleepData.filter((data) => {
-		return data.userID === generatedUser.id;
-	});
-
+		)["seven"];
+		let usersSleepData = sleepDataRepository.sleepData.filter((data) => {
+			return data.userID === generatedUser.id;
+		});
+		
 	strideLength.innerText = `Stride Length: ${generatedUser.strideLength}`;
 	recentWaterIntake.innerText = `Ounces of Water Consumed: ${waterInfo}`;
 	hoursOfSleep.innerText = `Hours Slept: ${
@@ -106,10 +106,10 @@ function displayLatestStats() {
 	qualityOfSleep.innerText = `Sleep Quality Score: ${
 		usersSleepData[usersSleepData.length - 1].sleepQuality
 	}`;
-	hoursSleptAverage.innerText = `Your average ${sleepDataRepository.findSleepAvrg(
+	hoursSleptAverage.innerText = `You average ${sleepDataRepository.findSleepAvrg("hours", 
 		generatedUser.id
 	)} hours of sleep a night`;
-	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepQualityAvrg(
+	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepAvrg("quality", 
 		generatedUser.id
 	)}`;
 }
@@ -282,6 +282,6 @@ function createSleepChart() {
 
 // Do not delete or rename this file ********
 
-console.log(userData, "<>>>>userData");
+// console.log(userData, "<>>>>userData");
 
 console.log("This is the JavaScript entry file - your code begins here.");
