@@ -101,13 +101,13 @@ describe("Hydation", () => {
 
   it("should show user's weekly fluid intake", function () {
     expect(hydration1.findWeeklyFluidIntake(3)).to.deep.equal({
-      dayOne: 47,
-      dayTwo: 50,
-      dayThree: 45,
-      dayFour: 44,
-      dayFive: 51,
-      daySix: 43,
-      daySeven: 42
+      one: 47,
+      two: 50,
+      three: 45,
+      four: 44,
+      five: 51,
+      six: 43,
+      seven: 42
     });
   });
 });

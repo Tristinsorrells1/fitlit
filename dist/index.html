@@ -8,41 +8,32 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js"></script> -->
   </head>
   <body>
-    <section class="friends-list">Friends List</section>
+    <section class="friends-list">
+      <h2>Your Friends</h2>
+    </section>
     <main class="main">
       <div class="welcome">
       <h1>Welcome</h1>
-      <p id="cardInfo">cardInfo</p>
+      <p class="card-info">cardInfo</p>
     </div>
-      <div class="steps">steps
-        <canvas id="stepsChart" width="1000" height="600"></canvas>
+      <div class="steps">
+        <canvas id="stepsChart" width="1000" height="400"></canvas>
       </div>
-      <div class="water">water
-        <canvas id="waterChart" width="1000" height="600"></canvas>
+      <div class="water">
+        <canvas id="waterChart" width="1000" height="400"></canvas>
       </div>
-      <div class="sleep">sleep
-        <canvas id="sleepChart" width="1000" height="600"></canvas>
+      <div class="sleep">
+        <canvas id="sleepChart" width="1000" height="400"></canvas>
       </div>
     </main>
     <section class="previous-activities">
-      <form action="/action_page.php">
-        <label for="days">Choose a Day:</label>
-        <select name="days" id="days">
-          <option value="monday">Monday</option>
-          <option value="tuesday">Tuesday</option>
-          <option value="wednesday">Wednesday</option>
-          <option value="thursday">Thursday</option>
-          <option value="friday">Friday</option>
-          <option value="saturday">Saturday</option>
-          <option value="sunday">Sunday</option>
-        </select>
-      </form>
-      
-      <div class="stride-length">Stride Length</div>
-      <div class="step-count">Step Count</div>
-      <div class="house-slept">House Slept</div>
-      <div class="sleep-quality">Sleep Quality</div>
-      <div class="ounces-drank">Ounces Drank</div>
+      <h2>Your Latest Activity</h2>
+      <div id="strideLength">Stride Length</div>
+      <div id="water">Water</div>
+      <div id="hoursSlept">House Slept</div>
+      <div id="sleepQuality">Sleep Quality</div>
+      <div id="hoursSleptAverage">Sleep Averages</div>
+      <div class="latest-activity" id="sleepQualityAverage">Sleep Averages</div>
     </section>
 
 <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->  
