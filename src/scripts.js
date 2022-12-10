@@ -4,7 +4,6 @@ import UserRepository from "./UserRepository";
 import User from "./User";
 import Hydration from "./Hydration";
 import apiCalls from "./apiCalls";
-import fetchData from "./apiCalls";
 import Chart from "chart.js/auto";
 import Sleep from "./Sleep";
 
@@ -22,21 +21,17 @@ let hydrationData;
 let sleepDataRepository;
 let newUserRepository;
 let hydrationDataRepository;
-let myWaterChart;
-let mySleepChart;
-let myStepsChart;
 
 //-----------------querySelectors--------------------
-let gretting = document.querySelector("h1");
-let userAddress = document.querySelector("#address");
-let userEmail = document.querySelector("#email");
-let strideLength = document.querySelector("#srideLength");
-let water = document.querySelector("#water");
+let greeting = document.querySelector("h1");
+let userAddressandEmail = document.querySelector(".card-info");
+let strideLength = document.querySelector("#strideLength");
+let recentWaterIntake = document.querySelector("#water");
 let hoursOfSleep = document.querySelector("#hoursSlept");
 let qualityOfSleep = document.querySelector("#sleepQuality");
 let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
 let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
-let friendsList = document.querySelector(".friends-list");
+let friendSection = document.querySelector(".friends-list");
 const stepsChart = document.getElementById("stepsChart").getContext("2d");
 const waterChart = document.getElementById("waterChart").getContext("2d");
 Chart.defaults.color = "rgb(219, 208, 208)";
@@ -86,14 +81,13 @@ function createSleepDataRepository() {
 function generateUser() {
 	return (generatedUser = new User(
 		newUserRepository.generateRandomUser(usersData)
-		));
-	}
+	));
+}
 
 function displayCardInfo() {
 	const generatedUserFirstName = generatedUser.findFirstName();
-	gretting.innerText = `Welcome, ${generatedUserFirstName}!`;
-	userAddress.innerText = `${generatedUser.address}`;
-	userEmail.innerText = `${generatedUser.email}`;
+	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
+	userAddressandEmail.innerText = `${generatedUser.address}  /  ${generatedUser.email}`;
 }
 
 function displayLatestStats() {
@@ -105,34 +99,35 @@ function displayLatestStats() {
 	});
 
 	strideLength.innerText = `Stride Length: ${generatedUser.strideLength}`;
-
-	water.innerText = `Ounces of Water Consumed: ${waterInfo}`;
-
+	recentWaterIntake.innerText = `Ounces of Water Consumed: ${waterInfo}`;
 	hoursOfSleep.innerText = `Hours Slept: ${
 		usersSleepData[usersSleepData.length - 1].hoursSlept
 	}`;
-
 	qualityOfSleep.innerText = `Sleep Quality Score: ${
 		usersSleepData[usersSleepData.length - 1].sleepQuality
 	}`;
-	
 	hoursSleptAverage.innerText = `Your average ${sleepDataRepository.findSleepAvrg(
 		generatedUser.id
 	)} hours of sleep a night`;
-
-	
-	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepQualityAvrg(generatedUser.id)}`;
+	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepQualityAvrg(
+		generatedUser.id
+	)}`;
 }
 
 function displayFriends() {
-	console.log(generatedUser)
-	let friends = generatedUser.friends.map((friend) => {
-		return newUserRepository.findUser(friend).name
-	})
-	friendsList.innerText = `You are friends with: ${friends.join(", ")}`
+	let friendInfo = {};
+	let friends = generatedUser.friends.forEach((friend) => {
+		let newFriend = newUserRepository.findUser(friend);
+		friendInfo.name = newFriend.name;
+		friendInfo.steps = newFriend.dailyStepGoal;
+		friendInfo.stride = newFriend.strideLength;
+
+		friendSection.innerHTML += `
+			<div class="friend-name">${friendInfo.name}</div>
+			<div class="friend-steps">Step Goal: ${friendInfo.steps}</div>`;
+	});
+	return friends;
 }
-
-
 
 //-----------------------Chart functions-----------------------------
 function createStepsChart() {
@@ -182,7 +177,7 @@ function createStepsChart() {
 			},
 		},
 	};
-	myStepsChart = new Chart(stepsChart, config);
+	new Chart(stepsChart, config);
 }
 
 function createWaterChart() {
@@ -219,7 +214,7 @@ function createWaterChart() {
 				y: {
 					title: {
 						display: true,
-						text: "Sleep Quality Score",
+						text: "Ounces of Water",
 					},
 				},
 			},
@@ -235,7 +230,7 @@ function createWaterChart() {
 			},
 		},
 	};
-	myWaterChart = new Chart(waterChart, config);
+	new Chart(waterChart, config);
 }
 
 function createSleepChart() {
@@ -244,9 +239,8 @@ function createSleepChart() {
 		labels: labels,
 		datasets: [
 			{
-				// label: 'Sleep Quality vs. Hours Slept',
 				data: sleepDataRepository.getSleepQualityandHours(generatedUser.id),
-				backgroundColor: ["rgba(0, 128, 0)"],
+				backgroundColor: ["rgba(255, 173, 0)"],
 				borderWidth: 1,
 			},
 		],
@@ -278,12 +272,12 @@ function createSleepChart() {
 				},
 				title: {
 					display: true,
-					text: "Sleep Quality vs. Hours Slept",
+					text: "Sleep Quality and Hours Slept for Past 7 Days",
 				},
 			},
 		},
 	};
-	mySleepChart = new Chart(sleepChart, config);
+	new Chart(sleepChart, config);
 }
 
 // Do not delete or rename this file ********

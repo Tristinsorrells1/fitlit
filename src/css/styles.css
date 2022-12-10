@@ -5,66 +5,64 @@
   text-align: center;
   color: rgb(219, 208, 208);
 }
-body, html {
+
+body{
   background-image: linear-gradient(to top, #131111 0%, #8d858a 99%, #7f777d 100%);
   background-repeat: no-repeat;
-  min-height: 100vh;
-  min-width: 100vw;
   display: flex;
   justify-content: space-between;
+  overflow-y: hidden;
 }
 
-.friends-list{
-height: 100vh;
-width: 15vw;
+h1{
+  font-size: 3vw;
 }
 
-.main{
-  height: 100vh;
-width: 60vw;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-align-items: center;
-}
-
-.previous-activities{
-  height: 100vh;
-width: 15vw;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-}
-
-.friends-list,
-.previous-activities{
-  background-color: #534f52;
-  border: 2px solid blue;
-
-}
-
-
-.steps,
-.water,
-.sleep{
-  height: 30vh;
-  width: 50vw;
-  border: 2px solid blue;
-  display: flex;
-  background-color: #534f52;
-  justify-content: space-around;
+h2{
+  font-size: 2.5vw;
 }
 
 .welcome {
   flex-direction: column;
   height: 14vh;
-    width: 50vw;
-    border: 2px solid blue;
-    display: flex;
-    background-color: #534f52;
-    justify-content: space-around;
 }
 
+.steps,
+.water,
+.sleep{
+  height: 28vh;
+}
+
+.steps,
+.water,
+.sleep,
+.welcome {
+  background-color: #534f52;
+  display: flex;
+  border: 2px solid blue;
+  width: 50vw;
+  justify-content: space-around;
+}
+
+.friend-name {
+font-size: 2vw;
+}
+
+.friend-steps {
+font-size: 1.5vw;
+}
+
+.previous-activities,
+.friends-list {
+  height: 99vh;
+  width: 15vw;
+  display: flex;
+  font-size: 2vw;
+  background-color: #534f52;
+  border: 2px solid blue;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
 
 
 
