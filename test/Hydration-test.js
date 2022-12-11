@@ -91,6 +91,14 @@ describe("Hydation", () => {
     expect(hydration1.hydrationData).to.deep.equal(hydrationData);
   });
 
+  it("should find a users hydration data by id", function () {
+    expect(hydration1.findUsersHydrationData(1)).to.deep.equal([
+      { userID: 1, date: '2019/06/15', numOunces: 37 },
+      { userID: 1, date: '2019/06/16', numOunces: 69 },
+      { userID: 1, date: '2019/06/17', numOunces: 96 }
+    ])
+  });
+
   it("should find the average fluid ounces consumed for a user", function () {
 		expect(hydration1.findAvrgFluidIntake(1)).to.equal(67);
 	});

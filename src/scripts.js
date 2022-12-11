@@ -1,17 +1,11 @@
 // -----------------imports------------------------
-
 import UserRepository from "./UserRepository";
 import User from "./User";
 import Hydration from "./Hydration";
 import apiCalls from "./apiCalls";
 import Chart from "chart.js/auto";
 import Sleep from "./Sleep";
-
-// An example of how you tell webpack to use a CSS file
 import "./css/styles.css";
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-// import './images/turing-logo.png'
 
 // ----------------variables-------------------------
 let generatedUser;
@@ -35,6 +29,7 @@ let friendSection = document.querySelector(".friends-list");
 const stepsChart = document.getElementById("stepsChart").getContext("2d");
 const waterChart = document.getElementById("waterChart").getContext("2d");
 Chart.defaults.color = "rgb(219, 208, 208)";
+Chart.defaults.font.size = 16;
 const sleepChart = document.getElementById("sleepChart").getContext("2d");
 
 // -------------------eventListeners----------------
@@ -79,9 +74,7 @@ function createSleepDataRepository() {
 }
 
 function generateUser() {
-	return (generatedUser = new User(
-		newUserRepository.generateRandomUser(usersData)
-	));
+	return (generatedUser = new User(newUserRepository.generateRandomUser(usersData)));
 }
 
 function displayCardInfo() {
@@ -91,27 +84,14 @@ function displayCardInfo() {
 }
 
 function displayLatestStats() {
-	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
-		generatedUser.id
-		)["seven"];
-		let usersSleepData = sleepDataRepository.sleepData.filter((data) => {
-			return data.userID === generatedUser.id;
-		});
-		
-	strideLength.innerText = `Stride Length: ${generatedUser.strideLength}`;
-	recentWaterIntake.innerText = `Ounces of Water Consumed: ${waterInfo}`;
-	hoursOfSleep.innerText = `Hours Slept: ${
-		usersSleepData[usersSleepData.length - 1].hoursSlept
-	}`;
-	qualityOfSleep.innerText = `Sleep Quality Score: ${
-		usersSleepData[usersSleepData.length - 1].sleepQuality
-	}`;
-	hoursSleptAverage.innerText = `You average ${sleepDataRepository.findSleepAvrg("hours", 
-		generatedUser.id
-	)} hours of sleep a night`;
-	sleepQualityAverage.innerText = `Your average sleep quality score is ${sleepDataRepository.findSleepAvrg("quality", 
-		generatedUser.id
-	)}`;
+	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id)["seven"];
+		let usersSleepData = sleepDataRepository.sleepData.filter(data => data.userID === generatedUser.id);
+	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
+	recentWaterIntake.innerText = `💧 Ounces of Water Consumed: ${waterInfo}`;
+	hoursOfSleep.innerText = `⏰ Hours Slept: ${usersSleepData[usersSleepData.length - 1].hoursSlept}`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
+	hoursSleptAverage.innerText = `🥱 You average ${sleepDataRepository.findSleepAvrg("hours", generatedUser.id)} hours of sleep a night`;
+	sleepQualityAverage.innerText = `💤 Your average sleep quality score is ${sleepDataRepository.findSleepAvrg("quality", generatedUser.id)}`;
 }
 
 function displayFriends() {
@@ -121,10 +101,11 @@ function displayFriends() {
 		friendInfo.name = newFriend.name;
 		friendInfo.steps = newFriend.dailyStepGoal;
 		friendInfo.stride = newFriend.strideLength;
-
-		friendSection.innerHTML += `
-			<div class="friend-name">${friendInfo.name}</div>
-			<div class="friend-steps">Step Goal: ${friendInfo.steps}</div>`;
+		friendSection.innerHTML += 
+		 `<div class"friends-container">
+				<div class="friend-name">&#9734 ${friendInfo.name}</div>
+				<div class="friend-steps">Step Goal: ${friendInfo.steps}</div>
+			</div>`;
 	});
 	return friends;
 }
@@ -279,9 +260,3 @@ function createSleepChart() {
 	};
 	new Chart(sleepChart, config);
 }
-
-// Do not delete or rename this file ********
-
-// console.log(userData, "<>>>>userData");
-
-console.log("This is the JavaScript entry file - your code begins here.");
