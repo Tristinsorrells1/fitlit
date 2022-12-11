@@ -1,5 +1,3 @@
-// Your fetch requests will live here!
-
 const fetchApiData = (path) => {
   return fetch(`https://fitlit-api.herokuapp.com/api/v1/${path}`)
   .then(response => response.json())
@@ -14,8 +12,5 @@ const fetchData = () => {
     fetchApiData("hydration"),
   ])
 };
-
   
-
-console.log('I will be a fetch request!')
 export default { fetchData };

@@ -2,11 +2,11 @@ class UserRepository {
 	constructor(data) {
 		this.data = data;
 	}
+
 	findUser(userID) {
-		return this.data.find((user) => {
-			return user.id === userID;
-		});
+		return this.data.find(user =>  user.id === userID);
 	}
+
 	findAvrgStepGoal(data) {
 		const calculateAvrgGoal =
 			this.data.reduce((accum, data) => {
@@ -14,13 +14,15 @@ class UserRepository {
 			}, 0) / data.length;
 		return parseInt(calculateAvrgGoal.toFixed(0));
 	}
+
 	getRandomIndex(data) {
 		return Math.floor(Math.random() * data.length);
 	}
+
 	generateRandomUser(data) {
 		const id = this.getRandomIndex(data);
        return this.findUser(id)
-    }
+  }
 }
 
 export default UserRepository;
