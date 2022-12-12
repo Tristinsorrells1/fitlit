@@ -1,5 +1,5 @@
 * {
-  color: rgb(219, 208, 208);
+  color: #bdc1c6;
   font-family: 'Raleway';
   margin: 0;
   padding: 0;
@@ -51,9 +51,12 @@ h2{
 }
 
 .charts {
+  align-items: center;
   border-top: .5px solid blue;
-  width: 50vw;
+  display:flex;
   height: 28vh;
+  justify-content: center;
+  width: 50vw;
 }
 
 .friend-name {

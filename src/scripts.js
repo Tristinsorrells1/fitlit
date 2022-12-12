@@ -27,10 +27,10 @@ let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
 let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 let friendSection = document.querySelector(".friends-list");
 const stepsChart = document.getElementById("stepsChart").getContext("2d");
-const waterChart = document.getElementById("waterChart").getContext("2d");
-Chart.defaults.color = "rgb(219, 208, 208)";
-Chart.defaults.font.size = 16;
 const sleepChart = document.getElementById("sleepChart").getContext("2d");
+const waterChart = document.getElementById("waterChart").getContext("2d");
+Chart.defaults.color = "#bdc1c6";
+Chart.defaults.font.size = 16;
 
 // -------------------eventListeners----------------
 window.addEventListener("load", (event) => {
