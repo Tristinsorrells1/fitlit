@@ -44,7 +44,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 ### Future Considerations
 - As of now, there is no user interaction on our app. 
 - In the future, we would like to enable the user to choose which week's data is displayed on their chart.
-- We also would like to create some sort of step challenge users can participate in with their friends.
+- We would like to create some sort of step challenge users can participate in with their friends.
 - We would like to add a login page for a user.
 
 ## Contributors
