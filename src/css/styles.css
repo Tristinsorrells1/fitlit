@@ -51,9 +51,12 @@ h2{
 }
 
 .charts {
+  align-items: center;
   border-top: .5px solid blue;
-  width: 50vw;
+  display:flex;
   height: 28vh;
+  justify-content: center;
+  width: 50vw;
 }
 
 .friend-name {
