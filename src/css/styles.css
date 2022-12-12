@@ -49,11 +49,8 @@ h2{
   border: 3px solid blue;
 }
 
-.steps-chart,
-.water-chart,
-.sleep-chart {
+.charts {
   border-top: .5px solid blue;
-  justify-content: space-around;
   width: 50vw;
   height: 28vh;
 }
