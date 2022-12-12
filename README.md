@@ -37,6 +37,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 ### Wins
 - This was our first time making a network request to retrieve data from an API, so being able to use that data in our code base was an exciting win.
 - This was also our first time using Chart.js. We manipulated the data we fetched and then used it to create our charts, so we are proud of our ability to learn two new technologies and use them together in our project.
+- We were able to create a responsive user interface across different sizing.
 
 ### Challenges 
 - Initially, we struggled to write DRY code. We refactored to make our code more reusable, but this was not as efficient as writing DRY code from the beginning. 
