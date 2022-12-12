@@ -48,33 +48,30 @@ const fetchApiPromises = () => {
 };
 
 function createDashboard() {
-	createUserRepository();
-	createHydrationRepository();
-	createSleepDataRepository();
+	createRepositories();
 	generateUser();
 	displayCardInfo();
 	displayLatestStats();
 	displayFriends();
-	createWaterChart();
-	createSleepChart();
-	createStepsChart();
+	createCharts();
 }
 
-function createUserRepository() {
+function createRepositories() {
 	newUserRepository = new UserRepository(usersData);
-	return newUserRepository;
-}
-
-function createHydrationRepository() {
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
-}
-
-function createSleepDataRepository() {
 	sleepDataRepository = new Sleep(sleepData.sleepData);
 }
 
 function generateUser() {
-	return (generatedUser = new User(newUserRepository.generateRandomUser(usersData)));
+	return (generatedUser = new User(
+		newUserRepository.generateRandomUser(usersData)
+	));
+}
+
+function createCharts() {
+	createWaterChart();
+	createSleepChart();
+	createStepsChart();
 }
 
 function displayCardInfo() {
@@ -83,15 +80,54 @@ function displayCardInfo() {
 	userAddressandEmail.innerText = `${generatedUser.address}  /  ${generatedUser.email}`;
 }
 
+function findSleepInsights(type) {
+	let usersSleepData = sleepDataRepository.sleepData.filter(
+		(data) => data.userID === generatedUser.id
+	);
+	if (type === "hours") {
+		var latestSleepHours = usersSleepData[usersSleepData.length - 1].hoursSlept;
+		var sleepAverage = sleepDataRepository.findSleepAvrg(
+			"hours",
+			generatedUser.id
+		);
+	} else {
+		var latestSleepHours =
+			usersSleepData[usersSleepData.length - 1].sleepQuality;
+		var sleepAverage = sleepDataRepository.findSleepAvrg(
+			"quality",
+			generatedUser.id
+		);
+	}
+	if (latestSleepHours > sleepAverage) {
+		return `${(latestSleepHours - sleepAverage).toFixed(
+			1
+		)} more than your average of ${sleepAverage} a night`;
+	} else {
+		return `${(sleepAverage - latestSleepHours).toFixed(
+			1
+		)} less than your average of ${sleepAverage} a night`;
+	}
+}
+
 function displayLatestStats() {
-	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id)["seven"];
-		let usersSleepData = sleepDataRepository.sleepData.filter(data => data.userID === generatedUser.id);
+	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
+		generatedUser.id
+	)["seven"];
+	let usersSleepData = sleepDataRepository.sleepData.filter(
+		(data) => data.userID === generatedUser.id
+	);
 	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
-	recentWaterIntake.innerText = `💧 Ounces of Water Consumed: ${waterInfo}`;
-	hoursOfSleep.innerText = `⏰ Hours Slept: ${usersSleepData[usersSleepData.length - 1].hoursSlept}`;
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
-	hoursSleptAverage.innerText = `🥱 You average ${sleepDataRepository.findSleepAvrg("hours", generatedUser.id)} hours of sleep a night`;
-	sleepQualityAverage.innerText = `💤 Your average sleep quality score is ${sleepDataRepository.findSleepAvrg("quality", generatedUser.id)}`;
+	recentWaterIntake.innerText = `💧 Hydration: ${waterInfo} ounces of water`;
+	hoursOfSleep.innerText = `⏰ Hours Slept: ${
+		usersSleepData[usersSleepData.length - 1].hoursSlept
+	} hours`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
+	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
+	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
+		"quality"
+	)}`;
 }
 
 function displayFriends() {
@@ -101,8 +137,7 @@ function displayFriends() {
 		friendInfo.name = newFriend.name;
 		friendInfo.steps = newFriend.dailyStepGoal;
 		friendInfo.stride = newFriend.strideLength;
-		friendSection.innerHTML += 
-		 `<div class"friends-container">
+		friendSection.innerHTML += `<div class"friends-container">
 				<div class="friend-name">&#9734 ${friendInfo.name}</div>
 				<div class="friend-steps">Step Goal: ${friendInfo.steps}</div>
 			</div>`;
@@ -144,6 +179,8 @@ function createStepsChart() {
 						display: true,
 						text: "Steps",
 					},
+					suggestedMax: 10000,
+					suggestedMin: 0,
 				},
 			},
 			responsive: true,
@@ -197,6 +234,8 @@ function createWaterChart() {
 						display: true,
 						text: "Ounces of Water",
 					},
+					suggestedMax: 100,
+					suggestedMin: 0,
 				},
 			},
 			responsive: true,
@@ -215,41 +254,59 @@ function createWaterChart() {
 }
 
 function createSleepChart() {
-	const labels = [];
+	const labels = ["one", "two", "three", "four", "five", "six", "seven"];
 	const data = {
 		labels: labels,
 		datasets: [
 			{
-				data: sleepDataRepository.getSleepQualityandHours(generatedUser.id),
-				backgroundColor: ["rgba(255, 173, 0)"],
+				data: sleepDataRepository.getSleepQualityandHours(
+					generatedUser.id,
+					"quality"
+				),
+				label: ["Sleep Quality"],
+				backgroundColor: ["rgba(210, 39, 48)"],
+				borderColor: "rgba(210, 39, 48)",
 				borderWidth: 1,
+				showLine: true,
+				spanGaps: true,
+			},
+			{
+				data: sleepDataRepository.getSleepQualityandHours(
+					generatedUser.id,
+					"hours"
+				),
+				label: ["Hours of Sleep"],
+				backgroundColor: ["rgba(224, 231, 34)"],
+				borderColor: "rgba(224, 231, 34)",
+				borderWidth: 1,
+				showLine: true,
+				spanGaps: true,
 			},
 		],
 	};
 	const config = {
-		type: "scatter",
+		type: "line",
 		data: data,
 		options: {
 			scales: {
 				x: {
 					title: {
 						display: true,
-						text: "Hours Slept",
+						text: "Days",
 					},
-					type: "linear",
-					position: "bottom",
 				},
 				y: {
 					title: {
 						display: true,
-						text: "Sleep Quality Score",
+						text: "Sleep Quality / Hours",
 					},
-					type: "linear",
+					suggestedMax: 10,
+					suggestedMin: 0,
 				},
 			},
 			plugins: {
 				legend: {
-					display: false,
+					display: true,
 				},
 				title: {
 					display: true,

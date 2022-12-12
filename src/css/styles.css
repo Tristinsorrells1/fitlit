@@ -23,43 +23,46 @@ h2{
 }
 
 .welcome {
-  flex-direction: column;
   height: 14vh;
+  align-content: space-between;
+  padding-top: 1vw;
 }
 
-.steps,
-.water,
-.sleep{
-  height: 28vh;
-}
-
-.steps,
-.water,
-.sleep,
-.welcome {
-  background-color: #131111;
-  border-top: .5px solid blue;
-  display: flex;
-  justify-content: space-around;
-  width: 50vw;
-}
-
-.friend-name {
-  font-size: 2.5vw;
-}
-
-.friend-steps {
-  font-size: 1.5vw;
+.card-info {
+  padding-top: 2vw;
 }
 
 .previous-activities,
 .friends-list {
-  background-color: #131111;
-  border: 3px solid blue;
   display: flex;
   flex-direction: column;
   font-size: 2vw;
   height: 99vh;
   justify-content: space-evenly;
   width: 15vw;
+}
+
+.previous-activities,
+.friends-list,
+.main {
+  background-color: #131111;
+  border: 3px solid blue;
+}
+
+.steps-chart,
+.water-chart,
+.sleep-chart {
+  border-top: .5px solid blue;
+  justify-content: space-around;
+  width: 50vw;
+  height: 28vh;
+}
+
+.friend-name {
+  font-size: 2.5vw;
+}
+
+.friend-steps,
+.sleep-insights {
+  font-size: 1.5vw;
 }

@@ -5,34 +5,36 @@ class Sleep {
 		this.sleepData = sleepData;
 	}
 
-  findUsersSleepData(id) {
-    return this.sleepData.filter(data => data.userID === id);
-  }
+	findUsersSleepData(id) {
+		return this.sleepData.filter((data) => data.userID === id);
+	}
 
-  findSleepAvrg(type, id) {
-     const calculateAvrg = this.findUsersSleepData(id).reduce((accum, data) => {
-      if (type === "hours") {
-        return (accum += data.hoursSlept);
-      }
-      else {
-        return (accum += data.sleepQuality);
-      }
-    }, 0) / this.findUsersSleepData(id).length;
-   return calculateAvrg.toFixed(1);  
-  }
+	findSleepAvrg(type, id) {
+		const calculateAvrg =
+			this.findUsersSleepData(id).reduce((accum, data) => {
+				if (type === "hours") {
+					return (accum += data.hoursSlept);
+				} else {
+					return (accum += data.sleepQuality);
+				}
+			}, 0) / this.findUsersSleepData(id).length;
+		return calculateAvrg.toFixed(1);
+	}
 
-  findSleepInfoByDay(id, day, type) {
-		const findUserSleepInfoOnDate = this.findUsersSleepData(id).find(data => data.date === day);
-    if (type === "hours") {
-      return findUserSleepInfoOnDate.hoursSlept;
-    } else {
-      return findUserSleepInfoOnDate.sleepQuality;
-    };
-  }
+	findSleepInfoByDay(id, day, type) {
+		const findUserSleepInfoOnDate = this.findUsersSleepData(id).find(
+			(data) => data.date === day
+		);
+		if (type === "hours") {
+			return findUserSleepInfoOnDate.hoursSlept;
+		} else {
+			return findUserSleepInfoOnDate.sleepQuality;
+		}
+	}
 
 	getWeek(id, date) {
 		let userDates = this.findUsersSleepData(id).reverse();
-		let findDate = userDates.find(data => data.date === date);
+		let findDate = userDates.find((data) => data.date === date);
 		let indexPosition = userDates.indexOf(findDate);
 		week = userDates.slice(indexPosition, indexPosition + 7);
 		return week;
@@ -54,22 +56,29 @@ class Sleep {
 		if (week.length < 7) {
 			let earliestDate = this.findUsersSleepData(id);
 			return `ERROR - ${earliestDate[6].date} is the earliest date you have a full week of information for`;
-		};
+		}
 		return weeklySleep();
 	}
 
 	findAllUserSleepQuality(data) {
-		const calculateAvrgSleepQltyForAll = this.sleepData.reduce((accum, data) => {
-			return accum += data.sleepQuality
-		}, 0) / data.length;
+		const calculateAvrgSleepQltyForAll =
+			this.sleepData.reduce((accum, data) => {
+				return (accum += data.sleepQuality);
+			}, 0) / data.length;
 		return parseInt(calculateAvrgSleepQltyForAll.toFixed(0));
 	}
 
-	getSleepQualityandHours(id) {
-		const userSleepWeek = this.findUsersSleepData(id).slice(0, 7);
-		return userSleepWeek.map(day => {
-			return { x: day.hoursSlept, y: day.sleepQuality };
-		});
+	getSleepQualityandHours(id, type) {
+		const userSleepWeek = this.findUsersSleepData(id).reverse().slice(0, 7);
+		const weeklySleepStats = userSleepWeek.reduce((accum, day) => {
+			if (type === "hours") {
+				accum.push(day.hoursSlept);
+			} else {
+				accum.push(day.sleepQuality);
+			}
+			return accum;
+		}, []);
+		return weeklySleepStats.reverse();
 	}
 }
 
