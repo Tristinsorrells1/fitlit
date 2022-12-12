@@ -1,78 +1,49 @@
-# FitLit Starter Kit
+# FitLit!
 
-The details of this project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html).
+## Overview of project 
+### Description
+Fitlit was a group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. Students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of this project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html).
 
-## Setup
+### Goals
+- Implement ES6 classes that communicate to each other as needed.
+- Use object and array prototype methods to perform data manipulation.
+- Create a dashboard that is easy to use and displays information in a clear way.
+- Write modular, reusable code that follows SRP (Single Responsibility Principle).
+- Implement a robust testing suite using TDD.
+- Make network requests to retrieve data.
 
-1. Within your group, decide on one person to have the project repository (repo) on their GitHub account. Then, that person should fork this repo - on the top right corner of this page, click the **Fork** button.
-1. Both memebers of the group should clone down the _forked_ repo. Since you don't want to name your project "activity-tracker-starter", you can use an optional argument when you run git clone (you replace the [...] with the terminal command arguments): `git clone [remote-address] [what you want to name the repo]`
-1. Once you have cloned the repo, change into the directory and install the project dependencies. Run `npm install` to install project dependencies.
-1. Run `npm start` in the terminal to see the HTML page (you should see some boilerplate HTML displayed on the page).  `Control + C` is the command to stop running the local server.  Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems. This command is not specific to Webpack; make note of it for future use.   
-1. Make sure both members of your team are collaborators on the forked repo.  
-1. Do not run `npm audit fix --force`.  This will update to the latest version of packages.  We need to be using `webpack-dev-server@3.11.2` which is not the latest version.  If you start to run into Webpack errors, first check that all group members are using the correct version.  
+## Overview of technologies used
+- HTML, CSS, and Javascript 
+- Fetch API
+- Webpack
+- Chart.js
+- Mocha/Chai
+- GitHub project board
 
-## Testing
+## Installation Instructions:
+- Clone the repository to your local machine. 
+- Once you have cloned the repo, change into the directory. 
+- Run `npm install` to install project dependencies.
+- Run `npm start` in the terminal to see the HTML page. 
 
-There is no boilerplate for testing in this starter-kit repo. You will need to set this up yourself. However, if you ran `npm install`, then the tooling you need to start testing is already installed (`mocha` and `chai`).
+## App Preview
+<img width="721" alt="Screen Shot 2022-12-11 at 8 35 25 PM" src="https://user-images.githubusercontent.com/109977562/206948769-2dfb1e2e-e3bc-4de9-a5b2-1d9d413f2d4b.png">
 
+## Reflection
 
-## Data Model
+### Wins
+- This was our first time making a network request to retrieve data from an API, so being able to use that data in our code base was an exciting win.
+- This was also our first time using Chart.js. We manipulated the data we fetched and then used it to create our charts, so we are proud of our ability to learn two new technologies and use them together in our project.
 
-**Users**
+### Challenges 
+- Initially, we struggled to write DRY code. We refactored to make our code more reusable, but this was not as efficient as writing DRY code from the beginning. 
+- We could have improved our project board by using issue labels.
 
-```
-[
-  {
-    "id": [number],
-    "name": [string],
-    "address": [string],
-    "email": [string],
-    "strideLength": [number - feet],
-    "dailyStepGoal": [number - steps],
-    "friends": [array - one-way connection to other user(s)]
-  },
-  ...more user data
-]
-```
+### Future Considerations
+- As of now, there is no way for a user to interact with our site. In the future, we would like to enable the user to choose which week's data is displayed on their chart.
+- We also would like to create some sort of step challenge users can participate in with their friends.
 
-**Activity**
-
-```
-[
-  {
-    "userID": [number],
-    "date": [string YYYY/MM/DD],
-    "numSteps": [number - steps],
-    "minutesActive": [number - minutes],
-    "flightsOfStairs": [number - flights]
-  },
-  ...more activity data
-]
-```
-
-**Hydration**
-
-```
-[
-  {
-    "userID": [number],
-    "date": [string YYYY/MM/DD],
-    "numOunces": [number - ounces]
-  },
-  ...more hydration data
-]
-```
-
-**Sleep**
-
-```
-[
-  {
-    "userID": [number],
-    "date": [string YYYY/MM/DD],
-    "hoursSlept": [number - hours],
-    "sleepQuality": [number - unitless]
-  },
-  ...more sleep data
-]
-```
+## Contributors
+- Tristin Sorrells [GitHub](https://github.com/Tristinsorrells1), [LinkedIn](https://www.linkedin.com/in/tristinsorrells/)
+- Sarah Hampton [GitHub](https://github.com/SHampton22), [LinkedIn](https://www.linkedin.com/in/sarah-hampton-684083255/)
+- Gus Deribeaux [GitHub](https://github.com/Gderibeaux) [LinkedIn](https://www.linkedin.com/in/gus-deribeaux-562a511aa/)
