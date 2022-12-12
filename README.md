@@ -46,6 +46,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - In the future, we would like to enable the user to choose which week's data is displayed on their chart.
 - We would like to create some sort of step challenge users can participate in with their friends.
 - We would like to add a login page for a user.
+- We also would like to implement WAVE evaluation tool to evaluate web accessibility. 
 
 ## Contributors
 - Tristin Sorrells [GitHub](https://github.com/Tristinsorrells1), [LinkedIn](https://www.linkedin.com/in/tristinsorrells/)
