@@ -26,6 +26,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - Run `npm install` to install project dependencies.
 - Run `npm start` to get local host URL. 
 - Copy local host and paste it in your browswer to view the website.
+- To quit out of npm start click control C in your terminal.
 
 ## App Preview
 <img width="721" alt="Screen Shot 2022-12-11 at 8 35 25 PM" src="https://user-images.githubusercontent.com/109977562/206948769-2dfb1e2e-e3bc-4de9-a5b2-1d9d413f2d4b.png">
