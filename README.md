@@ -14,6 +14,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 
 ## Technologies Used:
 - HTML, CSS, and Javascript 
+- Test Driven Development (TDD)
 - Fetch API
 - Webpack
 - Chart.js
