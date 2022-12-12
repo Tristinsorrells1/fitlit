@@ -1,6 +1,6 @@
 # FitLit!
 
-## Overview of project 
+## Overview of Project 
 ### Description
 Fitlit was a group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. Students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of this project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html).
 
@@ -12,7 +12,7 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - Implement a robust testing suite using TDD.
 - Make network requests to retrieve data.
 
-## Overview of technologies used
+## Technologies Used:
 - HTML, CSS, and Javascript 
 - Fetch API
 - Webpack
@@ -40,10 +40,11 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - We could have improved our project board by using issue labels.
 
 ### Future Considerations
-- As of now, there is no way for a user to interact with our site. In the future, we would like to enable the user to choose which week's data is displayed on their chart.
+- As of now, there is no user interaction on our app. 
+- In the future, we would like to enable the user to choose which week's data is displayed on their chart.
 - We also would like to create some sort of step challenge users can participate in with their friends.
 
 ## Contributors
 - Tristin Sorrells [GitHub](https://github.com/Tristinsorrells1), [LinkedIn](https://www.linkedin.com/in/tristinsorrells/)
 - Sarah Hampton [GitHub](https://github.com/SHampton22), [LinkedIn](https://www.linkedin.com/in/sarah-hampton-684083255/)
-- Gus Deribeaux [GitHub](https://github.com/Gderibeaux) [LinkedIn](https://www.linkedin.com/in/gus-deribeaux-562a511aa/)
+- Gus Deribeaux [GitHub](https://github.com/Gderibeaux), [LinkedIn](https://www.linkedin.com/in/gus-deribeaux-562a511aa/)
