@@ -1,0 +1,394 @@
+import { expect } from "chai";
+// import User from "../src/User";
+import UserRepository from "../src/UserRepository";
+import Activity from "../src/Activity";
+
+describe("Activity", () => {
+	// let user1;
+	let userData;
+	let userRepository;
+	let activity;
+	let activityData;
+
+	beforeEach("test setup", function () {
+		// user1 = new User(userData);
+		userData = [
+			{
+				id: 1,
+				name: "Luisa Hane",
+				address: "15195 Nakia Tunnel, Erdmanport VA 19901-1697",
+				email: "Diana.Hayes1@hotmail.com",
+				strideLength: 4.3,
+				dailyStepGoal: 10000,
+				friends: [16, 4, 8],
+			},
+			{
+				id: 2,
+				name: "Jarvis Considine",
+				address: "30086 Kathryn Port, Ciceroland NE 07273",
+				email: "Dimitri.Bechtelar11@gmail.com",
+				strideLength: 4.5,
+				dailyStepGoal: 5000,
+				friends: [9, 18, 24, 19],
+			},
+			{
+				id: 3,
+				name: "Herminia Witting",
+				address: "85823 Bosco Fork, East Oscarstad MI 85126-5660",
+				email: "Elwin.Tromp@yahoo.com",
+				strideLength: 4.4,
+				dailyStepGoal: 5000,
+				friends: [19, 11, 42, 33],
+			},
+		];
+		userRepository = new UserRepository(userData);
+		activity = new Activity(activityData);
+		activityData = [
+			{
+				userID: 1,
+				date: "2019/06/15",
+				numSteps: 3577,
+				minutesActive: 140,
+				flightsOfStairs: 16,
+			},
+			{
+				userID: 1,
+				date: "2019/06/16",
+				numSteps: 4294,
+				minutesActive: 138,
+				flightsOfStairs: 10,
+			},
+			{
+				userID: 1,
+				date: "2019/06/17",
+				numSteps: 7402,
+				minutesActive: 116,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/18",
+				numSteps: 7402,
+				minutesActive: 0,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/19",
+				numSteps: 7402,
+				minutesActive: 150,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/20",
+				numSteps: 7402,
+				minutesActive: 95,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/21",
+				numSteps: 7402,
+				minutesActive: 62,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/22",
+				numSteps: 7402,
+				minutesActive: 85,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/23",
+				numSteps: 7402,
+				minutesActive: 100,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/24",
+				numSteps: 7402,
+				minutesActive: 111,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/25",
+				numSteps: 7402,
+				minutesActive: 45,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/26",
+				numSteps: 7402,
+				minutesActive: 98,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 2,
+				date: "2019/06/15",
+				numSteps: 3486,
+				minutesActive: 114,
+				flightsOfStairs: 32,
+			},
+			{
+				userID: 3,
+				date: "2019/06/15",
+				numSteps: 11374,
+				minutesActive: 213,
+				flightsOfStairs: 13,
+			},
+			{
+				userID: 6,
+				date: "2019/06/15",
+				numSteps: 14810,
+				minutesActive: 287,
+				flightsOfStairs: 18,
+			},
+			{
+				userID: 7,
+				date: "2019/06/15",
+				numSteps: 2634,
+				minutesActive: 107,
+				flightsOfStairs: 5,
+			},
+			{
+				userID: 8,
+				date: "2019/06/15",
+				numSteps: 10333,
+				minutesActive: 114,
+				flightsOfStairs: 31,
+			},
+			{
+				userID: 9,
+				date: "2019/06/15",
+				numSteps: 6389,
+				minutesActive: 41,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 10,
+				date: "2019/06/15",
+				numSteps: 8015,
+				minutesActive: 106,
+				flightsOfStairs: 37,
+			},
+			{
+				userID: 11,
+				date: "2019/06/15",
+				numSteps: 11652,
+				minutesActive: 20,
+				flightsOfStairs: 24,
+			},
+			{
+				userID: 12,
+				date: "2019/06/15",
+				numSteps: 9256,
+				minutesActive: 108,
+				flightsOfStairs: 2,
+			},
+		];
+	});
+
+	it("should be a function", function () {
+		expect(Activity).to.be.a("function");
+	});
+
+	it("should be an instance of Activity", function () {
+		expect(activity).to.be.an.instanceof(Activity);
+	});
+	it("should store all user activity data", function () {
+		expect(activity.activityData).to.deep.equal(activityData);
+	});
+
+	it("should return false if a user with the id is not found", function () {
+		expect(activity.checkForValidId(9000)).to.equal(false);
+	});
+	it("should return true if a user with the id is found", function () {
+		expect(activity.checkForValidId(1)).to.equal(true);
+	});
+	it("should return false if a user does not have data for a date", function () {
+		expect(activity.checkForValidDate(1, "2011/09/31")).to.equal(false);
+	});
+	it("should return true if a user has data for the date", function () {
+		expect(activity.checkForValidDate(1, "2019/06/15")).to.equal(true);
+	});
+	it("should find a user by id", function () {
+		expect(activity.findUser(1)).to.deep.equal([
+			{
+				userID: 1,
+				date: "2019/06/15",
+				numSteps: 3577,
+				minutesActive: 140,
+				flightsOfStairs: 16,
+			},
+			{
+				userID: 1,
+				date: "2019/06/16",
+				numSteps: 4294,
+				minutesActive: 138,
+				flightsOfStairs: 10,
+			},
+			{
+				userID: 1,
+				date: "2019/06/17",
+				numSteps: 7402,
+				minutesActive: 116,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/18",
+				numSteps: 7402,
+				minutesActive: 0,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/19",
+				numSteps: 7402,
+				minutesActive: 150,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/20",
+				numSteps: 7402,
+				minutesActive: 95,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/21",
+				numSteps: 7402,
+				minutesActive: 62,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/22",
+				numSteps: 7402,
+				minutesActive: 85,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/23",
+				numSteps: 7402,
+				minutesActive: 100,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/24",
+				numSteps: 7402,
+				minutesActive: 111,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/25",
+				numSteps: 7402,
+				minutesActive: 45,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/26",
+				numSteps: 7402,
+				minutesActive: 98,
+				flightsOfStairs: 33,
+			},
+		]);
+	});
+	it("should tell user if id is not found", function () {
+		expect(activity.findUser(9000)).to.equal("no id found");
+		expect(
+			activity.calculateMilesBySteps("2019/06/15", 9000, userRepository)
+		).to.equal("no id found");
+		expect(activity.findMinutesActive(9000, "2019/06/16")).to.equal(
+			"no id found"
+		);
+		expect(activity.getWeek(9000, "2019/06/15")).to.equal("no id found");
+		expect(
+			activity.calculateWeeklyAverageActiveMinutes(9000, "2019/06/15")
+		).to.equal("no id found");
+		expect(
+			activity.compareStepGoalToActualSteps(9000, "2019/06/15", userRepository)
+		).to.equal("no id found");
+	});
+	it("should tell user if date is not found", function () {
+		expect(
+			activity.calculateMilesBySteps("2019/09/15", 1, userRepository)
+		).to.equal(`date not found`);
+		expect(activity.findMinutesActive(1, "2019/09/12")).to.equal(
+			`date not found`
+		);
+		expect(activity.getWeek(1, "2011/09/31")).to.equal(`date not found`);
+	});
+
+	it("should return the miles a user has walked based on their number of steps", function () {
+		expect(
+			activity.calculateMilesBySteps("2019/06/15", 1, userRepository)
+		).to.equal("2.91");
+	});
+
+	it("should return how many minutes were they active for a given day", function () {
+		expect(activity.findMinutesActive(1, "2019/06/16")).to.equal(138);
+	});
+
+	it("should return how many minutes were they active on average for a given week", function () {
+		expect(
+			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/26")
+		).to.equal(85.14);
+	});
+	it("should take in a date and create a week with that date as the last day of the week", function () {
+		expect(activity.getWeek(1, "2019/06/17")).to.deep.equal([
+			{
+				userID: 1,
+				date: "2019/06/17",
+				numSteps: 7402,
+				minutesActive: 116,
+				flightsOfStairs: 33,
+			},
+			{
+				userID: 1,
+				date: "2019/06/16",
+				numSteps: 4294,
+				minutesActive: 138,
+				flightsOfStairs: 10,
+			},
+			{
+				userID: 1,
+				date: "2019/06/15",
+				numSteps: 3577,
+				minutesActive: 140,
+				flightsOfStairs: 16,
+			},
+		]);
+	});
+
+	it("should notify user if there is not enough data for the week", function () {
+		expect(
+			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/17")
+		).to.equal(
+			"ERROR - 2019/06/21 is the earliest date you have a full week of information for"
+		);
+	});
+
+	it("should notify user if they met their step goal on a given date", function () {
+		expect(
+			activity.compareStepGoalToActualSteps(3, "2019/06/15", userRepository)
+		).to.equal("Congratulations! You exceeded your step goal by 6374 steps");
+	});
+
+	it("should notify user if they did not met their step goal on a given date", function () {
+		expect(
+			activity.compareStepGoalToActualSteps(2, "2019/06/15", userRepository)
+		).to.equal("You fell short of your goal by 1514");
+	});
+});
