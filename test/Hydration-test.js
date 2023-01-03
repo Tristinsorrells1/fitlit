@@ -99,6 +99,13 @@ describe("Hydation", () => {
     ])
   });
 
+  it("should tell user if id is not found", function () {
+    expect(hydration1.findUsersHydrationData(9000)).to.equal('no id found');
+    expect(hydration1.findAvrgFluidIntake(9000)).to.equal('no id found');
+    expect(hydration1.findDailyFluidIntake(9000, "2019/06/15")).to.equal('no id found');
+    expect(hydration1.findWeeklyFluidIntake(9000)).to.equal('no id found');
+  });
+
   it("should find the average fluid ounces consumed for a user", function () {
 		expect(hydration1.findAvrgFluidIntake(1)).to.equal(67);
 	});
