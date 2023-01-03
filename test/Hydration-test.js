@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import Hydration from "../src/Hydration";
 import User from "../src/User";
-import UserRepository from "../src/UserRepository";
+
 
 describe("Hydation", () => {
 	let user1;
