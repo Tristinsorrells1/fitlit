@@ -53,9 +53,21 @@ describe("User Repository", () => {
 		expect(userRepository.data).to.equal(userData);
 	});
 
-	it("should find User by ID and return their data", function () {
-		expect(userRepository.findUser(user1.id)).to.deep.equal(user1);
+	it("should return true if a user with the id is found", function () {
+		expect(userRepository.checkForValidId(1)).to.equal(true);
 	});
+
+	it("should return false if a user with the id is not found", function () {
+		expect(userRepository.checkForValidId(9000)).to.equal(false);
+	});
+
+	it("should find User by ID and return their data", function () {
+		expect(userRepository.findUser(1)).to.deep.equal(user1);
+	});
+
+	it("should tell user if id is not found", function () {
+    expect(userRepository.findUser(9000)).to.equal('no id found')
+  });
 
 	it("should find average step goal amongst all users", function () {
 		expect(userRepository.findAvrgStepGoal(userData)).to.equal(6667);

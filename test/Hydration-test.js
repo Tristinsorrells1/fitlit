@@ -99,6 +99,14 @@ describe("Hydation", () => {
     ])
   });
 
+  it("should return true if a user with the id is found", function () {
+		expect(hydration1.checkForValidId(1)).to.equal(true);
+	});
+
+	it("should return false if a user with the id is not found", function () {
+		expect(hydration1.checkForValidId(9000)).to.equal(false);
+	});
+
   it("should tell user if id is not found", function () {
     expect(hydration1.findUsersHydrationData(9000)).to.equal('no id found');
     expect(hydration1.findAvrgFluidIntake(9000)).to.equal('no id found');
