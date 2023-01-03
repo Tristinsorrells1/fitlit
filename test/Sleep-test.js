@@ -105,6 +105,23 @@ describe("Sleep", () => {
 		]);
 	});
 
+	it("should return false if a user with the id is not found", function () {
+		expect(sleep1.findUsersSleepData(9000)).to.equal(false);
+	});
+
+	it("should tell user if id is not found", function () {
+    expect(sleep1.findSleepAvrg("hours",9000)).to.equal('no id found');
+    expect(sleep1.findSleepAvrg("quality",9000)).to.equal('no id found');
+    expect(sleep1.findSleepInfoByDay(9000, "2019/06/15", "hours")).to.equal('no id found');
+    expect(sleep1.findSleepInfoByDay(9000, "2019/06/15", "quality")).to.equal('no id found');
+		expect(sleep1.getWeek(9000, "2019/06/21")).to.equal('no id found');
+		expect(sleep1.findWeeklySleepInfo(9000, "2019/06/21", "hoursSlept")).to.equal('no id found');
+		expect(sleep1.findWeeklySleepInfo(9000, "2019/06/21", "sleepQuality")).to.equal('no id found');
+		expect(sleep1.findWeeklySleepInfo(9000, "2019/06/15", "hoursSlept")).to.equal('no id found');
+		expect(sleep1.getSleepQualityandHours(9000, "hours")).to.equal('no id found');
+		expect(sleep1.getSleepQualityandHours(9000, "quality")).to.equal('no id found');
+  });
+
 	it("should find the average hours slept for a user", function () {
 		expect(sleep1.findSleepAvrg("hours", 1)).to.equal("7.7");
 	});

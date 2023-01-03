@@ -6,10 +6,17 @@ class Sleep {
 	}
 
 	findUsersSleepData(id) {
-		return this.sleepData.filter((data) => data.userID === id);
+		let usersSleepData = this.sleepData.filter((data) => data.userID === id);
+		if (usersSleepData.length === 0) {
+			return false
+		}
+		return usersSleepData
 	}
 
-	findSleepAvrg(type, id) {
+	findSleepAvrg(type, id) { 
+		if (!this.findUsersSleepData(id)) {
+			return 'no id found'
+		}
 		const calculateAvrg =
 			this.findUsersSleepData(id).reduce((accum, data) => {
 				if (type === "hours") {
@@ -22,6 +29,9 @@ class Sleep {
 	}
 
 	findSleepInfoByDay(id, day, type) {
+		if (!this.findUsersSleepData(id)) {
+			return 'no id found'
+		}
 		const findUserSleepInfoOnDate = this.findUsersSleepData(id).find(
 			(data) => data.date === day
 		);
@@ -33,6 +43,9 @@ class Sleep {
 	}
 
 	getWeek(id, date) {
+		if (!this.findUsersSleepData(id)) {
+			return 'no id found'
+		}
 		let userDates = this.findUsersSleepData(id).reverse();
 		let findDate = userDates.find((data) => data.date === date);
 		let indexPosition = userDates.indexOf(findDate);
@@ -41,6 +54,9 @@ class Sleep {
 	}
 
 	findWeeklySleepInfo(id, date, type) {
+		if (!this.findUsersSleepData(id)) {
+			return 'no id found'
+		}
 		this.getWeek(id, date);
 		const weeklySleep = () => {
 			let sleepByDay = {};
@@ -69,6 +85,9 @@ class Sleep {
 	}
 
 	getSleepQualityandHours(id, type) {
+		if (!this.findUsersSleepData(id)) {
+			return 'no id found'
+		}
 		const userSleepWeek = this.findUsersSleepData(id).reverse().slice(0, 7);
 		const weeklySleepStats = userSleepWeek.reduce((accum, day) => {
 			if (type === "hours") {
