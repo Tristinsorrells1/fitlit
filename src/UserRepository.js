@@ -3,7 +3,18 @@ class UserRepository {
 		this.data = data;
 	}
 
+	checkForValidId(id) {
+    let filteredData = this.data.filter(data => data.id === id);
+    if (filteredData.length === 0) {
+      return false;
+    } 
+    return true;
+  }
+
 	findUser(userID) {
+		if (!this.checkForValidId(userID)) {
+      return 'no id found'
+    }
 		return this.data.find(user =>  user.id === userID);
 	}
 

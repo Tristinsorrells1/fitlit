@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import Hydration from "../src/Hydration";
 import User from "../src/User";
-import UserRepository from "../src/UserRepository";
+
 
 describe("Hydation", () => {
 	let user1;
@@ -97,6 +97,21 @@ describe("Hydation", () => {
       { userID: 1, date: '2019/06/16', numOunces: 69 },
       { userID: 1, date: '2019/06/17', numOunces: 96 }
     ])
+  });
+
+  it("should return true if a user with the id is found", function () {
+		expect(hydration1.checkForValidId(1)).to.equal(true);
+	});
+
+	it("should return false if a user with the id is not found", function () {
+		expect(hydration1.checkForValidId(9000)).to.equal(false);
+	});
+
+  it("should tell user if id is not found", function () {
+    expect(hydration1.findUsersHydrationData(9000)).to.equal('no id found');
+    expect(hydration1.findAvrgFluidIntake(9000)).to.equal('no id found');
+    expect(hydration1.findDailyFluidIntake(9000, "2019/06/15")).to.equal('no id found');
+    expect(hydration1.findWeeklyFluidIntake(9000)).to.equal('no id found');
   });
 
   it("should find the average fluid ounces consumed for a user", function () {
