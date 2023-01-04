@@ -1,17 +1,14 @@
 import { expect } from "chai";
-// import User from "../src/User";
 import UserRepository from "../src/UserRepository";
 import Activity from "../src/Activity";
 
 describe("Activity", () => {
-	// let user1;
 	let userData;
 	let userRepository;
 	let activity;
 	let activityData;
 
 	beforeEach("test setup", function () {
-		// user1 = new User(userData);
 		userData = [
 			{
 				id: 1,
@@ -42,7 +39,6 @@ describe("Activity", () => {
 			},
 		];
 		userRepository = new UserRepository(userData);
-		activity = new Activity(activityData);
 		activityData = [
 			{
 				userID: 1,
@@ -192,6 +188,7 @@ describe("Activity", () => {
 				flightsOfStairs: 2,
 			},
 		];
+		activity = new Activity(activityData);
 	});
 
 	it("should be a function", function () {
@@ -201,24 +198,17 @@ describe("Activity", () => {
 	it("should be an instance of Activity", function () {
 		expect(activity).to.be.an.instanceof(Activity);
 	});
-	it("should store all user activity data", function () {
+
+	it("should store all users' activity data", function () {
 		expect(activity.activityData).to.deep.equal(activityData);
 	});
 
 	it("should return false if a user with the id is not found", function () {
-		expect(activity.checkForValidId(9000)).to.equal(false);
+		expect(activity.findUserByValidId(9000)).to.equal(false);
 	});
-	it("should return true if a user with the id is found", function () {
-		expect(activity.checkForValidId(1)).to.equal(true);
-	});
-	it("should return false if a user does not have data for a date", function () {
-		expect(activity.checkForValidDate(1, "2011/09/31")).to.equal(false);
-	});
-	it("should return true if a user has data for the date", function () {
-		expect(activity.checkForValidDate(1, "2019/06/15")).to.equal(true);
-	});
-	it("should find a user by id", function () {
-		expect(activity.findUser(1)).to.deep.equal([
+
+	it("should return the user's activity data if their id is found", function () {
+		expect(activity.findUserByValidId(1)).to.deep.equal([
 			{
 				userID: 1,
 				date: "2019/06/15",
@@ -305,8 +295,16 @@ describe("Activity", () => {
 			},
 		]);
 	});
+
+	it("should return false if a user with a valid ID does not have data for the date", function () {
+		expect(activity.checkForValidDate(1, "2011/09/31")).to.equal(false);
+	});
+
+	it("should return true if a user with a valid ID has data for the date", function () {
+		expect(activity.checkForValidDate(1, "2019/06/15")).to.equal(true);
+	});
+
 	it("should tell user if id is not found", function () {
-		expect(activity.findUser(9000)).to.equal("no id found");
 		expect(
 			activity.calculateMilesBySteps("2019/06/15", 9000, userRepository)
 		).to.equal("no id found");
@@ -324,7 +322,11 @@ describe("Activity", () => {
 		expect(activity.getDaysUserExceededStepGoal(9000, userRepository)).to.equal(
 			"no id found"
 		);
+		expect(activity.checkForValidDate(9000, "2019/06/15")).to.equal(
+			"no id found"
+		);
 	});
+
 	it("should tell user if date is not found", function () {
 		expect(
 			activity.calculateMilesBySteps("2019/09/15", 1, userRepository)
@@ -338,7 +340,19 @@ describe("Activity", () => {
 		).to.equal(`date not found`);
 	});
 
-	it("should return the miles a user has walked based on their number of steps", function () {
+	it("should find a user's stride length", function () {
+		expect(
+			activity.findSrideLengthOrStepGoal(1, userRepository, "step goal")
+		).to.equal(10000);
+	});
+
+	it("should find a user's step goal", function () {
+		expect(
+			activity.findSrideLengthOrStepGoal(1, userRepository, "stride length")
+		).to.equal(4.3);
+	});
+
+	it("should return the miles a user has walked based on their number of steps that date", function () {
 		expect(
 			activity.calculateMilesBySteps("2019/06/15", 1, userRepository)
 		).to.equal("2.91");
@@ -348,11 +362,6 @@ describe("Activity", () => {
 		expect(activity.findMinutesActive(1, "2019/06/16")).to.equal(138);
 	});
 
-	it("should return how many minutes a user was active on average for a given week", function () {
-		expect(
-			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/26")
-		).to.equal(85.14);
-	});
 	it("should take in a date and create a week with that date as the last day of the week", function () {
 		expect(activity.getWeek(1, "2019/06/17")).to.deep.equal([
 			{
@@ -379,7 +388,13 @@ describe("Activity", () => {
 		]);
 	});
 
-	it("should notify user if there is not enough data for the week", function () {
+	it("should return how many minutes a user was active on average for the week of the selected date", function () {
+		expect(
+			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/26")
+		).to.equal(85.14);
+	});
+
+	it("should notify user if there is not enough data for the week of the selected date", function () {
 		expect(
 			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/17")
 		).to.equal(
@@ -410,9 +425,11 @@ describe("Activity", () => {
 			`There are no dates you exceeded your step goal.`
 		);
 	});
+
 	it("should find a user's all-time stair climbing record", function () {
 		expect(activity.findAllTimeStairClimbRecord(1)).to.equal(33);
 	});
+
 	it("should find the average number of stairs climbed for a specified date for all users", function () {
 		expect(
 			activity.findAllUserActivityAvrg(
