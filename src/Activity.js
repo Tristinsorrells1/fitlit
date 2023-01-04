@@ -1,4 +1,3 @@
-import UserRepository from "../src/UserRepository";
 let week;
 
 class Activity {
@@ -6,13 +5,13 @@ class Activity {
 		this.activityData = activityData;
 	}
 	checkForValidId(id) {
-		if ((this.activityData.filter((data) => data.userID === id)).length === 0 ) {
+		if (this.activityData.filter((data) => data.userID === id).length === 0) {
 			return false;
 		}
 		return true;
 	}
 	checkForValidDate(id, date) {
-        let findDate = this.findUser(id).find((data) => data.date === date);
+		let findDate = this.findUser(id).find((data) => data.date === date);
 		if (findDate === undefined) {
 			return false;
 		}
@@ -41,13 +40,10 @@ class Activity {
 		if (!this.checkForValidId(id)) {
 			return "no id found";
 		}
-
 		if (!this.checkForValidDate(id, day)) {
 			return `date not found`;
 		}
-		let findUserOnDate = this.findUser(id).find(
-			(userInfo) => userInfo.date === day
-		);
+		const findUserOnDate = this.findUser(id).find((data) => data.date === day);
 		return findUserOnDate.minutesActive;
 	}
 	getWeek(id, date) {
@@ -99,6 +95,36 @@ class Activity {
 		return `You fell short of your goal by ${
 			user.dailyStepGoal - dailyActivity.numSteps
 		}`;
+	}
+	getDaysUserExceededStepGoal(id, userRepository) {
+		if (!this.checkForValidId(id)) {
+			return "no id found";
+		}
+		let user = userRepository.findUser(id);
+		let userInfo = this.findUser(id);
+		let daysOverStepGoal = userInfo.filter(
+			(day) => day.numSteps > user.dailyStepGoal
+		);
+		let datesGoalWasExceeded = daysOverStepGoal.map((day) => day.date);
+		if (datesGoalWasExceeded.length === 0) {
+			return `There are no dates you exceeded your step goal.`;
+		}
+		return datesGoalWasExceeded;
+	}
+	findAllTimeStairClimbRecord(id) {
+		if (!this.checkForValidId(id)) {
+			return "no id found";
+		}
+		return this.findUser(id)
+			.map((user) => user.flightsOfStairs)
+			.reduce((acc, cur) => Math.max(acc, cur), -Infinity);
+	}
+	findAllUserActivityAvrg(data, type, day) {
+		const calculateAvrgActivityForAll =
+			this.activityData
+				.filter((data) => data.date === day)
+				.reduce((accum, data) => (accum += data[`${type}`]), 0) / data.length;
+		return parseInt(calculateAvrgActivityForAll.toFixed(0));
 	}
 }
 
