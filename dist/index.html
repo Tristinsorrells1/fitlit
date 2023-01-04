@@ -3,37 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <title>Fitlit</title>
-    <link rel="stylesheet" href="./src/css/styles.css">
+    <!-- <link rel="stylesheet" type= "text/css" href="./src/css/styles.css"> -->
+    <link rel="stylesheet" type= "text/css" href="src/css/homepage.css">
     <link href='https://fonts.google.com/specimen/Raleway' rel='stylesheet'>
   </head>
-  <body>
-    <section class="friends-list">
-      <h2>Your Fitness Friends</h2>
-    </section>
-    <main class="main">
+  <body class="homepage-body">
+    <main class="homepage-main">
       <div class="welcome">
         <h1>Welcome</h1>
          <p class="card-info">cardInfo</p>
        </div>
-      <div class="charts">
-        <canvas id="stepsChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
-      </div>
-      <div class="charts">
-        <canvas id="waterChart" width="1320" height="400" aria-label="Ounces of Water Consumed in Past 7 Days" role="img"></canvas>
-      </div>
-      <div class="charts">
-        <canvas id="sleepChart" width="1320" height="400" aria-label="Sleep Quality and Hours Slept for Past 7 Days" role="img"></canvas>
-      </div>
     </main>
-    <section class="previous-activities">
-      <h2>Your Latest Activity</h2>
-      <div id="strideLength">Stride Length</div>
-      <div id="water">Water</div>
-      <div id="hoursSlept">House Slept</div>
-      <div id="hoursSleptAverage" class="sleep-insights">Hours Slept Average</div>
-      <div id="sleepQuality">Sleep Quality</div>
-      <div id="sleepQualityAverage" class="sleep-insights">Sleep Quality Average</div>
-    </section> 
     <script src="bundle.js"></script>
   </body>
 </html>
