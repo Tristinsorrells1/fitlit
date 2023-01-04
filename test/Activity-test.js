@@ -54,7 +54,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/16",
-				numSteps: 4294,
+				numSteps: 12000,
 				minutesActive: 138,
 				flightsOfStairs: 10,
 			},
@@ -68,7 +68,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/18",
-				numSteps: 7402,
+				numSteps: 14000,
 				minutesActive: 0,
 				flightsOfStairs: 33,
 			},
@@ -82,7 +82,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/20",
-				numSteps: 7402,
+				numSteps: 11000,
 				minutesActive: 95,
 				flightsOfStairs: 33,
 			},
@@ -229,7 +229,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/16",
-				numSteps: 4294,
+				numSteps: 12000,
 				minutesActive: 138,
 				flightsOfStairs: 10,
 			},
@@ -243,7 +243,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/18",
-				numSteps: 7402,
+				numSteps: 14000,
 				minutesActive: 0,
 				flightsOfStairs: 33,
 			},
@@ -257,7 +257,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/20",
-				numSteps: 7402,
+				numSteps: 11000,
 				minutesActive: 95,
 				flightsOfStairs: 33,
 			},
@@ -320,6 +320,10 @@ describe("Activity", () => {
 		expect(
 			activity.compareStepGoalToActualSteps(9000, "2019/06/15", userRepository)
 		).to.equal("no id found");
+		expect(activity.findAllTimeStairClimbRecord(9000)).to.equal("no id found");
+		expect(activity.getDaysUserExceededStepGoal(9000, userRepository)).to.equal(
+			"no id found"
+		);
 	});
 	it("should tell user if date is not found", function () {
 		expect(
@@ -329,6 +333,9 @@ describe("Activity", () => {
 			`date not found`
 		);
 		expect(activity.getWeek(1, "2011/09/31")).to.equal(`date not found`);
+		expect(
+			activity.compareStepGoalToActualSteps(1, "2011/09/31", userRepository)
+		).to.equal(`date not found`);
 	});
 
 	it("should return the miles a user has walked based on their number of steps", function () {
@@ -337,11 +344,11 @@ describe("Activity", () => {
 		).to.equal("2.91");
 	});
 
-	it("should return how many minutes were they active for a given day", function () {
+	it("should return how many minutes a user was active for a given day", function () {
 		expect(activity.findMinutesActive(1, "2019/06/16")).to.equal(138);
 	});
 
-	it("should return how many minutes were they active on average for a given week", function () {
+	it("should return how many minutes a user was active on average for a given week", function () {
 		expect(
 			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/26")
 		).to.equal(85.14);
@@ -358,7 +365,7 @@ describe("Activity", () => {
 			{
 				userID: 1,
 				date: "2019/06/16",
-				numSteps: 4294,
+				numSteps: 12000,
 				minutesActive: 138,
 				flightsOfStairs: 10,
 			},
@@ -390,5 +397,45 @@ describe("Activity", () => {
 		expect(
 			activity.compareStepGoalToActualSteps(2, "2019/06/15", userRepository)
 		).to.equal("You fell short of your goal by 1514");
+	});
+
+	it("should return a list of all the dates a user exceeded their step goal", function () {
+		expect(
+			activity.getDaysUserExceededStepGoal(1, userRepository)
+		).to.deep.equal(["2019/06/16", "2019/06/18", "2019/06/20"]);
+	});
+
+	it("should tell the user if there are no dates they exceeded their step goal", function () {
+		expect(activity.getDaysUserExceededStepGoal(2, userRepository)).equal(
+			`There are no dates you exceeded your step goal.`
+		);
+	});
+	it("should find a user's all-time stair climbing record", function () {
+		expect(activity.findAllTimeStairClimbRecord(1)).to.equal(33);
+	});
+	it("should find the average number of stairs climbed for a specified date for all users", function () {
+		expect(
+			activity.findAllUserActivityAvrg(
+				activityData,
+				"flightsOfStairs",
+				"2019/06/15"
+			)
+		).to.equal(10);
+	});
+
+	it("should find the average number of steps taken for a specified date for all users", function () {
+		expect(
+			activity.findAllUserActivityAvrg(activityData, "numSteps", "2019/06/15")
+		).to.equal(3882);
+	});
+
+	it("should find the average number of minutes active for a specified date for all users", function () {
+		expect(
+			activity.findAllUserActivityAvrg(
+				activityData,
+				"minutesActive",
+				"2019/06/15"
+			)
+		).to.equal(60);
 	});
 });
