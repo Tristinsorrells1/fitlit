@@ -178,7 +178,7 @@ describe("Sleep", () => {
 		});
 	});
 
-	it("should notify user if there is not enough data for the week", function () {
+	it("should notify user if there is not enough data for the week of the selected date", function () {
 		expect(sleep1.findWeeklySleepInfo(1, "2019/06/15", "hoursSlept")).to.equal(
 			"ERROR - 2019/06/21 is the earliest date you have a full week of information for"
 		);

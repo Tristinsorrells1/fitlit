@@ -1,5 +1,3 @@
-let week;
-
 class Activity {
 	constructor(activityData) {
 		this.activityData = activityData;
@@ -11,34 +9,32 @@ class Activity {
 		return this.activityData.filter((user) => user.userID === id);
 	}
 	checkForValidDate(id, date) {
-		let findDate = this.findUserByValidId(id).find(
-			(data) => data.date === date
-		);
-		if (findDate === undefined) {
+		if (!this.findUserByValidId(id)) {
+			return `no id found`;
+		}
+		if (!this.findUserByValidId(id).find((data) => data.date === date)) {
 			return false;
 		}
 		return true;
 	}
 	findSrideLengthOrStepGoal(id, userRepository, userInfo) {
-		let user = userRepository.findUser(id);
 		if (userInfo === "step goal") {
-			return user.dailyStepGoal;
+			return userRepository.findUser(id).dailyStepGoal;
 		}
-		return user.strideLength;
+		return userRepository.findUser(id).strideLength;
 	}
 	calculateMilesBySteps(date, id, userRepository) {
 		if (!this.findUserByValidId(id)) {
 			return `no id found`;
 		}
-		let userInfo = this.activityData
-			.filter((user) => user.userID === id)
-			.find((activity) => activity.date === date);
-
 		if (!this.checkForValidDate(id, date)) {
 			return `date not found`;
 		}
+		let stepCountOnDate = this.findUserByValidId(id).find(
+			(activity) => activity.date === date
+		).numSteps;
 		return (
-			(userInfo.numSteps *
+			(stepCountOnDate *
 				this.findSrideLengthOrStepGoal(id, userRepository, "stride length")) /
 			5280
 		).toFixed(2);
@@ -50,43 +46,43 @@ class Activity {
 		if (!this.checkForValidDate(id, day)) {
 			return `date not found`;
 		}
-		const findUserOnDate = this.findUserByValidId(id).find(
-			(data) => data.date === day
-		);
-		return findUserOnDate.minutesActive;
+		return this.findUserByValidId(id).find((data) => data.date === day)
+			.minutesActive;
 	}
 	getWeek(id, date) {
 		if (!this.findUserByValidId(id)) {
 			return "no id found";
 		}
-		let userDates = this.findUserByValidId(id).reverse();
-		let findDate = userDates.find((data) => data.date === date);
-		if (findDate === undefined) {
+		if (!this.checkForValidDate(id, date)) {
 			return `date not found`;
 		}
-		let indexPosition = userDates.indexOf(findDate);
-		week = userDates.slice(indexPosition, indexPosition + 7);
+		let userDates = this.findUserByValidId(id).reverse();
+		let indexPosition = userDates.indexOf(
+			userDates.find((data) => data.date === date)
+		);
+		let week = userDates.slice(indexPosition, indexPosition + 7);
 		return week;
 	}
-
 	calculateWeeklyAverageActiveMinutes(id, date) {
 		if (!this.findUserByValidId(id)) {
 			return "no id found";
 		}
-		this.getWeek(id, date);
-		if (week.length < 7) {
-			let earliestDate = this.findUserByValidId(id);
-			return `ERROR - ${earliestDate[6].date} is the earliest date you have a full week of information for`;
+		if (!this.checkForValidDate(id, date)) {
+			return `date not found`;
 		}
-		let weeklySum =
+		let week = this.getWeek(id, date);
+		if (week.length < 7) {
+			let earliestDates = this.findUserByValidId(id);
+			return `ERROR - ${earliestDates[6].date} is the earliest date you have a full week of information for`;
+		}
+		let weeklySum = (
 			week.reduce((accum, day) => {
 				accum += day.minutesActive;
 				return accum;
-			}, 0) / 7;
-		weeklySum = weeklySum.toFixed(2);
+			}, 0) / 7
+		).toFixed(2);
 		return Number(weeklySum);
 	}
-
 	compareStepGoalToActualSteps(id, date, userRepository) {
 		if (!this.findUserByValidId(id)) {
 			return "no id found";
@@ -94,8 +90,9 @@ class Activity {
 		if (!this.checkForValidDate(id, date)) {
 			return `date not found`;
 		}
-		let userInfo = this.activityData.filter((user) => user.userID === id);
-		let dailyActivity = userInfo.find((activity) => activity.date === date);
+		let dailyActivity = this.findUserByValidId(id).find(
+			(activity) => activity.date === date
+		);
 		let steps =
 			dailyActivity.numSteps -
 			this.findSrideLengthOrStepGoal(id, userRepository, "step goal");
@@ -111,11 +108,13 @@ class Activity {
 		if (!this.findUserByValidId(id)) {
 			return "no id found";
 		}
-		let daysOverStepGoal = this.findUserByValidId(id).filter((day) =>
-				day.numSteps >
-				this.findSrideLengthOrStepGoal(id, userRepository, "step goal")
-		);
-		let datesGoalWasExceeded = daysOverStepGoal.map((day) => day.date);
+		let datesGoalWasExceeded = this.findUserByValidId(id)
+			.filter(
+				(day) =>
+					day.numSteps >
+					this.findSrideLengthOrStepGoal(id, userRepository, "step goal")
+			)
+			.map((day) => day.date);
 		if (datesGoalWasExceeded.length === 0) {
 			return `There are no dates you exceeded your step goal.`;
 		}
