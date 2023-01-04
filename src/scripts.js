@@ -5,6 +5,7 @@ import Hydration from "./Hydration";
 import apiCalls from "./apiCalls";
 import Chart from "chart.js/auto";
 import Sleep from "./Sleep";
+import Activity from "./Activity";
 import "./css/styles.css";
 
 // ----------------variables-------------------------
@@ -12,9 +13,11 @@ let generatedUser;
 let usersData;
 let sleepData;
 let hydrationData;
+let activityData;
 let sleepDataRepository;
 let newUserRepository;
 let hydrationDataRepository;
+let activityRepository;
 
 //-----------------querySelectors--------------------
 let greeting = document.querySelector("h1");
@@ -43,6 +46,8 @@ const fetchApiPromises = () => {
 		usersData = data[0].userData;
 		sleepData = data[1];
 		hydrationData = data[2];
+		console.log(data[3])
+		activityData = data[3];
 		createDashboard();
 	});
 };
@@ -60,6 +65,7 @@ function createRepositories() {
 	newUserRepository = new UserRepository(usersData);
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 	sleepDataRepository = new Sleep(sleepData.sleepData);
+	activityRepository = new Activity(activityData);
 }
 
 function generateUser() {

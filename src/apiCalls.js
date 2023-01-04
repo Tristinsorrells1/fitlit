@@ -10,6 +10,7 @@ const fetchData = () => {
     fetchApiData("users"),
     fetchApiData("sleep"),
     fetchApiData("hydration"),
+    fetchApiData("activity")
   ])
 };
   
