@@ -2,7 +2,6 @@ class UserRepository {
 	constructor(data) {
 		this.data = data;
 	}
-
 	checkForValidId(id) {
     let filteredData = this.data.filter(data => data.id === id);
     if (filteredData.length === 0) {

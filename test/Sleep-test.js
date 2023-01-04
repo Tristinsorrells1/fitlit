@@ -85,7 +85,7 @@ describe("Sleep", () => {
 		expect(Sleep).to.be.a("function");
 	});
 
-	it("should be an instance of Hydration", function () {
+	it("should be an instance of Sleep", function () {
 		expect(sleep1).to.be.an.instanceof(Sleep);
 	});
 
