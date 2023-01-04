@@ -1,17 +1,14 @@
 import { expect } from "chai";
-// import User from "../src/User";
 import UserRepository from "../src/UserRepository";
 import Activity from "../src/Activity";
 
 describe("Activity", () => {
-	// let user1;
 	let userData;
 	let userRepository;
 	let activity;
 	let activityData;
 
 	beforeEach("test setup", function () {
-		// user1 = new User(userData);
 		userData = [
 			{
 				id: 1,
@@ -206,19 +203,10 @@ describe("Activity", () => {
 	});
 
 	it("should return false if a user with the id is not found", function () {
-		expect(activity.checkForValidId(9000)).to.equal(false);
+		expect(activity.findUserByValidId(9000)).to.equal(false);
 	});
-	it("should return true if a user with the id is found", function () {
-		expect(activity.checkForValidId(1)).to.equal(true);
-	});
-	it("should return false if a user does not have data for a date", function () {
-		expect(activity.checkForValidDate(1, "2011/09/31")).to.equal(false);
-	});
-	it("should return true if a user has data for the date", function () {
-		expect(activity.checkForValidDate(1, "2019/06/15")).to.equal(true);
-	});
-	it("should find a user by id", function () {
-		expect(activity.findUser(1)).to.deep.equal([
+	it("should return all of the user's activity data if their id is found", function () {
+		expect(activity.findUserByValidId(1)).to.deep.equal([
 			{
 				userID: 1,
 				date: "2019/06/15",
@@ -305,8 +293,26 @@ describe("Activity", () => {
 			},
 		]);
 	});
+	it("should return false if a user does not have data for a date", function () {
+		expect(activity.checkForValidDate(1, "2011/09/31")).to.equal(false);
+	});
+	it("should return true if a user has data for the date", function () {
+		expect(activity.checkForValidDate(1, "2019/06/15")).to.equal(true);
+	});
+
+	it("should find a user's stride length", function () {
+		expect(
+			activity.findSrideLengthOrStepGoal(1, userRepository, "step goal")
+		).to.equal(10000);
+	});
+
+	it("should find a user's step goal", function () {
+		expect(
+			activity.findSrideLengthOrStepGoal(1, userRepository, "stride length")
+		).to.equal(4.3);
+	});
+
 	it("should tell user if id is not found", function () {
-		expect(activity.findUser(9000)).to.equal("no id found");
 		expect(
 			activity.calculateMilesBySteps("2019/06/15", 9000, userRepository)
 		).to.equal("no id found");
