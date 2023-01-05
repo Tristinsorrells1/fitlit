@@ -1,12 +1,12 @@
-/* * {
+* {
   color: #bdc1c6;
   font-family: 'Raleway';
   margin: 0;
   padding: 0;
   text-align: center;
-} */
+}
 
-/* body {
+body {
   background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
   background-repeat: no-repeat;
   display: flex;
@@ -66,23 +66,6 @@ h2{
 .friend-steps,
 .sleep-insights {
   font-size: 1.5vw;
-} */
-
-/* ---------- Home Page --------- */
-/* .homepage-body {
-  background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: space-evenly;
-  overflow-y: hidden;
 }
 
-.homepage-main {
-  display: flex;
-  background-color: #131111;
-  border: 3px solid blue;
-  height: 100vh;
-  align-content: space-between;
-  padding-top: 1vw;
-  width: 50vw;
-} */
+/* ---------- Home Page --------- */

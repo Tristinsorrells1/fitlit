@@ -7,6 +7,7 @@ import Chart from "chart.js/auto";
 import Sleep from "./Sleep";
 import Activity from "./Activity";
 import "./css/styles.css";
+import "./css/homepage.css"
 
 // ----------------variables-------------------------
 let generatedUser;
