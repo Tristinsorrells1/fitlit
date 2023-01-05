@@ -20,9 +20,9 @@ let newUserRepository;
 let hydrationDataRepository;
 let activityRepository;
 
+
 //-----------------querySelectors--------------------
 let greeting = document.querySelector("h1");
-let userAddressandEmail = document.querySelector(".card-info");
 let strideLength = document.querySelector("#strideLength");
 let recentWaterIntake = document.querySelector("#water");
 let hoursOfSleep = document.querySelector("#hoursSlept");
@@ -30,6 +30,10 @@ let qualityOfSleep = document.querySelector("#sleepQuality");
 let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
 let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 let friendSection = document.querySelector(".friends-list");
+let homepageName = document.querySelector(".homepage-name")
+let homepageAddress = document.querySelector(".homepage-address")
+let homepageEmail = document.querySelector(".homepage-email")
+
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
@@ -56,7 +60,7 @@ const fetchApiPromises = () => {
 function createDashboard() {
 	createRepositories();
 	generateUser();
-	displayCardInfo();
+	createDropdown();
 	displayLatestStats();
 	displayFriends();
 	// createCharts();
@@ -81,10 +85,12 @@ function createCharts() {
 	createStepsChart();
 }
 
-function displayCardInfo() {
+function createDropdown() {
 	const generatedUserFirstName = generatedUser.findFirstName();
 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
-	userAddressandEmail.innerText = `${generatedUser.address}  /  ${generatedUser.email}`;
+	homepageAddress.innerText = generatedUser.address;
+	homepageEmail.innerText = generatedUser.email;
+	homepageName.innerText = generatedUser.name;
 }
 
 function findSleepInsights(type) {
