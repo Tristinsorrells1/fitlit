@@ -1,0 +1,65 @@
+* {
+    color: #bdc1c6;
+    font-family: 'Raleway';
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  body {
+    background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    overflow-y: hidden;
+  }
+  
+  h1{
+    font-size: 3vw;
+  }
+  
+  h2{
+    font-size: 2.5vw;
+  }
+  
+  .previous-activities,
+  .form {
+    display: flex;
+    flex-direction: column;
+    font-size: 2vw;
+    height: 99vh;
+    justify-content: space-evenly;
+    width: 15vw;
+  }
+  
+  .previous-activities,
+  .form,
+  .main {
+    background-color: #131111;
+    border: 3px solid blue;
+  }
+  
+  .charts {
+    align-items: center;
+    border-top: .5px solid blue;
+    display:flex;
+    height: 28vh;
+    justify-content: center;
+    width: 50vw;
+  }
+  
+  .friend-name {
+    font-size: 2.5vw;
+  }
+  
+  .friend-steps,
+  .sleep-insights {
+    font-size: 1.5vw;
+  }
+  
+  .hidden {
+    display: none !important;
+}
+  
+  /* ---------- Home Page --------- */
+  

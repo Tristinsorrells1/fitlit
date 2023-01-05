@@ -4,19 +4,15 @@ import User from "./User";
 import Hydration from "./Hydration";
 import apiCalls from "./apiCalls";
 import Chart from "chart.js/auto";
-import Sleep from "./Sleep";
-import Activity from "./Activity";
+// import Activity from "./Activity";
 import "./css/styles.css";
 import "./css/homepage.css"
 import "./css/activity.css";
-import "../src/activityScripts.js";
 // ----------------variables-------------------------
 let generatedUser;
 let usersData;
-let sleepData;
 let hydrationData;
 let activityData;
-let sleepDataRepository;
 let newUserRepository;
 let hydrationDataRepository;
 let activityRepository;
@@ -34,7 +30,7 @@ let friendSection = document.querySelector(".friends-list");
 let homepageName = document.querySelector(".homepage-name")
 let homepageAddress = document.querySelector(".homepage-address")
 let homepageEmail = document.querySelector(".homepage-email")
-let submitButton = document.querySelector(".submit-button")
+
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
@@ -46,17 +42,13 @@ window.addEventListener("load", (event) => {
 	fetchApiPromises();
 });
 
-submitButton.addEventListener("click", (event) => {
-    getFormInfo();
-    test();
-});
 // ------------------functions-----------------------------------
 const fetchApiPromises = () => {
 	apiCalls.fetchData().then((data) => {
 		usersData = data[0].userData;
 		sleepData = data[1];
 		hydrationData = data[2];
-		// console.log(data[3])
+		console.log(data[3])
 		activityData = data[3];
 		createDashboard();
 	});
@@ -163,175 +155,3 @@ function displayFriends() {
 	return friends;
 }
 
-//-----------------------Chart functions-----------------------------
-function createStepsChart() {
-	const data = {
-		labels: ["Step Goals"],
-		datasets: [
-			{
-				label: "Your Step Goal",
-				data: [generatedUser.dailyStepGoal],
-				backgroundColor: ["rgba(255, 173, 0)"],
-				borderWidth: 1,
-			},
-			{
-				label: "Average Step Goal for all Users",
-				data: [newUserRepository.findAvrgStepGoal(usersData)],
-				backgroundColor: ["rgba(70, 70, 255)"],
-				borderWidth: 1,
-			},
-		],
-	};
-	const config = {
-		type: "bar",
-		data: data,
-		options: {
-			scales: {
-				x: {
-					title: {
-						display: true,
-					},
-				},
-				y: {
-					title: {
-						display: true,
-						text: "Steps",
-					},
-					suggestedMax: 10000,
-					suggestedMin: 0,
-				},
-			},
-			responsive: true,
-			plugins: {
-				legend: {
-					display: true,
-				},
-				title: {
-					display: true,
-					text: "Your Step Goal vs Average Step Goal for all Users",
-				},
-			},
-		},
-	};
-	new Chart(stepsChart, config);
-}
-
-function createWaterChart() {
-	const labels = [];
-	const data = {
-		labels: labels,
-		datasets: [
-			{
-				data: hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id),
-				backgroundColor: [
-					"rgba(210, 39, 48)",
-					"rgba(70, 70, 255)",
-					"rgba(224, 231, 34",
-					"rgba(219, 62, 177",
-					"rgba(255, 173, 0)",
-					"rgba(68, 214, 44)",
-					"rgba(128, 49, 167)",
-				],
-				borderWidth: 1,
-			},
-		],
-	};
-	const config = {
-		type: "bar",
-		data: data,
-		options: {
-			scales: {
-				x: {
-					title: {
-						display: true,
-						text: "Days",
-					},
-				},
-				y: {
-					title: {
-						display: true,
-						text: "Ounces of Water",
-					},
-					suggestedMax: 100,
-					suggestedMin: 0,
-				},
-			},
-			responsive: true,
-			plugins: {
-				legend: {
-					display: false,
-				},
-				title: {
-					display: true,
-					text: "Ounces of Water Consumed in Past 7 Days",
-				},
-			},
-		},
-	};
-	new Chart(waterChart, config);
-}
-
-function createSleepChart() {
-	const labels = ["one", "two", "three", "four", "five", "six", "seven"];
-	const data = {
-		labels: labels,
-		datasets: [
-			{
-				data: sleepDataRepository.getSleepQualityandHours(
-					generatedUser.id,
-					"quality"
-				),
-				label: ["Sleep Quality"],
-				backgroundColor: ["rgba(210, 39, 48)"],
-				borderColor: "rgba(210, 39, 48)",
-				borderWidth: 1,
-				showLine: true,
-				spanGaps: true,
-			},
-			{
-				data: sleepDataRepository.getSleepQualityandHours(
-					generatedUser.id,
-					"hours"
-				),
-				label: ["Hours of Sleep"],
-				backgroundColor: ["rgba(224, 231, 34)"],
-				borderColor: "rgba(224, 231, 34)",
-				borderWidth: 1,
-				showLine: true,
-				spanGaps: true,
-			},
-		],
-	};
-	const config = {
-		type: "line",
-		data: data,
-		options: {
-			scales: {
-				x: {
-					title: {
-						display: true,
-						text: "Days",
-					},
-				},
-				y: {
-					title: {
-						display: true,
-						text: "Sleep Quality / Hours",
-					},
-					suggestedMax: 10,
-					suggestedMin: 0,
-				},
-			},
-			plugins: {
-				legend: {
-					display: true,
-				},
-				title: {
-					display: true,
-					text: "Sleep Quality and Hours Slept for Past 7 Days",
-				},
-			},
-		},
-	};
-	new Chart(sleepChart, config);
-}
