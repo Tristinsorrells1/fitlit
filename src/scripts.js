@@ -9,7 +9,7 @@ import Activity from "./Activity";
 import "./css/styles.css";
 import "./css/homepage.css"
 import "./css/activity.css";
-import "../src/activityScripts.js";
+
 // ----------------variables-------------------------
 let generatedUser;
 let usersData;
@@ -34,7 +34,8 @@ let friendSection = document.querySelector(".friends-list");
 let homepageName = document.querySelector(".homepage-name")
 let homepageAddress = document.querySelector(".homepage-address")
 let homepageEmail = document.querySelector(".homepage-email")
-let submitButton = document.querySelector(".submit-button")
+
+
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
@@ -46,10 +47,6 @@ window.addEventListener("load", (event) => {
 	fetchApiPromises();
 });
 
-submitButton.addEventListener("click", (event) => {
-    getFormInfo();
-    test();
-});
 // ------------------functions-----------------------------------
 const fetchApiPromises = () => {
 	apiCalls.fetchData().then((data) => {
@@ -65,9 +62,9 @@ const fetchApiPromises = () => {
 function createDashboard() {
 	createRepositories();
 	generateUser();
-	createDropdown();
+	// createDropdown();
 	displayLatestStats();
-	displayFriends();
+	// displayFriends();
 	// createCharts();
 }
 
@@ -90,13 +87,13 @@ function createCharts() {
 	createStepsChart();
 }
 
-function createDropdown() {
-	const generatedUserFirstName = generatedUser.findFirstName();
-	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
-	homepageAddress.innerText = generatedUser.address;
-	homepageEmail.innerText = generatedUser.email;
-	homepageName.innerText = generatedUser.name;
-}
+// function createDropdown() {
+// 	const generatedUserFirstName = generatedUser.findFirstName();
+// 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
+// 	homepageAddress.innerText = generatedUser.address;
+// 	homepageEmail.innerText = generatedUser.email;
+// 	homepageName.innerText = generatedUser.name;
+// }
 
 function findSleepInsights(type) {
 	let usersSleepData = sleepDataRepository.sleepData.filter(
@@ -163,6 +160,46 @@ function displayFriends() {
 	return friends;
 }
 
+//-----------------------Activity-------------------
+
+//QuerySelectors for Activity Section
+let stepInput = document.querySelector("#numberOfSteps")
+// let dateInput = document.querySelector("#date")
+let minutesActiveInput = document.querySelector("#minutesActive")
+let flightsOfStairsInput = document.querySelector("#flightsOfStairs")
+let submitButton = document.querySelector(".submit-button")
+
+//EventLisenters for Acticvity
+
+submitButton.addEventListener("click", (event) => {
+	event.preventDefault();
+    getFormInfo();
+    test();
+    console.log('new hello')
+});
+console.log('hello')
+
+
+
+function getFormInfo() {
+	if (!date.value || !stepInput.value || !minutesActiveInput || !flightsOfStairsInput.value){
+		let inputValues = [date.value, stepInput.value, minutesActiveInput.value, flightsOfStairsInput.value]
+	}
+    let formData = {
+        userID: generatedUser.id,
+			date: date.value.replaceAll("-", "/"), 
+			numSteps: stepInput.value,
+			minutesActive: minutesActiveInput.value,
+			flightsOfStairs: flightsOfStairsInput.value,
+    }
+    console.log("fromData", formData)
+	
+
+}
+
+function test(){
+    console.log('testing')
+}
 //-----------------------Chart functions-----------------------------
 function createStepsChart() {
 	const data = {

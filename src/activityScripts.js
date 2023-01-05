@@ -24,7 +24,7 @@ let stepInput = document.querySelector("#numberOfSteps")
 let dateInput = document.querySelector("#date")
 let minutesActiveInput = document.querySelector("#minutesActive")
 let flightsOfStairsInput = document.querySelector("#flightsOfStairs")
-// let submitButton = document.querySelector(".submit-button")
+let submitButton = document.querySelector(".submit-button")
 
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 Chart.defaults.color = "#bdc1c6";
@@ -35,11 +35,11 @@ window.addEventListener("load", (event) => {
 	fetchApiPromises();
 });
 
-// submitButton.addEventListener("click", (event) => {
-//     getFormInfo();
-//     test();
-//     console.log('new hello')
-// });
+submitButton.addEventListener("click", (event) => {
+    getFormInfo();
+    test();
+    console.log('new hello')
+});
 console.log('hello')
 // ------------------functions-----------------------------------
 const fetchApiPromises = () => {
