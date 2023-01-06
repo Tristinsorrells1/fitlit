@@ -7,7 +7,7 @@ import Chart from "chart.js/auto";
 import Sleep from "./Sleep";
 import Activity from "./Activity";
 import "./css/styles.css";
-import "./css/homepage.css"
+import "./css/homepage.css";
 import "./css/activity.css";
 
 // ----------------variables-------------------------
@@ -21,20 +21,19 @@ let newUserRepository;
 let hydrationDataRepository;
 let activityRepository;
 
-
 //-----------------querySelectors--------------------
 let greeting = document.querySelector("h1");
-let strideLength = document.querySelector("#strideLength");
 let recentWaterIntake = document.querySelector("#water");
 let hoursOfSleep = document.querySelector("#hoursSlept");
 let qualityOfSleep = document.querySelector("#sleepQuality");
 let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
 let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 let friendSection = document.querySelector(".friends-list");
-let homepageName = document.querySelector(".homepage-name")
-let homepageAddress = document.querySelector(".homepage-address")
-let homepageEmail = document.querySelector(".homepage-email")
-
+let homepageName = document.querySelector(".homepage-name");
+let homepageAddress = document.querySelector(".homepage-address");
+let homepageEmail = document.querySelector(".homepage-email");
+let postResponseMessage = document.querySelector(".post-result-message");
+let form = document.querySelector(".form");
 
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
@@ -48,16 +47,6 @@ window.addEventListener("load", (event) => {
 });
 
 // ------------------functions-----------------------------------
-const fetchApiPromises = () => {
-	apiCalls.fetchData().then((data) => {
-		usersData = data[0].userData;
-		sleepData = data[1];
-		hydrationData = data[2];
-		// console.log(data[3])
-		activityData = data[3];
-		createDashboard();
-	});
-};
 
 function createDashboard() {
 	createRepositories();
@@ -72,7 +61,8 @@ function createRepositories() {
 	newUserRepository = new UserRepository(usersData);
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 	sleepDataRepository = new Sleep(sleepData.sleepData);
-	activityRepository = new Activity(activityData);
+	activityRepository = new Activity(activityData.activityData);
+	console.log("ar", activityRepository);
 }
 
 function generateUser() {
@@ -125,24 +115,24 @@ function findSleepInsights(type) {
 }
 
 function displayLatestStats() {
-	let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
-		generatedUser.id
-	)["seven"];
-	let usersSleepData = sleepDataRepository.sleepData.filter(
-		(data) => data.userID === generatedUser.id
-	);
-	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
-	recentWaterIntake.innerText = `💧 Hydration: ${waterInfo} ounces of water`;
-	hoursOfSleep.innerText = `⏰ Hours Slept: ${
-		usersSleepData[usersSleepData.length - 1].hoursSlept
-	} hours`;
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
-		usersSleepData[usersSleepData.length - 1].sleepQuality
-	}`;
-	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
-	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
-		"quality"
-	)}`;
+	activityLatestStats()
+	// let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
+	// 	generatedUser.id
+	// )["seven"];
+	// let usersSleepData = sleepDataRepository.sleepData.filter(
+	// 	(data) => data.userID === generatedUser.id
+	// );
+	// recentWaterIntake.innerText = `💧 Hydration: ${waterInfo} ounces of water`;
+	// hoursOfSleep.innerText = `⏰ Hours Slept: ${
+	// 	usersSleepData[usersSleepData.length - 1].hoursSlept
+	// } hours`;
+	// qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+	// 	usersSleepData[usersSleepData.length - 1].sleepQuality
+	// }`;
+	// hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
+	// sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
+	// 	"quality"
+	// )}`;
 }
 
 function displayFriends() {
@@ -160,46 +150,143 @@ function displayFriends() {
 	return friends;
 }
 
-//-----------------------Activity-------------------
+//--------------------------------------Activity----------------------------------------------
 
-//QuerySelectors for Activity Section
-let stepInput = document.querySelector("#numberOfSteps")
-// let dateInput = document.querySelector("#date")
-let minutesActiveInput = document.querySelector("#minutesActive")
-let flightsOfStairsInput = document.querySelector("#flightsOfStairs")
-let submitButton = document.querySelector(".submit-button")
+// querySelectors for Activity
+let stepInput = document.querySelector("#numberOfSteps");
+let minutesActiveInput = document.querySelector("#minutesActive");
+let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
+let submitActivityButton = document.querySelector(".activity-button");
+let emptyInputMessage = document.querySelector(".empty-input-message");
+let strideLength = document.querySelector("#strideLength");
+let stepCount = document.querySelector("#stepCount");
+let stepCountInsight = document.querySelector("#stepCountInsight");
+let numMinutesActive = document.getElementById("#minutesActive");
+let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
+let numOfStairs = document.querySelector("#flightsOfStairs");
+let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
 
-//EventLisenters for Acticvity
+// eventLisenters for Activity
 
-submitButton.addEventListener("click", (event) => {
+submitActivityButton.addEventListener("click", (event) => {
 	event.preventDefault();
-    getFormInfo();
-    test();
-    console.log('new hello')
+	getActivityFormInfo();
 });
-console.log('hello')
 
+// functions for Acivity
 
+function activityLatestStats() {
+	numMinutesActive.innerText = `🚶 Minutes Active: ${
+		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].minutesActive
+	}`;
+	numOfStairs.innerText = `🚶 Flights of Stairs: ${
+		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].flightsOfStairs
+	}`;
+	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
+	stepCount.innerText = `🚶 Step Count: ${
+		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].numSteps
+	}`;
+	console.log(
+		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0]
+			.minutesActive
+	);
+}
 
-function getFormInfo() {
-	if (!date.value || !stepInput.value || !minutesActiveInput || !flightsOfStairsInput.value){
-		let inputValues = [date.value, stepInput.value, minutesActiveInput.value, flightsOfStairsInput.value]
+function getActivityFormInfo() {
+	let inputValues = [date, stepInput, minutesActiveInput, flightsOfStairsInput];
+	if (
+		!date.value ||
+		!stepInput.value.trim() ||
+		!minutesActiveInput.value.trim() ||
+		!flightsOfStairsInput.value.trim()
+	) {
+		let filtered = inputValues.filter((userInput) => {
+			return userInput.value === "";
+		});
+		filtered.forEach((field) => {
+			field.classList.add("missing-info");
+		});
+		emptyInputMessage.classList.remove("hidden");
+		return;
 	}
-    let formData = {
-        userID: generatedUser.id,
-			date: date.value.replaceAll("-", "/"), 
-			numSteps: stepInput.value,
-			minutesActive: minutesActiveInput.value,
-			flightsOfStairs: flightsOfStairsInput.value,
-    }
-    console.log("fromData", formData)
-	
+	emptyInputMessage.classList.add("hidden");
+	inputValues.forEach((field) => {
+		field.classList.remove("missing-info");
+	});
 
+	let formInput = {
+		userID: generatedUser.id,
+		date: date.value.replaceAll("-", "/"),
+		numSteps: stepInput.value,
+		minutesActive: minutesActiveInput.value,
+		flightsOfStairs: flightsOfStairsInput.value,
+	};
+	postData(formInput, "activity", "activityData");
+	form.reset();
 }
 
-function test(){
-    console.log('testing')
+// -------------------------------Network Request Functions -------------------------------------------
+
+const fetchApiPromises = () => {
+	apiCalls.fetchData().then((data) => {
+		usersData = data[0].userData;
+		sleepData = data[1];
+		hydrationData = data[2];
+		activityData = data[3];
+		createDashboard();
+	});
+};
+
+function postData(data, path, access) {
+	fetch(`http://localhost:3001/api/v1/${path}`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(data),
+	})
+		.then((response) => {
+			if (!response.ok) {
+				response.json().then((response) => {
+					alert(response.message);
+				});
+				showPostResult("unknown");
+			} else {
+				showPostResult("success");
+				fetch(`http://localhost:3001/api/v1/${path}`)
+					.then((response) => response.json())
+					.then((data) => {
+						let usersData = data[access]
+							.filter((data) => data.userID === generatedUser.id)
+							.slice(-3);
+						console.log(usersData);
+					});
+				return;
+			}
+		})
+		.catch((error) => {
+			showPostResult("server error");
+		});
 }
+
+function showPostResult(result) {
+	form.classList.add("hidden");
+	postResponseMessage.classList.remove("hidden");
+	if (result === "success") {
+		postResponseMessage.innerText = "Success! Your information was added.";
+	} else if (result === "server error") {
+		postResponseMessage.innerText =
+			"Error - Server is down. Please try again later.";
+	} else {
+		postResponseMessage.innerText =
+			"An unexpected issue has occured. Please try again later.";
+	}
+	setTimeout(resetForm, 3000);
+}
+
+function resetForm() {
+	form.classList.remove("hidden");
+	postResponseMessage.classList.add("hidden");
+}
+
 //-----------------------Chart functions-----------------------------
 function createStepsChart() {
 	const data = {

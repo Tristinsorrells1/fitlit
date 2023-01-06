@@ -1,78 +1,91 @@
-* {
-    color: #bdc1c6;
-    font-family: 'Raleway';
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
+body {
+  min-width: fit-content;
+  min-height: fit-content;
+  display: block;
+}
+
+main {
+  height: 85vh;
+  margin: 1vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
+  background-repeat: no-repeat;
+  border: 2px solid red;
+}
+
+h2 {
+  font-size: 1.5vw;
+}
+
+.nav {
+  min-width: fit-content;
+  height: 5vh;
+  border: 2px solid blue;
+  margin: 0 0 7vh 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: rgb(0, 0, 0);
+}
+
+.nav-link {
+  margin: 2vw 1vw 2vw 2vw;
+}
+
+input {
+  color: black;
+}
   
-  body {
-    background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: space-between;
-    overflow-y: hidden;
-  }
+.previous-activities,
+.form-section,
+.form {
+  display: flex;
+  flex-direction: column;
+  font-size: 2vw;
+  height: 100%;
+  justify-content: space-evenly;
+  width: 15vw;
+}
   
-  h1{
-    font-size: 3vw;
-  }
-  
-  h2{
-    font-size: 2.5vw;
-  }
-  
-  .previous-activities,
-  .form {
-    display: flex;
-    flex-direction: column;
-    font-size: 2vw;
-    height: 99vh;
-    justify-content: space-evenly;
-    width: 15vw;
-  }
-  
-  .previous-activities,
-  .form,
-  .main {
-    background-color: #131111;
-    border: 3px solid blue;
-  }
-  
-  .charts {
+.previous-activities,
+.form-section,
+.main {
+  background-color: #131111;
+  border: 2px solid blue;
+}
+
+.missing-info {
+  border: 3px dashed red;
+}
+
+.empty-input-message {
+  color: red;
+}
+
+.submit-button {
+  border: none;
+  margin: 1vh;
+}
+
+input[type=date], 
+.submit-button {
+  width: 9.5vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+  /* .charts {
     align-items: center;
     border-top: .5px solid blue;
     display:flex;
     height: 28vh;
     justify-content: center;
     width: 50vw;
-  }
+  } */
   
-  .friend-name {
-    font-size: 2.5vw;
-  }
-  
-  .friend-steps,
-  .sleep-insights {
-    font-size: 1.5vw;
-  }
-
-  input:invalid {
-    border: 2px dashed red;
-  }
-  
-  input:invalid:required {
-    background-image: linear-gradient(to right, pink, lightgreen);
-  }
-  
-  input:valid {
-    border: 2px solid black;
-    background-color: red;
-  }
-
-  .hidden {
-    display: none !important;
-}
-  
-  /* ---------- Home Page --------- */
-  
+.hidden {
+  display: none !important;
+} 

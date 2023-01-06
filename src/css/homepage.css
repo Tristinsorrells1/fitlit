@@ -38,9 +38,14 @@ h1 {
   font-size: 5vw;
 }
 
-nav {
+
+.home-nav {
   height: 50px;
   width: 100%;
+  border: 3px solid pink;
+  display: flex;
+  justify-content: space-around;
+  font-size: 2vh;
 }
 
 .dropdown {
@@ -70,7 +75,7 @@ nav {
 }
 
 button {
-  height: 5vh;
+  /* height: 5vh; */
   background-color:  #1F51FF;
   border-radius: 5px;
   font-size: 2vw;
@@ -102,11 +107,4 @@ flex-direction: column;
 }
 
 
-nav {
-  height: 50px;
-  border: 3px solid pink;
-  display: flex;
-  justify-content: space-around;
-  font-size: 2vh;
-}
 
