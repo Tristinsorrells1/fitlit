@@ -87,6 +87,3 @@ function getFormInfo() {
     console.log("fromData", formData)
 }
 
-function test(){
-    console.log('testing')
-}

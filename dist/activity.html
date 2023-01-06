@@ -8,9 +8,12 @@
   </head>
   <body>
     <nav class="nav">
-          <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="sleep.html">Sleep</a>
-          <a class="nav-link" href="hydration.html">Hydration</a>
+          <h2>FITLIT</h2>
+          <div>
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="sleep.html">Sleep</a>
+            <a class="nav-link" href="hydration.html">Hydration</a>
+          </div>
     </nav>
     <main>
       <section class="form-section">
@@ -41,18 +44,29 @@
         <div class="charts">
           <canvas id="stepsChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
         </div>
+        <div class="charts">
+          <canvas id="minutesActiveChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
+        </div><div class="charts">
+          <canvas id="flightsOfStairsChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
+        </div>
       </section>
         <section class="previous-activities">
           <h2>Your Latest Activity</h2>
-          <div id="strideLength">Stride Length</div>
-          <!-- <div id="stepGoal">Step Goal: </div>
-          <div id="stepGoalInsight">Step Goal Insight: </div> -->
-          <div id="stepCount1">Step Count: </div>
-          <div class="insight" id="stepCountInsight1">Step Count Insight: </div>
-          <div id="minutesActive1">Minutes Active: </div>
-          <div class="insight" id="minutesActiveInsight">Minutes Active Insight</div>
-          <div id="flightsOfStairs1">Flights of Stairs</div>
-          <div class="insight" id="flightsOfStairsInsights">Flights of Stairs Insight</div>
+          <p id="strideLength">Stride Length</p>
+          <p id="distanceWalked">Distance Walked: </p>
+          <div>
+            <p id="stepCount1">Step Count: </p>
+            <p class="insight" id="stepCountInsight1">Step Count Insight: </p>
+          </div>
+          <div>
+            <p id="minutesActive1">Minutes Active: </p>
+            <p class="insight" id="minutesActiveInsight">Minutes Active Insight</p>
+          </div>
+          <div>
+            <p id="flightsOfStairs1">Flights of Stairs</p>
+            <p class="insight" id="flightsOfStairsInsights">Flights of Stairs Insight</p>
+          </div>
+          <p>💡 = Average for All Users On This Day</p>
         </section> 
     </main>
     <script src="bundle.js"></script> 

@@ -39,8 +39,8 @@ let form = document.querySelector(".form");
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
-Chart.defaults.color = "#bdc1c6";
-Chart.defaults.font.size = 16;
+Chart.defaults.color = "white";
+Chart.defaults.font.size = 20;
 
 // -------------------eventListeners----------------
 window.addEventListener("load", (event) => {
@@ -54,8 +54,6 @@ function createDashboard() {
 	generateUser();
 	// createDropdown();
 	displayLatestStats();
-	test()
-	// displayFriends();
 	createCharts();
 }
 
@@ -79,8 +77,8 @@ function generateUser() {
 function createCharts() {
 	// createWaterChart();
 	// createSleepChart();
-	createActivityChart("flightsOfStairs", "Flights of Stairs Climbed", 40, "Flights of Stairs Climbed for the Past 7 Days" )
-	createActivityChart( "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
+	createActivityChart(flightsOfStairsChart, "flightsOfStairs", "Flights of Stairs", 50, "Flights of Stairs Climbed for the Past 7 Days" )
+	createActivityChart(minutesActiveChart, "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
 	createActivityChart(stepsChart, "numSteps", "Steps", 1000, "Step Count for Past 7 Days");
 	
 }
@@ -143,21 +141,6 @@ function displayLatestStats() {
 	// )}`;
 }
 
-function displayFriends() {
-	let friendInfo = {};
-	let friends = generatedUser.friends.forEach((friend) => {
-		let newFriend = newUserRepository.findUser(friend);
-		friendInfo.name = newFriend.name;
-		friendInfo.steps = newFriend.dailyStepGoal;
-		friendInfo.stride = newFriend.strideLength;
-		friendSection.innerHTML += `<div class"friends-container">
-				<div class="friend-name">&#9734 ${friendInfo.name}</div>
-				<div class="friend-steps">Step Goal: ${friendInfo.steps}</div>
-			</div>`;
-	});
-	return friends;
-}
-
 //--------------------------------------Activity----------------------------------------------
 
 // querySelectors for Activity
@@ -173,6 +156,7 @@ let numMinutesActive = document.querySelector("#minutesActive1");
 let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
 let numOfStairs = document.querySelector("#flightsOfStairs1");
 let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
+let distanceWalked = document.querySelector("#distanceWalked");
 
 // eventLisenters for Activity
 
@@ -184,7 +168,7 @@ submitActivityButton.addEventListener("click", (event) => {
 // functions for Acivity
 
 function activityLatestStats() {
-	console.log(userInfo)
+	console.log("userInfo", userInfo)
 	let allUsersStepAvrg = activityRepository.findAllUserActivityAvrg(
 		activityData.activityData,
 		"numSteps",
@@ -204,9 +188,10 @@ function activityLatestStats() {
 	numOfStairs.innerText = `⛰ Flights of Stairs: ${userInfo.flightsOfStairs}`;
 	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
 	stepCount.innerText = `🚶 Step Count: ${userInfo.numSteps}`;
-	stepCountInsight.innerText = `💡 The average step count for all users on this day was ${allUsersStepAvrg}`;// let usersLastDay = userInfo.date.toString()
-	minutesActiveInsight.innerText = `💡 The average number of active minutes for all users on this day was ${allUsersMinsActiveAvrg}`;
-	flightsOfStairsInsights.innerText = `💡 The average flights of stairs climbed for all users on this day was ${allUsersStairsAvrg}`;	
+	stepCountInsight.innerText = `💡 ${allUsersStepAvrg} steps`;// let usersLastDay = userInfo.date.toString()
+	minutesActiveInsight.innerText = `💡 ${allUsersMinsActiveAvrg} active minutes`;
+	flightsOfStairsInsights.innerText = `💡 ${allUsersStairsAvrg} flights of stairs`;	
+	distanceWalked.innerText = `📍 Distance: ${activityRepository.calculateMilesBySteps(userInfo.date, generatedUser.id, newUserRepository)} miles`
 }
 
 function getActivityFormInfo() {
@@ -242,7 +227,7 @@ function getActivityFormInfo() {
 	form.reset();
 }
 
-function test(activityKey) {
+function getWeeklyActivity(activityKey) {
 	let weeklyActivity =  activityRepository
 	.getWeek(userInfo.userID, userInfo.date)
 	.map((day) => {
@@ -259,22 +244,6 @@ function test(activityKey) {
 		activityByDay.seven = weeklyActivity[6];
 	console.log(activityByDay)	
 	return activityByDay
-	// let weeklySteps =  activityRepository
-	// .getWeek(userInfo.userID, userInfo.date)
-	// .map((day) => {
-	// 	return Number(day.numSteps)
-	// })	
-
-	//  let stepsByDay = {};
-	// 	stepsByDay.one = weeklySteps[0];
-	// 	stepsByDay.two = weeklySteps[1];
-	// 	stepsByDay.three = weeklySteps[2];
-	// 	stepsByDay.four = weeklySteps[3];
-	// 	stepsByDay.five = weeklySteps[4];
-	// 	stepsByDay.six = weeklySteps[5];
-	// 	stepsByDay.seven = weeklySteps[6];
-	// console.log(stepsByDay)	
-	// return stepsByDay
 }
 
 // -------------------------------Network Request Functions -------------------------------------------
@@ -342,13 +311,13 @@ function resetForm() {
 
 
 //-----------------------Chart functions-----------------------------
-function createActivityChart(querySelector, activityKey, type, suggestedMax, title) {
+function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 	const labels = [];
 	const data = {
 		labels: labels,
 		datasets: [
 			{
-				data: test(activityKey),
+				data: getWeeklyActivity(activityKey),
 				backgroundColor: [
 					"rgba(210, 39, 48)",
 					"rgba(70, 70, 255)",
@@ -394,7 +363,7 @@ function createActivityChart(querySelector, activityKey, type, suggestedMax, tit
 			},
 		},
 	};
-	new Chart(querySelector, config);
+	new Chart(chartId, config);
 }
 
 function createWaterChart() {

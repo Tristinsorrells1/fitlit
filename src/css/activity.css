@@ -12,7 +12,6 @@ main {
   justify-content: space-between;
   background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
   background-repeat: no-repeat;
-  border: 2px solid red;
 }
 
 .nav {
@@ -22,24 +21,26 @@ main {
   margin: 0 0 7vh 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  background-color: rgb(0, 0, 0);
+  justify-content: space-between;
+  background-color: #131111;
 }
 
-.nav-link {
+.nav-link, h2 {
   margin: 2vw 1vw 2vw 2vw;
+
 }
 
 input {
   color: black;
 }
+
+
   
 .previous-activities,
 .form-section,
 .form {
   display: flex;
   flex-direction: column;
-  font-size: 2vw;
   height: 100%;
   justify-content: space-evenly;
   width: 15vw;
@@ -53,9 +54,10 @@ input {
 }
 
 h2,
-.previous-activities {
+.previous-activities, .form {
   font-size: 1.5vw;
 }
+
 
 .insight {
   font-size: 1.25vw;
@@ -89,7 +91,7 @@ input[type=date],
   height: 28vh;
   justify-content: center;
   width: 50vw;
-  background: black;
+  background: #131111;
 }
   
 .hidden {
