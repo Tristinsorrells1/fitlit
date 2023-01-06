@@ -76,7 +76,7 @@ function generateUser() {
 
 function createCharts() {
 	// createWaterChart();
-	// createSleepChart();
+	createSleepChart();
 	createActivityChart(flightsOfStairsChart, "flightsOfStairs", "Flights of Stairs", 50, "Flights of Stairs Climbed for the Past 7 Days" )
 	createActivityChart(minutesActiveChart, "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
 	createActivityChart(stepsChart, "numSteps", "Steps", 1000, "Step Count for Past 7 Days");
@@ -122,6 +122,7 @@ function findSleepInsights(type) {
 
 function displayLatestStats() {
 	activityLatestStats()
+	sleepLatestStats()
 	// let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
 	// 	generatedUser.id
 	// )["seven"];
@@ -144,6 +145,7 @@ function displayLatestStats() {
 //--------------------------------------Activity----------------------------------------------
 
 // querySelectors for Activity
+let activityDate = document.querySelector("#activityDate")
 let stepInput = document.querySelector("#numberOfSteps");
 let minutesActiveInput = document.querySelector("#minutesActive");
 let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
@@ -195,9 +197,9 @@ function activityLatestStats() {
 }
 
 function getActivityFormInfo() {
-	let inputValues = [date, stepInput, minutesActiveInput, flightsOfStairsInput];
+	let inputValues = [activityDate, stepInput, minutesActiveInput, flightsOfStairsInput];
 	if (
-		!date.value ||
+		!activityDate.value ||
 		!stepInput.value.trim() ||
 		!minutesActiveInput.value.trim() ||
 		!flightsOfStairsInput.value.trim()
@@ -218,7 +220,7 @@ function getActivityFormInfo() {
 
 	let formInput = {
 		userID: generatedUser.id,
-		date: date.value.replaceAll("-", "/"),
+		date: activityDate.value.replaceAll("-", "/"),
 		numSteps: stepInput.value,
 		minutesActive: minutesActiveInput.value,
 		flightsOfStairs: flightsOfStairsInput.value,
@@ -254,9 +256,9 @@ function getWeeklyActivity(activityKey) {
 //QuerySelectors
 
 let hoursSleptInput = document.querySelector("#hoursSlept");
-let sleepQualityInput = document.querySelector("#sleepQaulity");
+let sleepQualityInput = document.querySelector("#sleepQuality");
 let submitSleepButton = document.querySelector(".sleep-button");
-
+let sleepDate = document.querySelector("#sleepDate")
 
 //functions
 
@@ -267,9 +269,9 @@ submitSleepButton.addEventListener("click", (event) => {
 
 
 function getSleepFormInfo() {
-	let inputValues = [date, sleepQualityInput, hoursSleptInput];
+	let inputValues = [sleepDate, sleepQualityInput, hoursSleptInput];
 	if (
-		!date.value ||
+		!sleepDate.value ||
 		!sleepQualityInput.value.trim() ||
 		!hoursSleptInput.value.trim() 
 	) {
@@ -289,14 +291,24 @@ function getSleepFormInfo() {
 
 	let formInput = {
 		userID: generatedUser.id,
-		date: date.value.replaceAll("-", "/"),
-		hoursSlept: sleepQualityInput.value,
-		sleepQuality: hoursSleptInput.value,
+		date: sleepDate.value.replaceAll("-", "/"),
+		sleepQuality: sleepQualityInput.value,
+		hoursSlept: hoursSleptInput.value,
 	};
-	postData(formInput, "sleep", "activityData");
+	postData(formInput, "sleep", "sleepData");
 	form.reset();
 }
 
+
+function sleepLatestStats(){
+		qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
+	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
+	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
+		"quality"
+	)}`;
+}
 // -------------------------------Network Request Functions -------------------------------------------
 
 const fetchApiPromises = () => {
