@@ -79,7 +79,10 @@ function generateUser() {
 function createCharts() {
 	// createWaterChart();
 	// createSleepChart();
-	createStepsChart();
+	createActivityChart("flightsOfStairs", "Flights of Stairs Climbed", 40, "Flights of Stairs Climbed for the Past 7 Days" )
+	createActivityChart( "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
+	createActivityChart(stepsChart, "numSteps", "Steps", 1000, "Step Count for Past 7 Days");
+	
 }
 
 // function createDropdown() {
@@ -239,6 +242,41 @@ function getActivityFormInfo() {
 	form.reset();
 }
 
+function test(activityKey) {
+	let weeklyActivity =  activityRepository
+	.getWeek(userInfo.userID, userInfo.date)
+	.map((day) => {
+		return Number(day[activityKey])
+	})	
+
+	 let activityByDay = {};
+		activityByDay.one = weeklyActivity[0];
+		activityByDay.two = weeklyActivity[1];
+		activityByDay.three = weeklyActivity[2];
+		activityByDay.four = weeklyActivity[3];
+		activityByDay.five = weeklyActivity[4];
+		activityByDay.six = weeklyActivity[5];
+		activityByDay.seven = weeklyActivity[6];
+	console.log(activityByDay)	
+	return activityByDay
+	// let weeklySteps =  activityRepository
+	// .getWeek(userInfo.userID, userInfo.date)
+	// .map((day) => {
+	// 	return Number(day.numSteps)
+	// })	
+
+	//  let stepsByDay = {};
+	// 	stepsByDay.one = weeklySteps[0];
+	// 	stepsByDay.two = weeklySteps[1];
+	// 	stepsByDay.three = weeklySteps[2];
+	// 	stepsByDay.four = weeklySteps[3];
+	// 	stepsByDay.five = weeklySteps[4];
+	// 	stepsByDay.six = weeklySteps[5];
+	// 	stepsByDay.seven = weeklySteps[6];
+	// console.log(stepsByDay)	
+	// return stepsByDay
+}
+
 // -------------------------------Network Request Functions -------------------------------------------
 
 const fetchApiPromises = () => {
@@ -301,33 +339,16 @@ function resetForm() {
 	postResponseMessage.classList.add("hidden");
 }
 
-function test() {
-	let weeklySteps =  activityRepository
-	.getWeek(userInfo.userID, userInfo.date)
-	.map((day) => {
-		return Number(day.numSteps)
-	})	
 
-	 let stepsByDay = {};
-		stepsByDay.one = weeklySteps[0];
-		stepsByDay.two = weeklySteps[1];
-		stepsByDay.three = weeklySteps[2];
-		stepsByDay.four = weeklySteps[3];
-		stepsByDay.five = weeklySteps[4];
-		stepsByDay.six = weeklySteps[5];
-		stepsByDay.seven = weeklySteps[6];
-	console.log(stepsByDay)	
-	return stepsByDay
-}
 
 //-----------------------Chart functions-----------------------------
-function createStepsChart() {
+function createActivityChart(querySelector, activityKey, type, suggestedMax, title) {
 	const labels = [];
 	const data = {
 		labels: labels,
 		datasets: [
 			{
-				data: test(),
+				data: test(activityKey),
 				backgroundColor: [
 					"rgba(210, 39, 48)",
 					"rgba(70, 70, 255)",
@@ -355,9 +376,9 @@ function createStepsChart() {
 				y: {
 					title: {
 						display: true,
-						text: "Steps",
+						text: type,
 					},
-					suggestedMax: 10000,
+					suggestedMax: suggestedMax,
 					suggestedMin: 0,
 				},
 			},
@@ -368,12 +389,12 @@ function createStepsChart() {
 				},
 				title: {
 					display: true,
-					text: "Weekly Step Count",
+					text: title,
 				},
 			},
 		},
 	};
-	new Chart(stepsChart, config);
+	new Chart(querySelector, config);
 }
 
 function createWaterChart() {

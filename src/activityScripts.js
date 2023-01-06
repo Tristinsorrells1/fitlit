@@ -45,7 +45,6 @@ console.log('hello')
 const fetchApiPromises = () => {
 	apiCalls.fetchData().then((data) => {
 		usersData = data[0].userData;
-		// console.log(data[3])
 		activityData = data[3];
 		createDashboard();
 	});

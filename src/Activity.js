@@ -135,6 +135,8 @@ class Activity {
 				.reduce((accum, data) => (accum += data[`${type}`]), 0) / data.length;
 		return parseInt(calculateAvrgActivityForAll.toFixed(0));
 	}
+
+	
 }
 
 export default Activity;
