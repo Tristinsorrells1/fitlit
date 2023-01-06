@@ -130,7 +130,7 @@ class Activity {
 	}
 	findAllUserActivityAvrg(data, type, day) {
 		const calculateAvrgActivityForAll =
-			this.activityData
+			data
 				.filter((data) => data.date === day)
 				.reduce((accum, data) => (accum += data[`${type}`]), 0) / data.length;
 		return parseInt(calculateAvrgActivityForAll.toFixed(0));

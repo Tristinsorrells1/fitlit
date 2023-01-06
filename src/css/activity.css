@@ -15,10 +15,6 @@ main {
   border: 2px solid red;
 }
 
-h2 {
-  font-size: 1.5vw;
-}
-
 .nav {
   min-width: fit-content;
   height: 5vh;
@@ -56,6 +52,15 @@ input {
   border: 2px solid blue;
 }
 
+h2,
+.previous-activities {
+  font-size: 1.5vw;
+}
+
+.insight {
+  font-size: 1.25vw;
+}
+
 .missing-info {
   border: 3px dashed red;
 }
@@ -77,14 +82,15 @@ input[type=date],
   display: block;
 }
 
-  /* .charts {
-    align-items: center;
-    border-top: .5px solid blue;
-    display:flex;
-    height: 28vh;
-    justify-content: center;
-    width: 50vw;
-  } */
+.charts {
+  align-items: center;
+  border-top: .5px solid blue;
+  display:flex;
+  height: 28vh;
+  justify-content: center;
+  width: 50vw;
+  background: black;
+}
   
 .hidden {
   display: none !important;

@@ -20,6 +20,7 @@ let sleepDataRepository;
 let newUserRepository;
 let hydrationDataRepository;
 let activityRepository;
+let userInfo
 
 //-----------------querySelectors--------------------
 let greeting = document.querySelector("h1");
@@ -53,8 +54,9 @@ function createDashboard() {
 	generateUser();
 	// createDropdown();
 	displayLatestStats();
+	test()
 	// displayFriends();
-	// createCharts();
+	createCharts();
 }
 
 function createRepositories() {
@@ -62,18 +64,21 @@ function createRepositories() {
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 	sleepDataRepository = new Sleep(sleepData.sleepData);
 	activityRepository = new Activity(activityData.activityData);
-	console.log("ar", activityRepository);
 }
 
 function generateUser() {
-	return (generatedUser = new User(
+	generatedUser = new User(
 		newUserRepository.generateRandomUser(usersData)
-	));
+	);
+	userInfo = activityRepository
+		.findUserByValidId(generatedUser.id)
+		.slice(-1)[0];
+	return generatedUser
 }
 
 function createCharts() {
-	createWaterChart();
-	createSleepChart();
+	// createWaterChart();
+	// createSleepChart();
 	createStepsChart();
 }
 
@@ -159,11 +164,11 @@ let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
 let submitActivityButton = document.querySelector(".activity-button");
 let emptyInputMessage = document.querySelector(".empty-input-message");
 let strideLength = document.querySelector("#strideLength");
-let stepCount = document.querySelector("#stepCount");
-let stepCountInsight = document.querySelector("#stepCountInsight");
-let numMinutesActive = document.getElementById("#minutesActive");
+let stepCount = document.querySelector("#stepCount1");
+let stepCountInsight = document.querySelector("#stepCountInsight1");
+let numMinutesActive = document.querySelector("#minutesActive1");
 let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
-let numOfStairs = document.querySelector("#flightsOfStairs");
+let numOfStairs = document.querySelector("#flightsOfStairs1");
 let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
 
 // eventLisenters for Activity
@@ -176,20 +181,29 @@ submitActivityButton.addEventListener("click", (event) => {
 // functions for Acivity
 
 function activityLatestStats() {
-	numMinutesActive.innerText = `🚶 Minutes Active: ${
-		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].minutesActive
-	}`;
-	numOfStairs.innerText = `🚶 Flights of Stairs: ${
-		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].flightsOfStairs
-	}`;
-	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
-	stepCount.innerText = `🚶 Step Count: ${
-		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0].numSteps
-	}`;
-	console.log(
-		activityRepository.findUserByValidId(generatedUser.id).slice(-1)[0]
-			.minutesActive
+	console.log(userInfo)
+	let allUsersStepAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"numSteps",
+		userInfo.date
 	);
+	let allUsersMinsActiveAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"minutesActive",
+		userInfo.date
+	);
+	let allUsersStairsAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"flightsOfStairs",
+		userInfo.date
+	);
+	numMinutesActive.innerText = `⏱️ Minutes Active: ${userInfo.minutesActive}`;
+	numOfStairs.innerText = `⛰ Flights of Stairs: ${userInfo.flightsOfStairs}`;
+	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
+	stepCount.innerText = `🚶 Step Count: ${userInfo.numSteps}`;
+	stepCountInsight.innerText = `💡 The average step count for all users on this day was ${allUsersStepAvrg}`;// let usersLastDay = userInfo.date.toString()
+	minutesActiveInsight.innerText = `💡 The average number of active minutes for all users on this day was ${allUsersMinsActiveAvrg}`;
+	flightsOfStairsInsights.innerText = `💡 The average flights of stairs climbed for all users on this day was ${allUsersStairsAvrg}`;	
 }
 
 function getActivityFormInfo() {
@@ -287,21 +301,42 @@ function resetForm() {
 	postResponseMessage.classList.add("hidden");
 }
 
+function test() {
+	let weeklySteps =  activityRepository
+	.getWeek(userInfo.userID, userInfo.date)
+	.map((day) => {
+		return Number(day.numSteps)
+	})	
+
+	 let stepsByDay = {};
+		stepsByDay.one = weeklySteps[0];
+		stepsByDay.two = weeklySteps[1];
+		stepsByDay.three = weeklySteps[2];
+		stepsByDay.four = weeklySteps[3];
+		stepsByDay.five = weeklySteps[4];
+		stepsByDay.six = weeklySteps[5];
+		stepsByDay.seven = weeklySteps[6];
+	console.log(stepsByDay)	
+	return stepsByDay
+}
+
 //-----------------------Chart functions-----------------------------
 function createStepsChart() {
+	const labels = [];
 	const data = {
-		labels: ["Step Goals"],
+		labels: labels,
 		datasets: [
 			{
-				label: "Your Step Goal",
-				data: [generatedUser.dailyStepGoal],
-				backgroundColor: ["rgba(255, 173, 0)"],
-				borderWidth: 1,
-			},
-			{
-				label: "Average Step Goal for all Users",
-				data: [newUserRepository.findAvrgStepGoal(usersData)],
-				backgroundColor: ["rgba(70, 70, 255)"],
+				data: test(),
+				backgroundColor: [
+					"rgba(210, 39, 48)",
+					"rgba(70, 70, 255)",
+					"rgba(224, 231, 34",
+					"rgba(219, 62, 177",
+					"rgba(255, 173, 0)",
+					"rgba(68, 214, 44)",
+					"rgba(128, 49, 167)",
+				],
 				borderWidth: 1,
 			},
 		],
@@ -314,6 +349,7 @@ function createStepsChart() {
 				x: {
 					title: {
 						display: true,
+						text: "Days",
 					},
 				},
 				y: {
@@ -328,11 +364,11 @@ function createStepsChart() {
 			responsive: true,
 			plugins: {
 				legend: {
-					display: true,
+					display: false,
 				},
 				title: {
 					display: true,
-					text: "Your Step Goal vs Average Step Goal for all Users",
+					text: "Weekly Step Count",
 				},
 			},
 		},
