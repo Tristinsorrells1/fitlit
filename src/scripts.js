@@ -246,6 +246,57 @@ function getWeeklyActivity(activityKey) {
 	return activityByDay
 }
 
+
+
+//-----------------------------Sleep------------
+
+
+//QuerySelectors
+
+let hoursSleptInput = document.querySelector("#hoursSlept");
+let sleepQualityInput = document.querySelector("#sleepQaulity");
+let submitSleepButton = document.querySelector(".sleep-button");
+
+
+//functions
+
+submitSleepButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	getSleepFormInfo();
+});
+
+
+function getSleepFormInfo() {
+	let inputValues = [date, sleepQualityInput, hoursSleptInput];
+	if (
+		!date.value ||
+		!sleepQualityInput.value.trim() ||
+		!hoursSleptInput.value.trim() 
+	) {
+		let filtered = inputValues.filter((userInput) => {
+			return userInput.value === "";
+		});
+		filtered.forEach((field) => {
+			field.classList.add("missing-info");
+		});
+		emptyInputMessage.classList.remove("hidden");
+		return;
+	}
+	emptyInputMessage.classList.add("hidden");
+	inputValues.forEach((field) => {
+		field.classList.remove("missing-info");
+	});
+
+	let formInput = {
+		userID: generatedUser.id,
+		date: date.value.replaceAll("-", "/"),
+		hoursSlept: sleepQualityInput.value,
+		sleepQuality: hoursSleptInput.value,
+	};
+	postData(formInput, "sleep", "activityData");
+	form.reset();
+}
+
 // -------------------------------Network Request Functions -------------------------------------------
 
 const fetchApiPromises = () => {
