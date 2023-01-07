@@ -18,7 +18,7 @@ main {
   min-width: fit-content;
   height: 5vh;
   border: 2px solid blue;
-  margin: 0 0 7vh 0;
+  margin: 0 0 1vh 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,6 +28,10 @@ main {
 .nav-link, h2 {
   margin: 2vw 1vw 2vw 2vw;
 
+}
+
+h1 {
+  font-size: 2.5vw;
 }
 
 input {
