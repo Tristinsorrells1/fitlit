@@ -34,7 +34,7 @@ let onActivityPage = document.querySelector("#activityPage")
 let onHomePage = document.querySelector("#homePage")
 let onSleepPage = document.querySelector('#sleepPage')
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
-// const sleepChart = document.getElementById("sleepChart").getContext("2d");
+const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
 Chart.defaults.color = "white";
 Chart.defaults.font.size = 20;
@@ -116,7 +116,6 @@ function createDisplays() {
 }
 
 function createDropdown() {
-	console.log("t")
 	const generatedUserFirstName = generatedUser.findFirstName();
 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
 	homepageAddress.innerText = generatedUser.address;
@@ -154,6 +153,7 @@ function findSleepInsights(type) {
 }
 
 function displayLatestStats() {
+	console.log('g')
 	if (onActivityPage) {
 		activityLatestStats()
 	}
@@ -285,6 +285,7 @@ let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 submitSleepButton.addEventListener("click", (event) => {
 	event.preventDefault();
 	getSleepFormInfo();
+	
 });
 
 function getSleepFormInfo() {
