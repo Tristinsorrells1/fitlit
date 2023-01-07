@@ -34,14 +34,16 @@ let onActivityPage = document.querySelector("#activityPage")
 let onHomePage = document.querySelector("#homePage")
 let onSleepPage = document.querySelector('#sleepPage')
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
-const sleepChart = document.getElementById("sleepChart").getContext("2d");
+// const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
 Chart.defaults.color = "white";
 Chart.defaults.font.size = 20;
 //-------------------------------------Hydration---------------------------
 let waterConsumed = document.querySelector("#waterConsumed1");
 let averageWaterConsumed = document.querySelector("#averageWaterConsumed");
-
+let waterConsumedInput = document.querySelector("#waterConsumed");
+let submitHydrationButton = document.querySelector(".button");
+let hydrationDate = document.querySelector("#hydrationDate")
 // -------------------eventListeners----------------
 window.addEventListener("load", (event) => {
 	const fetchApiPromises = () => {
@@ -198,7 +200,7 @@ let activityDate = document.querySelector("#activityDate")
 let stepInput = document.querySelector("#numberOfSteps");
 let minutesActiveInput = document.querySelector("#minutesActive");
 let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
-let submitActivityButton = document.querySelector(".activity-button");
+let submitActivityButton = document.querySelector(".button");
 let emptyInputMessage = document.querySelector(".empty-input-message");
 let strideLength = document.querySelector("#strideLength");
 let stepCount = document.querySelector("#stepCount1");
@@ -299,7 +301,7 @@ function getWeeklyActivity(activityKey) {
 
 let hoursSleptInput = document.querySelector("#hoursSlept");
 let sleepQualityInput = document.querySelector("#sleepQuality");
-let submitSleepButton = document.querySelector(".sleep-button");
+let submitSleepButton = document.querySelector(".button");
 let sleepDate = document.querySelector("#sleepDate")
 let hoursOfSleep = document.querySelector("#hoursSlept1");
 let qualityOfSleep = document.querySelector("#sleepQuality1");
@@ -369,10 +371,11 @@ function sleepLatestStats(){
 
 
 
+
 // Hydration Functions
 
 function hydrationLatestStats() {
-waterConsumed.innerText = `You drank ${hydrationDataRepository.findWeeklyFluidIntake(
+waterConsumed.innerText = `💧 You drank ${hydrationDataRepository.findWeeklyFluidIntake(
 		generatedUser.id
 	)["seven"]} ounces of water`
 averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(
@@ -380,7 +383,41 @@ averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepo
 )} ounces of water a day`;
 }
 
+submitHydrationButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	getHydrationFormInfo();
+	
+});
 
+function getHydrationFormInfo() {
+	let inputValues = [hydrationDate, waterConsumedInput];
+	if (
+		!hydrationDate.value ||
+		!waterConsumedInput.value.trim() 
+	) {
+		let filtered = inputValues.filter((userInput) => {
+			return userInput.value === "";
+		});
+		filtered.forEach((field) => {
+			field.classList.add("missing-info");
+		});
+		emptyInputMessage.classList.remove("hidden");
+		return;
+	}
+	emptyInputMessage.classList.add("hidden");
+	inputValues.forEach((field) => {
+		field.classList.remove("missing-info");
+	});
+
+	let formInput = {
+		userID: generatedUser.id,
+		date: hydrationDate.value.replaceAll("-", "/"),
+		numOunces: waterConsumedInput.value,
+		
+	};
+	postData(formInput, "hydration", "hydrationData");
+	form.reset();
+}
 
 
 // -------------------------------Network Request Functions -------------------------------------------
