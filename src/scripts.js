@@ -38,6 +38,9 @@ let onSleepPage = document.querySelector('#sleepPage')
 // const waterChart = document.getElementById("waterChart").getContext("2d");
 Chart.defaults.color = "white";
 Chart.defaults.font.size = 20;
+//-------------------------------------Hydration---------------------------
+let waterConsumed = document.querySelector("#waterConsumed1");
+let averageWaterConsumed = document.querySelector("#averageWaterConsumed");
 
 // -------------------eventListeners----------------
 window.addEventListener("load", (event) => {
@@ -162,6 +165,29 @@ function displayLatestStats() {
 	}
 	else if (onHydrationPage) {
 		hydrationLatestStats();
+	}
+}
+
+// let flightsOfStairsChart;
+
+function updateCharts() {
+	if (onActivityPage) {
+		
+		console.log(window.stairsClimbed);
+	
+		// window.stairsClimbed.destroy();
+		// new Chart(chartId, config);
+		// minutesActiveChart
+		// stepsChart
+	}
+	else if (onSleepPage) {
+		sleepLatestStats()
+	}
+	else if (onHydrationPage) {
+		// hydrationLatestStats();
+		window.waterChart.destory()
+		// createWaterChart();
+
 	}
 }
 
@@ -341,8 +367,6 @@ function sleepLatestStats(){
 // Hydration queries
 
 
-let waterConsumed = document.querySelector('#waterConsumed1')
-let averageWaterConsumed = document.querySelector('#averageWaterConsumed')
 
 // Hydration Functions
 
@@ -354,6 +378,9 @@ averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepo
 	generatedUser.id
 )} ounces of water a day`;
 }
+
+
+
 
 // -------------------------------Network Request Functions -------------------------------------------
 
@@ -461,7 +488,7 @@ function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 			},
 		},
 	};
-	new Chart(chartId, config);
+	  new Chart(chartId, config);
 }
 
 function createWaterChart() {
@@ -516,7 +543,7 @@ function createWaterChart() {
 			},
 		},
 	};
-	new Chart(waterChart, config);
+	window.waterChart = new Chart(waterChart, config);
 }
 
 function createSleepChart() {
