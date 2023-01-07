@@ -29,6 +29,10 @@ let homepageAddress = document.querySelector(".homepage-address");
 let homepageEmail = document.querySelector(".homepage-email");
 let postResponseMessage = document.querySelector(".post-result-message");
 let form = document.querySelector(".form");
+let onHydrationPage = document.querySelector('#hydrationPage')
+let onActivityPage = document.querySelector("#activityPage")
+let onHomePage = document.querySelector("#homePage")
+let onSleepPage = document.querySelector('#sleepPage')
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
@@ -37,6 +41,15 @@ Chart.defaults.font.size = 20;
 
 // -------------------eventListeners----------------
 window.addEventListener("load", (event) => {
+	const fetchApiPromises = () => {
+		apiCalls.fetchData().then((data) => {
+			usersData = data[0].userData;
+			sleepData = data[1];
+			hydrationData = data[2];
+			activityData = data[3];
+			createDashboard();
+		});
+	};
 	fetchApiPromises();
 });
 
@@ -67,10 +80,10 @@ function generateUser() {
 }
 
 function createDisplays() {
-	if (sleepDate) {
+	if (onSleepPage) {
 		return createSleepChart()
 	}
-	else if (activityDate) {
+	else if (onActivityPage) {
 		createActivityChart(
 			flightsOfStairsChart,
 			"flightsOfStairs",
@@ -78,19 +91,32 @@ function createDisplays() {
 			50,
 			"Flights of Stairs Climbed for the Past 7 Days"
 		);
-	createActivityChart(minutesActiveChart, "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
-	createActivityChart(stepsChart, "numSteps", "Steps", 1000, "Step Count for Past 7 Days");
-	return
-	}
-	else if (waterConsumed) {
+		createActivityChart(
+			minutesActiveChart,
+			"minutesActive",
+			"Minutes Active",
+			500,
+			"Minutes of Activity for the Past 7 Days"
+		);
+		createActivityChart(
+			stepsChart,
+			"numSteps",
+			"Steps",
+			1000,
+			"Step Count for Past 7 Days"
+		);
+		return;
+	} 
+	else if (onHydrationPage) {
 		return createWaterChart();
 	} 
-	else if (greeting) {
-		createDropdown()
+	else if (onHomePage) {
+		createDropdown();
 	}
 }
 
 function createDropdown() {
+	console.log("t")
 	const generatedUserFirstName = generatedUser.findFirstName();
 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
 	homepageAddress.innerText = generatedUser.address;
@@ -128,14 +154,14 @@ function findSleepInsights(type) {
 }
 
 function displayLatestStats() {
-	if (activityDate) {
+	if (onActivityPage) {
 		activityLatestStats()
 	}
-	if (hoursSleptInput) {
+	else if (onSleepPage) {
 		sleepLatestStats()
 	}
-	if (waterConsumed) {
-		hydrationLatestStats()
+	else if (onHydrationPage) {
+		hydrationLatestStats();
 	}
 }
 
@@ -167,7 +193,6 @@ submitActivityButton.addEventListener("click", (event) => {
 // functions for Acivity
 
 function activityLatestStats() {
-	console.log("userInfo", userInfo)
 	let allUsersStepAvrg = activityRepository.findAllUserActivityAvrg(
 		activityData.activityData,
 		"numSteps",
@@ -332,15 +357,6 @@ averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepo
 
 // -------------------------------Network Request Functions -------------------------------------------
 
-const fetchApiPromises = () => {
-	apiCalls.fetchData().then((data) => {
-		usersData = data[0].userData;
-		sleepData = data[1];
-		hydrationData = data[2];
-		activityData = data[3];
-		createDashboard();
-	});
-};
 
 function postData(data, path, access) {
 	fetch(`http://localhost:3001/api/v1/${path}`, {
