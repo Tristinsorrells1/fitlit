@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Fitlit</title>
+    <link rel="stylesheet" href="../src/css/activity.css">
+    <link href='https://fonts.google.com/specimen/Raleway' rel='stylesheet'>
+  </head>
+  <body id="activityPage">
+    <nav class="nav">
+          <h2>FITLIT</h2>
+          <div>
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="sleep.html">Sleep</a>
+            <a class="nav-link" href="hydration.html">Hydration</a>
+          </div>
+    </nav>
+    <h1>ACTIVITY</h1>
+    <main>
+      <section class="form-section">
+        <p class="post-result-message hidden"></p>
+            <form class="form">
+              <h2>Add Activity</h2>
+              <p class="hidden empty-input-message">Please fill out all fields</p>
+              <div>
+                <label for="date">Date</label>
+                <input type="date" name="date" id="activityDate" value="2022-01-23" min="2022-01-24" max="2025-02-24">
+              </div>
+              <div>
+                <label for="number-of-steps">Number of Steps</label>
+                <input type="number" name="number-of-steps" id="numberOfSteps" required />
+              </div>
+              <div>
+                <label for="minutes-active">Minutes Active</label>
+                <input type="number" name="minutes-active" id="minutesActive" required />
+              </div>
+              <div>
+                <label for="flights-of-stairs">Flights of Stairs</label>
+                <input type="number" name="flights-of-stairs" id="flightsOfStairs" required />
+              </div>
+              <button class="button">Submit</button>
+            </form>
+      </section>
+      <section>
+        <div class="charts">
+          <canvas id="stepsChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
+        </div>
+        <div class="charts">
+          <canvas id="minutesActiveChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
+        </div><div class="charts">
+          <canvas id="flightsOfStairsChart" width="1320" height="400" aria-label="Your Step Goal vs Average Step Goal for all Users" role="img"></canvas>
+        </div>
+      </section>
+        <section class="previous-activities">
+          <h2>Your Latest Activity</h2>
+          <p id="strideLength">Stride Length</p>
+          <p id="distanceWalked">Distance Walked: </p>
+          <div>
+            <p id="stepCount1">Step Count: </p>
+            <p class="insight" id="stepCountInsight1">Step Count Insight: </p>
+          </div>
+          <div>
+            <p id="minutesActive1">Minutes Active: </p>
+            <p class="insight" id="minutesActiveInsight">Minutes Active Insight</p>
+          </div>
+          <div>
+            <p id="flightsOfStairs1">Flights of Stairs</p>
+            <p class="insight" id="flightsOfStairsInsights">Flights of Stairs Insight</p>
+          </div>
+          <p>💡 = Average for All Users On This Day</p>
+        </section> 
+    </main>
+    <script src="bundle.js"></script> 
+  </body>
+</html>

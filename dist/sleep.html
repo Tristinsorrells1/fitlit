@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Fitlit</title>
+    <link rel="stylesheet" href="../src/css/activity.css">
+    <link href='https://fonts.google.com/specimen/Raleway' rel='stylesheet'>
+  </head>
+  <body id="sleepPage">
+    <nav class="nav">
+      <h2>FITLIT</h2>
+      <div>
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="activity.html">Activity</a>
+        <a class="nav-link" href="hydration.html">Hydration</a>
+      </div>
+    </nav>
+    <h1>SLEEP</h1>
+    <main>
+      <section class="form-section">
+        <p class="post-result-message hidden"></p>
+        <form class="form">
+          <h2>Add Sleep Data</h2>
+          <p class="hidden empty-input-message">Please fill out all fields</p>
+          <div>
+            <label for="sleepDate">Date</label>
+            <input type="date" name="sleepDate" id="sleepDate" value="2022-01-23" min="2022-01-24" max="2025-02-24">
+          </div>
+          <div>
+            <label for="hours-slept">Hours slept</label>
+            <input type="number" name="hours-slept" id="hoursSlept" required />
+          </div>
+          <div>
+            <label for="sleep-quality">Sleep Quality</label>
+            <input type="number" name="sleep-quality" id="sleepQuality" required />
+          </div>
+          <button class="button">Submit</button>
+        </form>
+      </section>
+      <section>
+        <div class="charts">
+          <canvas id="sleepChart" width="1320" height="400" aria-label="Sleep Quality and Hours Slept for Past 7 Days" role="img"></canvas>
+        </div>
+      </section>
+      <section class="previous-activities">
+        <h2>Your Sleep Report</h2>
+        <p id="hoursSlept1">Hours Slept</p>
+        <p id="hoursSleptAverage">Hours Slept Average</p>
+        <p id="sleepQuality1">Sleep Quality</p>
+        <p id="sleepQualityAverage">Sleep Quality Average</p>
+      </section> 
+    </main>
+    <script src="bundle.js"></script> 
+  </body>
+</html>
