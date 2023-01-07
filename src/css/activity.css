@@ -2,6 +2,7 @@ body {
   min-width: fit-content;
   min-height: fit-content;
   display: block;
+  background-color: #4c4e61;
 }
 
 main {
