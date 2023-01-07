@@ -5,12 +5,6 @@
   padding: 0;
   text-align: center;
 }
-html {
-  /* background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%); */
-  background-repeat: no-repeat;
-  min-width: 100%;
-  min-height: 100%;
-}
 
 .homepage-body {
   display: flex;
@@ -19,16 +13,16 @@ html {
   overflow-y: hidden;
 }
 
-/* .welcome {
+.welcome {
   display: flex;
   flex-direction: column;
-  background-color: #131111;
-  border: 3px solid blue;
+  /* background-color: #131111; */
+  /* border: 3px solid blue; */
   height: 15vh;
   align-content: space-between;
   padding-top: 1vw;
   width: 50vw;
-} */
+}
 
 .card-info {
   padding-top: 2vw;
@@ -40,12 +34,14 @@ h1 {
 
 
 .home-nav {
-  height: 50px;
+  height: 20vh;
   width: 100%;
   border: 3px solid pink;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   font-size: 2vh;
+  font-weight: bold;
 }
 
 .dropdown {
@@ -84,11 +80,9 @@ button {
 
 .header {
   align-items: center;
-  background-color: #28282B;
-  /* background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%); */
-  /* background-color: #131111; */
-  /* border: 3px solid blue; */
-  height: 20vh;
+  background-color: #131111;
+  border: 2px solid blue;
+  height: 10vh;
   display: flex;
   justify-content: space-between;
   padding: 0 30px 0 30px;
@@ -96,15 +90,11 @@ button {
 
 
 
-main {
-background-image: url("/src/images/pexels-victor-freitas-949131.jpg");
-background-size: cover;
-height: 80vh;
-/* border: 3px solid green; */
+.homepage-main {
 display: flex;
 align-items: center;
 flex-direction: column;
+justify-content: space-evenly;
 }
-
 
 

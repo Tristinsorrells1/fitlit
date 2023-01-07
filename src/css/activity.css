@@ -7,7 +7,7 @@ body {
 
 main {
   height: 85vh;
-  margin: 1vw;
+  /* margin: 1vw; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
