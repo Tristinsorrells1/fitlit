@@ -7,26 +7,10 @@
 }
 
 .homepage-body {
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   overflow-y: hidden;
-}
-
-.welcome {
-  display: flex;
-  flex-direction: column;
-  /* background-color: #131111; */
-  /* border: 3px solid blue; */
-  height: 15vh;
-  align-content: space-between;
-  padding-top: 1vw;
-  width: 50vw;
-}
-
-.card-info {
-  padding-top: 2vw;
 }
 
 h1 {
@@ -36,7 +20,6 @@ h1 {
 .home-nav {
   height: 20vh;
   width: 100%;
-  /* border: 3px solid pink; */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -56,29 +39,17 @@ h1 {
   overflow: auto;
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   overflow-x: hidden;
+  background-color: #1F51FF;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-.dropdown-content a {
-  display: block;
-  color: purple;
-  padding: 5px;
-  text-decoration: none;
-}
-
-.dropdown-content a:hover {
-  color: #FFFFFF;
-  background-color: purple;
-}
-
 button {
-  /* height: 5vh; */
   background-color:  #1F51FF;
   border-radius: 5px;
-  font-size: 2vw;
+  font-size: 1.5vw;
   padding: 5px;
 }
 
@@ -93,11 +64,11 @@ button {
 }
 
 .homepage-main {
-display: flex;
-align-items: center;
-flex-direction: column;
-justify-content: space-evenly;
-height: 90vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 90vh;
 }
 
 .icon {
@@ -108,5 +79,4 @@ height: 90vh;
 
 a {
   padding-top: 20px;
-
 }
