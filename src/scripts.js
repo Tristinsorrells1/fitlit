@@ -24,18 +24,11 @@ let userInfo
 
 //-----------------querySelectors--------------------
 let greeting = document.querySelector("h1");
-let recentWaterIntake = document.querySelector("#water");
-let hoursOfSleep = document.querySelector("#hoursSlept");
-let qualityOfSleep = document.querySelector("#sleepQuality");
-let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
-let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
-let friendSection = document.querySelector(".friends-list");
 let homepageName = document.querySelector(".homepage-name");
 let homepageAddress = document.querySelector(".homepage-address");
 let homepageEmail = document.querySelector(".homepage-email");
 let postResponseMessage = document.querySelector(".post-result-message");
 let form = document.querySelector(".form");
-
 // const stepsChart = document.getElementById("stepsChart").getContext("2d");
 // const sleepChart = document.getElementById("sleepChart").getContext("2d");
 // const waterChart = document.getElementById("waterChart").getContext("2d");
@@ -52,9 +45,8 @@ window.addEventListener("load", (event) => {
 function createDashboard() {
 	createRepositories();
 	generateUser();
-	// createDropdown();
 	displayLatestStats();
-	createCharts();
+	createDisplays();
 }
 
 function createRepositories() {
@@ -74,22 +66,37 @@ function generateUser() {
 	return generatedUser
 }
 
-function createCharts() {
-	// createWaterChart();
-	createSleepChart();
-	createActivityChart(flightsOfStairsChart, "flightsOfStairs", "Flights of Stairs", 50, "Flights of Stairs Climbed for the Past 7 Days" )
+function createDisplays() {
+	if (sleepDate) {
+		return createSleepChart()
+	}
+	else if (activityDate) {
+		createActivityChart(
+			flightsOfStairsChart,
+			"flightsOfStairs",
+			"Flights of Stairs",
+			50,
+			"Flights of Stairs Climbed for the Past 7 Days"
+		);
 	createActivityChart(minutesActiveChart, "minutesActive", "Minutes Active", 500, "Minutes of Activity for the Past 7 Days" )
 	createActivityChart(stepsChart, "numSteps", "Steps", 1000, "Step Count for Past 7 Days");
-	
+	return
+	}
+	else if (waterConsumed) {
+		return createWaterChart();
+	} 
+	else if (greeting) {
+		createDropdown()
+	}
 }
 
-// function createDropdown() {
-// 	const generatedUserFirstName = generatedUser.findFirstName();
-// 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
-// 	homepageAddress.innerText = generatedUser.address;
-// 	homepageEmail.innerText = generatedUser.email;
-// 	homepageName.innerText = generatedUser.name;
-// }
+function createDropdown() {
+	const generatedUserFirstName = generatedUser.findFirstName();
+	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
+	homepageAddress.innerText = generatedUser.address;
+	homepageEmail.innerText = generatedUser.email;
+	homepageName.innerText = generatedUser.name;
+}
 
 function findSleepInsights(type) {
 	let usersSleepData = sleepDataRepository.sleepData.filter(
@@ -121,25 +128,15 @@ function findSleepInsights(type) {
 }
 
 function displayLatestStats() {
-	activityLatestStats()
-	sleepLatestStats()
-	// let waterInfo = hydrationDataRepository.findWeeklyFluidIntake(
-	// 	generatedUser.id
-	// )["seven"];
-	// let usersSleepData = sleepDataRepository.sleepData.filter(
-	// 	(data) => data.userID === generatedUser.id
-	// );
-	// recentWaterIntake.innerText = `💧 Hydration: ${waterInfo} ounces of water`;
-	// hoursOfSleep.innerText = `⏰ Hours Slept: ${
-	// 	usersSleepData[usersSleepData.length - 1].hoursSlept
-	// } hours`;
-	// qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
-	// 	usersSleepData[usersSleepData.length - 1].sleepQuality
-	// }`;
-	// hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
-	// sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
-	// 	"quality"
-	// )}`;
+	if (activityDate) {
+		activityLatestStats()
+	}
+	if (hoursSleptInput) {
+		sleepLatestStats()
+	}
+	if (waterConsumed) {
+		hydrationLatestStats()
+	}
 }
 
 //--------------------------------------Activity----------------------------------------------
@@ -244,29 +241,26 @@ function getWeeklyActivity(activityKey) {
 		activityByDay.five = weeklyActivity[4];
 		activityByDay.six = weeklyActivity[5];
 		activityByDay.seven = weeklyActivity[6];
-	console.log(activityByDay)	
 	return activityByDay
 }
-
-
-
-//-----------------------------Sleep------------
-
-
-//QuerySelectors
+//-----------------------------Sleep------------------------------------
+// Sleep querySelectors
 
 let hoursSleptInput = document.querySelector("#hoursSlept");
 let sleepQualityInput = document.querySelector("#sleepQuality");
 let submitSleepButton = document.querySelector(".sleep-button");
 let sleepDate = document.querySelector("#sleepDate")
+let hoursOfSleep = document.querySelector("#hoursSlept1");
+let qualityOfSleep = document.querySelector("#sleepQuality1");
+let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
+let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 
-//functions
+// Sleep functions
 
 submitSleepButton.addEventListener("click", (event) => {
 	event.preventDefault();
 	getSleepFormInfo();
 });
-
 
 function getSleepFormInfo() {
 	let inputValues = [sleepDate, sleepQualityInput, hoursSleptInput];
@@ -299,16 +293,43 @@ function getSleepFormInfo() {
 	form.reset();
 }
 
-
 function sleepLatestStats(){
-		qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+	let usersSleepData = sleepDataRepository.sleepData.filter(
+		(data) => data.userID === generatedUser.id
+	);
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
 		usersSleepData[usersSleepData.length - 1].sleepQuality
 	}`;
 	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
 	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
 		"quality"
 	)}`;
+	hoursOfSleep.innerText = `⏰ Hours Slept: ${
+		usersSleepData[usersSleepData.length - 1].hoursSlept
+	} hours`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
 }
+
+//-----------------------------------Hydration--------------------------------
+// Hydration queries
+
+
+let waterConsumed = document.querySelector('#waterConsumed1')
+let averageWaterConsumed = document.querySelector('#averageWaterConsumed')
+
+// Hydration Functions
+
+function hydrationLatestStats() {
+waterConsumed.innerText = `You drank ${hydrationDataRepository.findWeeklyFluidIntake(
+		generatedUser.id
+	)["seven"]} ounces of water`
+averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(
+	generatedUser.id
+)} ounces of water a day`;
+}
+
 // -------------------------------Network Request Functions -------------------------------------------
 
 const fetchApiPromises = () => {
@@ -370,8 +391,6 @@ function resetForm() {
 	form.classList.remove("hidden");
 	postResponseMessage.classList.add("hidden");
 }
-
-
 
 //-----------------------Chart functions-----------------------------
 function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
