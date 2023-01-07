@@ -6,13 +6,14 @@ body {
 }
 
 main {
-  height: 85vh;
-  /* margin: 1vw; */
+  height: 86vh;
+  margin: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-image: linear-gradient(to top, #131111 0%, #4f4d66 99%, #4c4e61 100%);
   background-repeat: no-repeat;
+  align-items: center;
 }
 
 .nav {
@@ -39,8 +40,6 @@ input {
   color: black;
 }
 
-
-  
 .previous-activities,
 .form-section,
 .form {
