@@ -19,31 +19,55 @@ let sleepDataRepository;
 let newUserRepository;
 let hydrationDataRepository;
 let activityRepository;
-let userInfo
+let userInfo;
 
-//-----------------querySelectors--------------------
+Chart.defaults.color = "white";
+Chart.defaults.font.size = 20;
+
+// -------------------Universal-querySelectors-----------------------------
+let form = document.querySelector(".form");
+let emptyInputMessage = document.querySelector(".empty-input-message");
+let postResponseMessage = document.querySelector(".post-result-message");
+// --------------------Homepage-querySelectors------------------------------
 let greeting = document.querySelector("h1");
 let homepageName = document.querySelector(".homepage-name");
 let homepageAddress = document.querySelector(".homepage-address");
 let homepageEmail = document.querySelector(".homepage-email");
-let postResponseMessage = document.querySelector(".post-result-message");
-let form = document.querySelector(".form");
-let onHydrationPage = document.querySelector('#hydrationPage')
-let onActivityPage = document.querySelector("#activityPage")
-let onHomePage = document.querySelector("#homePage")
-let onSleepPage = document.querySelector('#sleepPage')
-// const stepsChart = document.getElementById("stepsChart").getContext("2d");
-// const sleepChart = document.getElementById("sleepChart").getContext("2d");
-// const waterChart = document.getElementById("waterChart").getContext("2d");
-Chart.defaults.color = "white";
-Chart.defaults.font.size = 20;
-//-------------------------------------Hydration---------------------------
+let onHomePage = document.querySelector("#homePage");
+// -------------------Activity-querySelectors------------------------------
+let onActivityPage = document.querySelector("#activityPage");
+let activityDate = document.querySelector("#activityDate")
+let stepInput = document.querySelector("#numberOfSteps");
+let minutesActiveInput = document.querySelector("#minutesActive");
+let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
+let submitActivityButton = document.querySelector(".button");
+let strideLength = document.querySelector("#strideLength");
+let stepCount = document.querySelector("#stepCount1");
+let stepCountInsight = document.querySelector("#stepCountInsight1");
+let numMinutesActive = document.querySelector("#minutesActive1");
+let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
+let numOfStairs = document.querySelector("#flightsOfStairs1");
+let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
+let distanceWalked = document.querySelector("#distanceWalked");
+// --------------------Sleep querySelectors----------------------------------
+let onSleepPage = document.querySelector('#sleepPage');
+let hoursSleptInput = document.querySelector("#hoursSlept");
+let sleepQualityInput = document.querySelector("#sleepQuality");
+let submitSleepButton = document.querySelector(".button");
+let sleepDate = document.querySelector("#sleepDate")
+let hoursOfSleep = document.querySelector("#hoursSlept1");
+let qualityOfSleep = document.querySelector("#sleepQuality1");
+let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
+let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
+// -----------------------Hydration-querySelectors----------------------------
+let onHydrationPage = document.querySelector('#hydrationPage');
 let waterConsumed = document.querySelector("#waterConsumed1");
 let averageWaterConsumed = document.querySelector("#averageWaterConsumed");
 let waterConsumedInput = document.querySelector("#waterConsumed");
 let submitHydrationButton = document.querySelector(".button");
-let hydrationDate = document.querySelector("#hydrationDate")
-// -------------------eventListeners----------------
+let hydrationDate = document.querySelector("#hydrationDate");
+
+// ------------------------eventListeners------------------------------------
 window.addEventListener("load", (event) => {
 	const fetchApiPromises = () => {
 		apiCalls.fetchData().then((data) => {
@@ -57,21 +81,35 @@ window.addEventListener("load", (event) => {
 	fetchApiPromises();
 });
 
-// ------------------functions-----------------------------------
+submitActivityButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	getActivityFormInfo();
+});
 
+submitSleepButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	getSleepFormInfo();
+});
+
+submitHydrationButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	getHydrationFormInfo();
+});
+
+// ------------------------Universal-functions-----------------------------------
 function createDashboard() {
 	createRepositories();
 	generateUser();
 	displayLatestStats();
 	createDisplays();
-}
+};
 
 function createRepositories() {
 	newUserRepository = new UserRepository(usersData);
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 	sleepDataRepository = new Sleep(sleepData.sleepData);
 	activityRepository = new Activity(activityData.activityData);
-}
+};
 
 function generateUser() {
 	generatedUser = new User(
@@ -80,8 +118,8 @@ function generateUser() {
 	userInfo = activityRepository
 		.findUserByValidId(generatedUser.id)
 		.slice(-1)[0];
-	return generatedUser
-}
+	return generatedUser;
+};
 
 function createDisplays() {
 	if (onSleepPage) {
@@ -116,8 +154,8 @@ function createDisplays() {
 	} 
 	else if (onHomePage) {
 		createDropdown();
-	}
-}
+	};
+};
 
 function createDropdown() {
 	const generatedUserFirstName = generatedUser.findFirstName();
@@ -125,8 +163,97 @@ function createDropdown() {
 	homepageAddress.innerText = generatedUser.address;
 	homepageEmail.innerText = generatedUser.email;
 	homepageName.innerText = generatedUser.name;
-}
+};
 
+function displayLatestStats() {
+	if (onActivityPage) {
+		activityLatestStats();
+	}
+	else if (onSleepPage) {
+		sleepLatestStats();
+	}
+	else if (onHydrationPage) {
+		hydrationLatestStats();
+	};
+};
+
+// ------------------------Activity-functions-----------------------------------
+function activityLatestStats() {
+	let allUsersStepAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"numSteps",
+		userInfo.date
+	);
+	let allUsersMinsActiveAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"minutesActive",
+		userInfo.date
+	);
+	let allUsersStairsAvrg = activityRepository.findAllUserActivityAvrg(
+		activityData.activityData,
+		"flightsOfStairs",
+		userInfo.date
+	);
+	numMinutesActive.innerText = `⏱️ Minutes Active: ${userInfo.minutesActive}`;
+	numOfStairs.innerText = `⛰ Flights of Stairs: ${userInfo.flightsOfStairs}`;
+	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
+	stepCount.innerText = `🚶 Step Count: ${userInfo.numSteps}`;
+	stepCountInsight.innerText = `💡 ${allUsersStepAvrg} steps`;
+	minutesActiveInsight.innerText = `💡 ${allUsersMinsActiveAvrg} active minutes`;
+	flightsOfStairsInsights.innerText = `💡 ${allUsersStairsAvrg} flights of stairs`;	
+	distanceWalked.innerText = `📍 Distance: ${activityRepository.calculateMilesBySteps(userInfo.date, generatedUser.id, newUserRepository)} miles`;
+};
+
+function getActivityFormInfo() {
+	let inputValues = [activityDate, stepInput, minutesActiveInput, flightsOfStairsInput];
+	if (
+		!activityDate.value ||
+		!stepInput.value.trim() ||
+		!minutesActiveInput.value.trim() ||
+		!flightsOfStairsInput.value.trim()
+	) {
+		let filtered = inputValues.filter((userInput) => {
+			return userInput.value === "";
+		});
+		filtered.forEach((field) => {
+			field.classList.add("missing-info");
+		});
+		emptyInputMessage.classList.remove("hidden");
+		return;
+	};
+	emptyInputMessage.classList.add("hidden");
+	inputValues.forEach((field) => {
+		field.classList.remove("missing-info");
+	});
+	let formInput = {
+		userID: generatedUser.id,
+		date: activityDate.value.replaceAll("-", "/"),
+		numSteps: stepInput.value,
+		minutesActive: minutesActiveInput.value,
+		flightsOfStairs: flightsOfStairsInput.value,
+	};
+	postData(formInput, "activity", "activityData");
+	form.reset();
+};
+
+function getWeeklyActivity(activityKey) {
+	let weeklyActivity =  activityRepository
+	.getWeek(userInfo.userID, userInfo.date)
+	.map((day) => {
+		return Number(day[activityKey])
+	});	
+	 let activityByDay = {};
+		activityByDay.one = weeklyActivity[0];
+		activityByDay.two = weeklyActivity[1];
+		activityByDay.three = weeklyActivity[2];
+		activityByDay.four = weeklyActivity[3];
+		activityByDay.five = weeklyActivity[4];
+		activityByDay.six = weeklyActivity[5];
+		activityByDay.seven = weeklyActivity[6];
+	return activityByDay;
+};
+
+// ------------------------Sleep-functions-----------------------------------
 function findSleepInsights(type) {
 	let usersSleepData = sleepDataRepository.sleepData.filter(
 		(data) => data.userID === generatedUser.id
@@ -153,167 +280,8 @@ function findSleepInsights(type) {
 		return `${(sleepAverage - latestSleepHours).toFixed(
 			1
 		)} less than your average of ${sleepAverage} a night`;
-	}
-}
-
-function displayLatestStats() {
-	console.log('g')
-	if (onActivityPage) {
-		activityLatestStats()
-	}
-	else if (onSleepPage) {
-		sleepLatestStats()
-	}
-	else if (onHydrationPage) {
-		hydrationLatestStats();
-	}
-}
-
-// let flightsOfStairsChart;
-
-function updateCharts() {
-	if (onActivityPage) {
-		
-		console.log(window.stairsClimbed);
-	
-		// window.stairsClimbed.destroy();
-		// new Chart(chartId, config);
-		// minutesActiveChart
-		// stepsChart
-	}
-	else if (onSleepPage) {
-		sleepLatestStats()
-	}
-	else if (onHydrationPage) {
-		// hydrationLatestStats();
-		window.waterChart.destory()
-		// createWaterChart();
-
-	}
-}
-
-//--------------------------------------Activity----------------------------------------------
-
-// querySelectors for Activity
-let activityDate = document.querySelector("#activityDate")
-let stepInput = document.querySelector("#numberOfSteps");
-let minutesActiveInput = document.querySelector("#minutesActive");
-let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
-let submitActivityButton = document.querySelector(".button");
-let emptyInputMessage = document.querySelector(".empty-input-message");
-let strideLength = document.querySelector("#strideLength");
-let stepCount = document.querySelector("#stepCount1");
-let stepCountInsight = document.querySelector("#stepCountInsight1");
-let numMinutesActive = document.querySelector("#minutesActive1");
-let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
-let numOfStairs = document.querySelector("#flightsOfStairs1");
-let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
-let distanceWalked = document.querySelector("#distanceWalked");
-
-// eventLisenters for Activity
-
-submitActivityButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getActivityFormInfo();
-});
-
-// functions for Acivity
-
-function activityLatestStats() {
-	let allUsersStepAvrg = activityRepository.findAllUserActivityAvrg(
-		activityData.activityData,
-		"numSteps",
-		userInfo.date
-	);
-	let allUsersMinsActiveAvrg = activityRepository.findAllUserActivityAvrg(
-		activityData.activityData,
-		"minutesActive",
-		userInfo.date
-	);
-	let allUsersStairsAvrg = activityRepository.findAllUserActivityAvrg(
-		activityData.activityData,
-		"flightsOfStairs",
-		userInfo.date
-	);
-	numMinutesActive.innerText = `⏱️ Minutes Active: ${userInfo.minutesActive}`;
-	numOfStairs.innerText = `⛰ Flights of Stairs: ${userInfo.flightsOfStairs}`;
-	strideLength.innerText = `👟 Stride Length: ${generatedUser.strideLength}`;
-	stepCount.innerText = `🚶 Step Count: ${userInfo.numSteps}`;
-	stepCountInsight.innerText = `💡 ${allUsersStepAvrg} steps`;// let usersLastDay = userInfo.date.toString()
-	minutesActiveInsight.innerText = `💡 ${allUsersMinsActiveAvrg} active minutes`;
-	flightsOfStairsInsights.innerText = `💡 ${allUsersStairsAvrg} flights of stairs`;	
-	distanceWalked.innerText = `📍 Distance: ${activityRepository.calculateMilesBySteps(userInfo.date, generatedUser.id, newUserRepository)} miles`
-}
-
-function getActivityFormInfo() {
-	let inputValues = [activityDate, stepInput, minutesActiveInput, flightsOfStairsInput];
-	if (
-		!activityDate.value ||
-		!stepInput.value.trim() ||
-		!minutesActiveInput.value.trim() ||
-		!flightsOfStairsInput.value.trim()
-	) {
-		let filtered = inputValues.filter((userInput) => {
-			return userInput.value === "";
-		});
-		filtered.forEach((field) => {
-			field.classList.add("missing-info");
-		});
-		emptyInputMessage.classList.remove("hidden");
-		return;
-	}
-	emptyInputMessage.classList.add("hidden");
-	inputValues.forEach((field) => {
-		field.classList.remove("missing-info");
-	});
-
-	let formInput = {
-		userID: generatedUser.id,
-		date: activityDate.value.replaceAll("-", "/"),
-		numSteps: stepInput.value,
-		minutesActive: minutesActiveInput.value,
-		flightsOfStairs: flightsOfStairsInput.value,
 	};
-	postData(formInput, "activity", "activityData");
-	form.reset();
-}
-
-function getWeeklyActivity(activityKey) {
-	let weeklyActivity =  activityRepository
-	.getWeek(userInfo.userID, userInfo.date)
-	.map((day) => {
-		return Number(day[activityKey])
-	})	
-
-	 let activityByDay = {};
-		activityByDay.one = weeklyActivity[0];
-		activityByDay.two = weeklyActivity[1];
-		activityByDay.three = weeklyActivity[2];
-		activityByDay.four = weeklyActivity[3];
-		activityByDay.five = weeklyActivity[4];
-		activityByDay.six = weeklyActivity[5];
-		activityByDay.seven = weeklyActivity[6];
-	return activityByDay
-}
-//-----------------------------Sleep------------------------------------
-// Sleep querySelectors
-
-let hoursSleptInput = document.querySelector("#hoursSlept");
-let sleepQualityInput = document.querySelector("#sleepQuality");
-let submitSleepButton = document.querySelector(".button");
-let sleepDate = document.querySelector("#sleepDate")
-let hoursOfSleep = document.querySelector("#hoursSlept1");
-let qualityOfSleep = document.querySelector("#sleepQuality1");
-let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
-let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
-
-// Sleep functions
-
-submitSleepButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getSleepFormInfo();
-	
-});
+};
 
 function getSleepFormInfo() {
 	let inputValues = [sleepDate, sleepQualityInput, hoursSleptInput];
@@ -330,12 +298,11 @@ function getSleepFormInfo() {
 		});
 		emptyInputMessage.classList.remove("hidden");
 		return;
-	}
+	};
 	emptyInputMessage.classList.add("hidden");
 	inputValues.forEach((field) => {
 		field.classList.remove("missing-info");
 	});
-
 	let formInput = {
 		userID: generatedUser.id,
 		date: sleepDate.value.replaceAll("-", "/"),
@@ -344,50 +311,25 @@ function getSleepFormInfo() {
 	};
 	postData(formInput, "sleep", "sleepData");
 	form.reset();
-}
+};
 
-function sleepLatestStats(){
+function sleepLatestStats() {
 	let usersSleepData = sleepDataRepository.sleepData.filter(
 		(data) => data.userID === generatedUser.id
 	);
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
-		usersSleepData[usersSleepData.length - 1].sleepQuality
-	}`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
 	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
-	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
-		"quality"
-	)}`;
-	hoursOfSleep.innerText = `⏰ Hours Slept: ${
-		usersSleepData[usersSleepData.length - 1].hoursSlept
-	} hours`;
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
-		usersSleepData[usersSleepData.length - 1].sleepQuality
-	}`;
-}
+	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights("quality")}`;
+	hoursOfSleep.innerText = `⏰ Hours Slept: ${usersSleepData[usersSleepData.length - 1].hoursSlept} hours`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
+};
 
-//-----------------------------------Hydration--------------------------------
-// Hydration queries
-
-
-
-
-// Hydration Functions
-
+// ------------------------Hydration-functions-----------------------------------
 function hydrationLatestStats() {
-waterConsumed.innerText = `💧 You drank ${hydrationDataRepository.findWeeklyFluidIntake(
-		generatedUser.id
-	)["seven"]} ounces of water`
-averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(
-	generatedUser.id
-)} ounces of water a day`;
-}
-
-submitHydrationButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getHydrationFormInfo();
+	waterConsumed.innerText = `💧 You drank ${hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id)["seven"]} ounces of water`;
+	averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(generatedUser.id)} ounces of water a day`;
+};
 	
-});
-
 function getHydrationFormInfo() {
 	let inputValues = [hydrationDate, waterConsumedInput];
 	if (
@@ -402,26 +344,21 @@ function getHydrationFormInfo() {
 		});
 		emptyInputMessage.classList.remove("hidden");
 		return;
-	}
+	};
 	emptyInputMessage.classList.add("hidden");
 	inputValues.forEach((field) => {
 		field.classList.remove("missing-info");
 	});
-
 	let formInput = {
 		userID: generatedUser.id,
 		date: hydrationDate.value.replaceAll("-", "/"),
 		numOunces: waterConsumedInput.value,
-		
 	};
 	postData(formInput, "hydration", "hydrationData");
 	form.reset();
-}
+};
 
-
-// -------------------------------Network Request Functions -------------------------------------------
-
-
+// ------------------------Network-Request-functions-----------------------------------
 function postData(data, path, access) {
 	fetch(`http://localhost:3001/api/v1/${path}`, {
 		method: "POST",
@@ -450,7 +387,7 @@ function postData(data, path, access) {
 		.catch((error) => {
 			showPostResult("server error");
 		});
-}
+};
 
 function showPostResult(result) {
 	form.classList.add("hidden");
@@ -463,16 +400,16 @@ function showPostResult(result) {
 	} else {
 		postResponseMessage.innerText =
 			"An unexpected issue has occured. Please try again later.";
-	}
+	};
 	setTimeout(resetForm, 3000);
-}
+};
 
 function resetForm() {
 	form.classList.remove("hidden");
 	postResponseMessage.classList.add("hidden");
-}
+};
 
-//-----------------------Chart functions-----------------------------
+// ------------------------Chart-functions-----------------------------------
 function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 	const labels = [];
 	const data = {
@@ -525,8 +462,8 @@ function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 			},
 		},
 	};
-	  new Chart(chartId, config);
-}
+	new Chart(chartId, config);
+};
 
 function createWaterChart() {
 	const labels = [];
@@ -580,8 +517,8 @@ function createWaterChart() {
 			},
 		},
 	};
-	window.waterChart = new Chart(waterChart, config);
-}
+	new Chart(waterChart, config);
+};
 
 function createSleepChart() {
 	const labels = ["one", "two", "three", "four", "five", "six", "seven"];
@@ -646,4 +583,4 @@ function createSleepChart() {
 		},
 	};
 	new Chart(sleepChart, config);
-}
+};
