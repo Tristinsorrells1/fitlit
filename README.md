@@ -2,7 +2,7 @@
 
 ## Overview of Project 
 ### Description
-Fitlit was a group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. Students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of this project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html).
+Fitlit was a two part group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. In part 1, students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of part 1 of the project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html). In part 2, students had to implement the fetch API for accessing the data from a local server and add functionality that enables the user to submit new sleep, hydration, or activity data through a POST request. Students also needed to include proper error handling for users to ensure they GET data and submit their POST requests successfully. Finally, students were expected to make the application accessible by following WCAG 2.1 guidelines. The details of part 2 of the project are outline in [this project spec](https://frontend.turing.edu/projects/Fitlit-part-two.html).
 
 ### Goals
 - Implement ES6 classes that communicate to each other as needed.
@@ -11,6 +11,8 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - Write modular, reusable code that follows SRP (Single Responsibility Principle).
 - Implement a robust testing suite using TDD.
 - Make network requests to retrieve data.
+- Work with a local server and make network requests to API endpoints to retrieve and manipulate data.
+- Implement best practices for accessibility
 
 ## Technologies Used:
 - HTML, CSS, and Javascript 
@@ -20,14 +22,23 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 - Chart.js
 - Mocha/Chai
 - GitHub project board
+- ARIA
+- WAVE Evaluation Tool
+- Lighthouse
 
 ## Installation Instructions:
-- Clone the repository to your local machine. 
-- Once you have cloned the repo, change into the directory. 
+### Run the local server
+- In your terminal, clone 'git@github.com:turingschool-examples/fitlit-api.git' and CD into the directory.
 - Run `npm install` to install project dependencies.
-- Run `npm start` to get local host URL. 
-- Copy local host and paste it in your browswer to view the website.
-- To quit out of npm start click control C in your terminal.
+- Run `npm start` in to start the local server.
+- To stop the local server from running in your terminal use `command + c`.
+
+### Run the application locally using Webapck
+- In a second terminal, clone this repository to your local machine and CD into the directory. 
+- Run `npm install` to install project dependencies.
+- Run `npm start` to get a local host URL. 
+- Copy the local host URL given and paste it in your browswer to view the website.
+- To stop the local server from running in your terminal use `command + c`.
 
 ## App Preview
 <img width="721" alt="Screen Shot 2022-12-11 at 8 35 25 PM" src="https://user-images.githubusercontent.com/109977562/206948769-2dfb1e2e-e3bc-4de9-a5b2-1d9d413f2d4b.png">
@@ -35,20 +46,22 @@ Fitlit was a group project assigned to a group of three students in Mod 2 of Tur
 ## Reflection
 
 ### Wins
-- This was our first time making a network request to retrieve data from an API, so being able to use that data in our code base was an exciting win.
-- This was also our first time using Chart.js. We manipulated the data we fetched and then used it to create our charts, so we are proud of our ability to learn two new technologies and use them together in our project.
-- We were able to create a responsive user interface across different sizing.
+- Using a GET network request to retrieve data from an API and being able to use that data in our code base 
+- Making POST newtwork requests with the information a user input in a form 
+- Creating strong visuals interfaces using Chart.js. 
+- Creating a responsive user interface.
+- Receieving a 100% accessibility score from the Lighthouse Accessibility Audit.
+- Improved UX by implementing client-side form validation and error handling messages.
 
 ### Challenges 
-- Initially, we struggled to write DRY code. We refactored to make our code more reusable, but this was not as efficient as writing DRY code from the beginning. 
 - We could have improved our project board by using issue labels.
+- We struggled to update our charts after a user submits new information.
+- We had issues using multiple HTML files. All of our querySelectors are in the same JS file, but this caused issues when navigating to a HTML page that did not contain an element with the class or ID we queried. 
 
 ### Future Considerations
-- As of now, there is no user interaction on our app. 
 - In the future, we would like to enable the user to choose which week's data is displayed on their chart.
 - We would like to create some sort of step challenge users can participate in with their friends.
 - We would like to add a login page for a user.
-- We also would like to use the WAVE evaluation tool to evaluate web accessibility. 
 
 ## Contributors
 - Tristin Sorrells [GitHub](https://github.com/Tristinsorrells1), [LinkedIn](https://www.linkedin.com/in/tristinsorrells/)
