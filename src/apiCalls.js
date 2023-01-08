@@ -11,7 +11,7 @@ const fetchData = () => {
     fetchApiData("sleep"),
     fetchApiData("hydration"),
     fetchApiData("activity")
-  ])
+  ]);
 };
   
 export default { fetchData };

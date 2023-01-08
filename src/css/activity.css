@@ -1,8 +1,8 @@
 body {
+  background-color: #4c4e61;
+  display: block;
   min-width: fit-content;
   min-height: fit-content;
-  display: block;
-  background-color: #4c4e61;
 }
 
 main {
@@ -29,7 +29,6 @@ main {
 
 .nav-link, h2 {
   margin: 2vw 1vw 2vw 2vw;
-
 }
 
 h1 {
