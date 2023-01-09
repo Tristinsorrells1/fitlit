@@ -2,7 +2,7 @@
 
 ## Overview of Project 
 ### Description
-Fitlit was a two part group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. In part 1, students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of part 1 of the project are outline in [this project spec](http://frontend.turing.io/projects/fitlit.html). In part 2, students had to implement the fetch API for accessing the data from a local server and add functionality that enables the user to submit new sleep, hydration, or activity data through a POST request. Students also needed to include proper error handling for users to ensure they GET data and submit their POST requests successfully. Finally, students were expected to make the application accessible by following WCAG 2.1 guidelines. The details of part 2 of the project are outline in [this project spec](https://frontend.turing.edu/projects/Fitlit-part-two.html).
+Fitlit was a two part group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. In part 1, students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of part 1 of the project are outlined in [this project spec](http://frontend.turing.io/projects/fitlit.html). In part 2, students had to implement the fetch API for accessing the data from a local server and add functionality that enables the user to submit new sleep, hydration, or activity data through a POST request. Students also needed to include proper error handling for users to ensure they GET data and submit their POST requests successfully. Finally, students were expected to make the application accessible by following WCAG 2.1 guidelines. The details of part 2 of the project are outlined in [this project spec](https://frontend.turing.edu/projects/Fitlit-part-two.html).
 
 ### Goals
 - Implement ES6 classes that communicate to each other as needed.
@@ -41,7 +41,7 @@ Fitlit was a two part group project assigned to a group of three students in Mod
 - To stop the local server from running in your terminal use `command + c`.
 
 ## App Preview
-<img width="721" alt="Screen Shot 2022-12-11 at 8 35 25 PM" src="https://user-images.githubusercontent.com/109977562/206948769-2dfb1e2e-e3bc-4de9-a5b2-1d9d413f2d4b.png">
+https://user-images.githubusercontent.com/109977562/211330468-d9a2ab79-bad1-46fc-b024-d88dae595db2.mp4
 
 ## Reflection
 
