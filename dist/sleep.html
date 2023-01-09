@@ -27,11 +27,11 @@
             <input type="date" name="sleepDate" id="sleepDate" value="2022-01-23" min="2022-01-24" max="2025-02-24">
           </div>
           <div>
-            <label for="hours-slept">Hours slept</label>
+            <label for="hoursSlept">Hours slept</label>
             <input type="number" name="hours-slept" id="hoursSlept" required />
           </div>
           <div>
-            <label for="sleep-quality">Sleep Quality</label>
+            <label for="sleepQuality">Sleep Quality</label>
             <input type="number" name="sleep-quality" id="sleepQuality" required />
           </div>
           <button class="button">Submit</button>
@@ -44,10 +44,14 @@
       </section>
       <section class="previous-activities">
         <h2>Your Sleep Report</h2>
-        <p id="hoursSlept1">Hours Slept</p>
-        <p id="hoursSleptAverage">Hours Slept Average</p>
-        <p id="sleepQuality1">Sleep Quality</p>
-        <p id="sleepQualityAverage">Sleep Quality Average</p>
+        <div>
+          <p id="hoursSlept1">Hours Slept</p>
+          <p id="hoursSleptAverage">Hours Slept Average</p>
+        </div>
+        <div>
+          <p id="sleepQuality1">Sleep Quality</p>
+          <p id="sleepQualityAverage">Sleep Quality Average</p>
+        </div>
       </section> 
     </main>
     <script src="bundle.js"></script> 

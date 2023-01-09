@@ -66,11 +66,10 @@ describe("User Repository", () => {
 	});
 
 	it("should tell user if id is not found", function () {
-    expect(userRepository.findUser(9000)).to.equal('no id found')
+    expect(userRepository.findUser(9000)).to.equal('no id found');
   });
 
 	it("should find average step goal amongst all users", function () {
 		expect(userRepository.findAvrgStepGoal(userData)).to.equal(6667);
 	});
-
 });
