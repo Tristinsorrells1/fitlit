@@ -81,20 +81,29 @@ window.addEventListener("load", (event) => {
 	fetchApiPromises();
 });
 
-submitActivityButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getActivityFormInfo();
-});
+if(submitActivityButton) {
 
-submitSleepButton.addEventListener("click", (event) => {
+	submitActivityButton.addEventListener("click", (event) => {
+		event.preventDefault();
+		getActivityFormInfo();
+	});
+}
+
+if (submitSleepButton) {
+
+	submitSleepButton.addEventListener("click", (event) => {
 	event.preventDefault();
 	getSleepFormInfo();
 });
+}
 
-submitHydrationButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getHydrationFormInfo();
-});
+if (submitHydrationButton) {
+
+	submitHydrationButton.addEventListener("click", (event) => {
+		event.preventDefault();
+		getHydrationFormInfo();
+	});
+}
 
 // ------------------------Universal-functions-----------------------------------
 function createDashboard() {
@@ -112,12 +121,20 @@ function createRepositories() {
 };
 
 function generateUser() {
-	generatedUser = new User(
-		newUserRepository.generateRandomUser(usersData)
-	);
+	if (localStorage.getItem("generatedUser") === null) {
+		generatedUser = new User(newUserRepository.generateRandomUser(usersData));
+		localStorage.setItem("generatedUser", JSON.stringify(generatedUser)
+		);
+	}
+	else {
+		let retrievedGeneratedUser = localStorage.getItem("generatedUser");
+		let generatedUserData = JSON.parse(retrievedGeneratedUser)
+		generatedUser = new User(generatedUserData);
+	}
 	userInfo = activityRepository
 		.findUserByValidId(generatedUser.id)
 		.slice(-1)[0];
+	
 	return generatedUser;
 };
 
@@ -150,7 +167,7 @@ function createDisplays() {
 		return;
 	} 
 	else if (onHydrationPage) {
-		return createWaterChart();
+		 createWaterChart();
 	} 
 	else if (onHomePage) {
 		createDropdown();
@@ -158,6 +175,7 @@ function createDisplays() {
 };
 
 function createDropdown() {
+	console.log(generatedUser)
 	const generatedUserFirstName = generatedUser.findFirstName();
 	greeting.innerText = `Welcome, ${generatedUserFirstName}!`;
 	homepageAddress.innerText = generatedUser.address;
@@ -466,9 +484,14 @@ function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 };
 
 function createWaterChart() {
-	const labels = [];
-	const data = {
-		labels: labels,
+	let waterChart = Chart.getChart("waterChart")
+	if (waterChart) {
+		waterChart.destroy()
+	}
+	new Chart(document.getElementById("waterChart"), {
+		type: "bar",
+		data: {
+		labels: [],
 		datasets: [
 			{
 				data: hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id),
@@ -484,10 +507,7 @@ function createWaterChart() {
 				borderWidth: 1,
 			},
 		],
-	};
-	const config = {
-		type: "bar",
-		data: data,
+	},
 		options: {
 			scales: {
 				x: {
@@ -516,9 +536,8 @@ function createWaterChart() {
 				},
 			},
 		},
-	};
-	new Chart(waterChart, config);
-};
+	});
+}
 
 function createSleepChart() {
 	const labels = ["one", "two", "three", "four", "five", "six", "seven"];
