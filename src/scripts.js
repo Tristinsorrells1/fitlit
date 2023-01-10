@@ -36,65 +36,72 @@ let homepageEmail = document.querySelector(".homepage-email");
 let onHomePage = document.querySelector("#homePage");
 // -------------------Activity-querySelectors------------------------------
 let onActivityPage = document.querySelector("#activityPage");
-let activityDate = document.querySelector("#activityDate")
+let activityDate = document.querySelector("#activityDate");
 let stepInput = document.querySelector("#numberOfSteps");
 let minutesActiveInput = document.querySelector("#minutesActive");
 let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
-let submitActivityButton = document.querySelector(".button");
+let submitActivityButton = document.querySelector(".activity-button");
 let strideLength = document.querySelector("#strideLength");
 let stepCount = document.querySelector("#stepCount1");
 let stepCountInsight = document.querySelector("#stepCountInsight1");
 let numMinutesActive = document.querySelector("#minutesActive1");
 let minutesActiveInsight = document.querySelector("#minutesActiveInsight");
 let numOfStairs = document.querySelector("#flightsOfStairs1");
-let flightsOfStairsInsights = document.querySelector("#flightsOfStairsInsights");
+let flightsOfStairsInsights = document.querySelector(
+	"#flightsOfStairsInsights"
+);
 let distanceWalked = document.querySelector("#distanceWalked");
 // --------------------Sleep querySelectors----------------------------------
-let onSleepPage = document.querySelector('#sleepPage');
+let onSleepPage = document.querySelector("#sleepPage");
 let hoursSleptInput = document.querySelector("#hoursSlept");
 let sleepQualityInput = document.querySelector("#sleepQuality");
-let submitSleepButton = document.querySelector(".button");
-let sleepDate = document.querySelector("#sleepDate")
+let submitSleepButton = document.querySelector(".sleep-button");
+let sleepDate = document.querySelector("#sleepDate");
 let hoursOfSleep = document.querySelector("#hoursSlept1");
 let qualityOfSleep = document.querySelector("#sleepQuality1");
 let hoursSleptAverage = document.querySelector("#hoursSleptAverage");
 let sleepQualityAverage = document.querySelector("#sleepQualityAverage");
 // -----------------------Hydration-querySelectors----------------------------
-let onHydrationPage = document.querySelector('#hydrationPage');
+let onHydrationPage = document.querySelector("#hydrationPage");
 let waterConsumed = document.querySelector("#waterConsumed1");
 let averageWaterConsumed = document.querySelector("#averageWaterConsumed");
 let waterConsumedInput = document.querySelector("#waterConsumed");
-let submitHydrationButton = document.querySelector(".button");
+let submitHydrationButton = document.querySelector(".water-button");
 let hydrationDate = document.querySelector("#hydrationDate");
 
 // ------------------------eventListeners------------------------------------
-window.addEventListener("load", (event) => {
-	const fetchApiPromises = () => {
-		apiCalls.fetchData().then((data) => {
-			usersData = data[0].userData;
-			sleepData = data[1];
-			hydrationData = data[2];
-			activityData = data[3];
-			createDashboard();
-		});
-	};
-	fetchApiPromises();
-});
+const fetchApiPromises = () => {
+	apiCalls.fetchData().then((data) => {
+		usersData = data[0].userData;
+		sleepData = data[1];
+		hydrationData = data[2];
+		activityData = data[3];
+		createDashboard();
+	});
+};
 
-submitActivityButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getActivityFormInfo();
-});
+fetchApiPromises();
 
-submitSleepButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getSleepFormInfo();
-});
+if (submitActivityButton) {
+	submitActivityButton.addEventListener("click", (event) => {
+		event.preventDefault();
+		getActivityFormInfo();
+	});
+}
 
-submitHydrationButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	getHydrationFormInfo();
-});
+if (submitSleepButton) {
+	submitSleepButton.addEventListener("click", (event) => {
+		event.preventDefault();
+		getSleepFormInfo();
+	});
+}
+
+if (submitHydrationButton) {
+	submitHydrationButton.addEventListener("click", (event) => {
+		event.preventDefault();
+		getHydrationFormInfo();
+	});
+}
 
 // ------------------------Universal-functions-----------------------------------
 function createDashboard() {
@@ -102,60 +109,44 @@ function createDashboard() {
 	generateUser();
 	displayLatestStats();
 	createDisplays();
-};
+}
 
 function createRepositories() {
 	newUserRepository = new UserRepository(usersData);
 	hydrationDataRepository = new Hydration(hydrationData.hydrationData);
 	sleepDataRepository = new Sleep(sleepData.sleepData);
 	activityRepository = new Activity(activityData.activityData);
-};
+}
 
 function generateUser() {
-	generatedUser = new User(
-		newUserRepository.generateRandomUser(usersData)
-	);
+	if (localStorage.getItem("generatedUser") === null) {
+		generatedUser = new User(newUserRepository.generateRandomUser(usersData));
+		localStorage.setItem("generatedUser", JSON.stringify(generatedUser));
+	} else {
+		let retrievedGeneratedUser = localStorage.getItem("generatedUser");
+		let generatedUserData = JSON.parse(retrievedGeneratedUser);
+		generatedUser = new User(generatedUserData);
+	}
 	userInfo = activityRepository
 		.findUserByValidId(generatedUser.id)
 		.slice(-1)[0];
+
 	return generatedUser;
-};
+}
 
 function createDisplays() {
 	if (onSleepPage) {
-		return createSleepChart()
-	}
-	else if (onActivityPage) {
-		createActivityChart(
-			flightsOfStairsChart,
-			"flightsOfStairs",
-			"Flights of Stairs",
-			50,
-			"Flights of Stairs Climbed for the Past 7 Days"
-		);
-		createActivityChart(
-			minutesActiveChart,
-			"minutesActive",
-			"Minutes Active",
-			500,
-			"Minutes of Activity for the Past 7 Days"
-		);
-		createActivityChart(
-			stepsChart,
-			"numSteps",
-			"Steps",
-			1000,
-			"Step Count for Past 7 Days"
-		);
-		return;
-	} 
-	else if (onHydrationPage) {
-		return createWaterChart();
-	} 
-	else if (onHomePage) {
+		createSleepChart();
+	} else if (onActivityPage) {
+		createStepChart();
+		createMinsActiveChart();
+		createStairsChart();
+	} else if (onHydrationPage) {
+		createWaterChart();
+	} else if (onHomePage) {
 		createDropdown();
-	};
-};
+	}
+}
 
 function createDropdown() {
 	const generatedUserFirstName = generatedUser.findFirstName();
@@ -163,19 +154,17 @@ function createDropdown() {
 	homepageAddress.innerText = generatedUser.address;
 	homepageEmail.innerText = generatedUser.email;
 	homepageName.innerText = generatedUser.name;
-};
+}
 
 function displayLatestStats() {
 	if (onActivityPage) {
 		activityLatestStats();
-	}
-	else if (onSleepPage) {
+	} else if (onSleepPage) {
 		sleepLatestStats();
-	}
-	else if (onHydrationPage) {
+	} else if (onHydrationPage) {
 		hydrationLatestStats();
-	};
-};
+	}
+}
 
 // ------------------------Activity-functions-----------------------------------
 function activityLatestStats() {
@@ -200,12 +189,21 @@ function activityLatestStats() {
 	stepCount.innerText = `🚶 Step Count: ${userInfo.numSteps}`;
 	stepCountInsight.innerText = `💡 ${allUsersStepAvrg} steps`;
 	minutesActiveInsight.innerText = `💡 ${allUsersMinsActiveAvrg} active minutes`;
-	flightsOfStairsInsights.innerText = `💡 ${allUsersStairsAvrg} flights of stairs`;	
-	distanceWalked.innerText = `📍 Distance: ${activityRepository.calculateMilesBySteps(userInfo.date, generatedUser.id, newUserRepository)} miles`;
-};
+	flightsOfStairsInsights.innerText = `💡 ${allUsersStairsAvrg} flights of stairs`;
+	distanceWalked.innerText = `📍 Distance: ${activityRepository.calculateMilesBySteps(
+		userInfo.date,
+		generatedUser.id,
+		newUserRepository
+	)} miles`;
+}
 
 function getActivityFormInfo() {
-	let inputValues = [activityDate, stepInput, minutesActiveInput, flightsOfStairsInput];
+	let inputValues = [
+		activityDate,
+		stepInput,
+		minutesActiveInput,
+		flightsOfStairsInput,
+	];
 	if (
 		!activityDate.value ||
 		!stepInput.value.trim() ||
@@ -220,7 +218,7 @@ function getActivityFormInfo() {
 		});
 		emptyInputMessage.classList.remove("hidden");
 		return;
-	};
+	}
 	emptyInputMessage.classList.add("hidden");
 	inputValues.forEach((field) => {
 		field.classList.remove("missing-info");
@@ -234,24 +232,24 @@ function getActivityFormInfo() {
 	};
 	postData(formInput, "activity", "activityData");
 	form.reset();
-};
+}
 
 function getWeeklyActivity(activityKey) {
-	let weeklyActivity =  activityRepository
-	.getWeek(userInfo.userID, userInfo.date)
-	.map((day) => {
-		return Number(day[activityKey])
-	});	
-	 let activityByDay = {};
-		activityByDay.one = weeklyActivity[0];
-		activityByDay.two = weeklyActivity[1];
-		activityByDay.three = weeklyActivity[2];
-		activityByDay.four = weeklyActivity[3];
-		activityByDay.five = weeklyActivity[4];
-		activityByDay.six = weeklyActivity[5];
-		activityByDay.seven = weeklyActivity[6];
+	let weeklyActivity = activityRepository
+		.getWeek(userInfo.userID)
+		.map((day) => {
+			return Number(day[activityKey]);
+		});
+	let activityByDay = {};
+	activityByDay.one = weeklyActivity[6];
+	activityByDay.two = weeklyActivity[5];
+	activityByDay.three = weeklyActivity[4];
+	activityByDay.four = weeklyActivity[3];
+	activityByDay.five = weeklyActivity[2];
+	activityByDay.six = weeklyActivity[1];
+	activityByDay.seven = weeklyActivity[0];
 	return activityByDay;
-};
+}
 
 // ------------------------Sleep-functions-----------------------------------
 function findSleepInsights(type) {
@@ -280,15 +278,15 @@ function findSleepInsights(type) {
 		return `${(sleepAverage - latestSleepHours).toFixed(
 			1
 		)} less than your average of ${sleepAverage} a night`;
-	};
-};
+	}
+}
 
 function getSleepFormInfo() {
 	let inputValues = [sleepDate, sleepQualityInput, hoursSleptInput];
 	if (
 		!sleepDate.value ||
 		!sleepQualityInput.value.trim() ||
-		!hoursSleptInput.value.trim() 
+		!hoursSleptInput.value.trim()
 	) {
 		let filtered = inputValues.filter((userInput) => {
 			return userInput.value === "";
@@ -298,7 +296,7 @@ function getSleepFormInfo() {
 		});
 		emptyInputMessage.classList.remove("hidden");
 		return;
-	};
+	}
 	emptyInputMessage.classList.add("hidden");
 	inputValues.forEach((field) => {
 		field.classList.remove("missing-info");
@@ -311,31 +309,40 @@ function getSleepFormInfo() {
 	};
 	postData(formInput, "sleep", "sleepData");
 	form.reset();
-};
+}
 
 function sleepLatestStats() {
 	let usersSleepData = sleepDataRepository.sleepData.filter(
 		(data) => data.userID === generatedUser.id
 	);
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
 	hoursSleptAverage.innerText = `💡 You slept ${findSleepInsights("hours")}`;
-	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights("quality")}`;
-	hoursOfSleep.innerText = `⏰ Hours Slept: ${usersSleepData[usersSleepData.length - 1].hoursSlept} hours`;
-	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${usersSleepData[usersSleepData.length - 1].sleepQuality}`;
-};
+	sleepQualityAverage.innerText = `💡 Your score is ${findSleepInsights(
+		"quality"
+	)}`;
+	hoursOfSleep.innerText = `⏰ Hours Slept: ${
+		usersSleepData[usersSleepData.length - 1].hoursSlept
+	} hours`;
+	qualityOfSleep.innerText = `🛏️ Sleep Quality Score: ${
+		usersSleepData[usersSleepData.length - 1].sleepQuality
+	}`;
+}
 
 // ------------------------Hydration-functions-----------------------------------
 function hydrationLatestStats() {
-	waterConsumed.innerText = `💧 You drank ${hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id)["seven"]} ounces of water`;
-	averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(generatedUser.id)} ounces of water a day`;
-};
-	
+	waterConsumed.innerText = `💧 You drank ${
+		hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id)["seven"]
+	} ounces of water`;
+	averageWaterConsumed.innerText = `💡 On average, you drink ${hydrationDataRepository.findAvrgFluidIntake(
+		generatedUser.id
+	)} ounces of water a day`;
+}
+
 function getHydrationFormInfo() {
 	let inputValues = [hydrationDate, waterConsumedInput];
-	if (
-		!hydrationDate.value ||
-		!waterConsumedInput.value.trim() 
-	) {
+	if (!hydrationDate.value || !waterConsumedInput.value.trim()) {
 		let filtered = inputValues.filter((userInput) => {
 			return userInput.value === "";
 		});
@@ -344,7 +351,7 @@ function getHydrationFormInfo() {
 		});
 		emptyInputMessage.classList.remove("hidden");
 		return;
-	};
+	}
 	emptyInputMessage.classList.add("hidden");
 	inputValues.forEach((field) => {
 		field.classList.remove("missing-info");
@@ -356,7 +363,7 @@ function getHydrationFormInfo() {
 	};
 	postData(formInput, "hydration", "hydrationData");
 	form.reset();
-};
+}
 
 // ------------------------Network-Request-functions-----------------------------------
 function postData(data, path, access) {
@@ -376,10 +383,7 @@ function postData(data, path, access) {
 				fetch(`http://localhost:3001/api/v1/${path}`)
 					.then((response) => response.json())
 					.then((data) => {
-						let usersData = data[access]
-							.filter((data) => data.userID === generatedUser.id)
-							.slice(-3);
-						console.log(usersData);
+						fetchApiPromises();
 					});
 				return;
 			}
@@ -387,7 +391,7 @@ function postData(data, path, access) {
 		.catch((error) => {
 			showPostResult("server error");
 		});
-};
+}
 
 function showPostResult(result) {
 	form.classList.add("hidden");
@@ -400,39 +404,41 @@ function showPostResult(result) {
 	} else {
 		postResponseMessage.innerText =
 			"An unexpected issue has occured. Please try again later.";
-	};
+	}
 	setTimeout(resetForm, 3000);
-};
+}
 
 function resetForm() {
 	form.classList.remove("hidden");
 	postResponseMessage.classList.add("hidden");
-};
+}
 
 // ------------------------Chart-functions-----------------------------------
-function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
-	const labels = [];
-	const data = {
-		labels: labels,
-		datasets: [
-			{
-				data: getWeeklyActivity(activityKey),
-				backgroundColor: [
-					"rgba(210, 39, 48)",
-					"rgba(70, 70, 255)",
-					"rgba(224, 231, 34",
-					"rgba(219, 62, 177",
-					"rgba(255, 173, 0)",
-					"rgba(68, 214, 44)",
-					"rgba(128, 49, 167)",
-				],
-				borderWidth: 1,
-			},
-		],
-	};
-	const config = {
+function createStepChart() {
+	let stepChart = Chart.getChart("stepsChart");
+	if (stepChart) {
+		stepChart.destroy();
+	}
+	new Chart(document.getElementById("stepsChart"), {
 		type: "bar",
-		data: data,
+		data: {
+			labels: [],
+			datasets: [
+				{
+					data: getWeeklyActivity("numSteps"),
+					backgroundColor: [
+						"rgba(210, 39, 48)",
+						"rgba(70, 70, 255)",
+						"rgba(224, 231, 34",
+						"rgba(219, 62, 177",
+						"rgba(255, 173, 0)",
+						"rgba(68, 214, 44)",
+						"rgba(128, 49, 167)",
+					],
+					borderWidth: 1,
+				},
+			],
+		},
 		options: {
 			scales: {
 				x: {
@@ -444,9 +450,9 @@ function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 				y: {
 					title: {
 						display: true,
-						text: type,
+						text: "Steps",
 					},
-					suggestedMax: suggestedMax,
+					suggestedMax: 1000,
 					suggestedMin: 0,
 				},
 			},
@@ -457,37 +463,150 @@ function createActivityChart(chartId, activityKey, type, suggestedMax, title) {
 				},
 				title: {
 					display: true,
-					text: title,
+					text: "Step Count for Past 7 Days",
 				},
 			},
 		},
-	};
-	new Chart(chartId, config);
-};
+	});
+}
+
+function createStairsChart() {
+	let stairsChart = Chart.getChart("flightsOfStairsChart");
+	if (stairsChart) {
+		stairsChart.destroy();
+	}
+	new Chart(document.getElementById("flightsOfStairsChart"), {
+		type: "bar",
+		data: {
+			labels: [],
+			datasets: [
+				{
+					data: getWeeklyActivity("flightsOfStairs"),
+					backgroundColor: [
+						"rgba(210, 39, 48)",
+						"rgba(70, 70, 255)",
+						"rgba(224, 231, 34",
+						"rgba(219, 62, 177",
+						"rgba(255, 173, 0)",
+						"rgba(68, 214, 44)",
+						"rgba(128, 49, 167)",
+					],
+					borderWidth: 1,
+				},
+			],
+		},
+		options: {
+			scales: {
+				x: {
+					title: {
+						display: true,
+						text: "Days",
+					},
+				},
+				y: {
+					title: {
+						display: true,
+						text: "Stairs",
+					},
+					suggestedMax: 50,
+					suggestedMin: 0,
+				},
+			},
+			responsive: true,
+			plugins: {
+				legend: {
+					display: false,
+				},
+				title: {
+					display: true,
+					text: "Flights of Stairs for Past 7 Days",
+				},
+			},
+		},
+	});
+}
+
+function createMinsActiveChart() {
+	let minsActiveChart = Chart.getChart("minutesActiveChart");
+	if (minsActiveChart) {
+		minsActiveChart.destroy();
+	}
+	new Chart(document.getElementById("minutesActiveChart"), {
+		type: "bar",
+		data: {
+			labels: [],
+			datasets: [
+				{
+					data: getWeeklyActivity("minutesActive"),
+					backgroundColor: [
+						"rgba(210, 39, 48)",
+						"rgba(70, 70, 255)",
+						"rgba(224, 231, 34",
+						"rgba(219, 62, 177",
+						"rgba(255, 173, 0)",
+						"rgba(68, 214, 44)",
+						"rgba(128, 49, 167)",
+					],
+					borderWidth: 1,
+				},
+			],
+		},
+		options: {
+			scales: {
+				x: {
+					title: {
+						display: true,
+						text: "Days",
+					},
+				},
+				y: {
+					title: {
+						display: true,
+						text: "Minutes Active",
+					},
+					suggestedMax: 500,
+					suggestedMin: 0,
+				},
+			},
+			responsive: true,
+			plugins: {
+				legend: {
+					display: false,
+				},
+				title: {
+					display: true,
+					text: "Flights of Stairs Climbed for the Past 7 Days",
+				},
+			},
+		},
+	});
+}
 
 function createWaterChart() {
-	const labels = [];
-	const data = {
-		labels: labels,
-		datasets: [
-			{
-				data: hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id),
-				backgroundColor: [
-					"rgba(210, 39, 48)",
-					"rgba(70, 70, 255)",
-					"rgba(224, 231, 34",
-					"rgba(219, 62, 177",
-					"rgba(255, 173, 0)",
-					"rgba(68, 214, 44)",
-					"rgba(128, 49, 167)",
-				],
-				borderWidth: 1,
-			},
-		],
-	};
-	const config = {
+	let waterChart = Chart.getChart("waterChart");
+	if (waterChart) {
+		waterChart.destroy();
+	}
+	new Chart(document.getElementById("waterChart"), {
 		type: "bar",
-		data: data,
+		data: {
+			labels: [],
+			datasets: [
+				{
+					data: hydrationDataRepository.findWeeklyFluidIntake(generatedUser.id),
+					backgroundColor: [
+						"rgba(210, 39, 48)",
+						"rgba(70, 70, 255)",
+						"rgba(224, 231, 34",
+						"rgba(219, 62, 177",
+						"rgba(255, 173, 0)",
+						"rgba(68, 214, 44)",
+						"rgba(128, 49, 167)",
+					],
+					borderWidth: 1,
+				},
+			],
+		},
 		options: {
 			scales: {
 				x: {
@@ -516,44 +635,47 @@ function createWaterChart() {
 				},
 			},
 		},
-	};
-	new Chart(waterChart, config);
-};
+	});
+}
 
 function createSleepChart() {
+	let sleepChart = Chart.getChart("sleepChart");
+	if (sleepChart) {
+		sleepChart.destroy();
+	}
 	const labels = ["one", "two", "three", "four", "five", "six", "seven"];
-	const data = {
-		labels: labels,
-		datasets: [
-			{
-				data: sleepDataRepository.getSleepQualityandHours(
-					generatedUser.id,
-					"quality"
-				),
-				label: ["Sleep Quality"],
-				backgroundColor: ["rgba(210, 39, 48)"],
-				borderColor: "rgba(210, 39, 48)",
-				borderWidth: 1,
-				showLine: true,
-				spanGaps: true,
-			},
-			{
-				data: sleepDataRepository.getSleepQualityandHours(
-					generatedUser.id,
-					"hours"
-				),
-				label: ["Hours of Sleep"],
-				backgroundColor: ["rgba(224, 231, 34)"],
-				borderColor: "rgba(224, 231, 34)",
-				borderWidth: 1,
-				showLine: true,
-				spanGaps: true,
-			},
-		],
-	};
-	const config = {
+	new Chart(document.getElementById("sleepChart"), {
+		type: "bar",
 		type: "line",
-		data: data,
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					data: sleepDataRepository.getSleepQualityandHours(
+						generatedUser.id,
+						"quality"
+					),
+					label: ["Sleep Quality"],
+					backgroundColor: ["rgba(210, 39, 48)"],
+					borderColor: "rgba(210, 39, 48)",
+					borderWidth: 1,
+					showLine: true,
+					spanGaps: true,
+				},
+				{
+					data: sleepDataRepository.getSleepQualityandHours(
+						generatedUser.id,
+						"hours"
+					),
+					label: ["Hours of Sleep"],
+					backgroundColor: ["rgba(224, 231, 34)"],
+					borderColor: "rgba(224, 231, 34)",
+					borderWidth: 1,
+					showLine: true,
+					spanGaps: true,
+				},
+			],
+		},
 		options: {
 			scales: {
 				x: {
@@ -581,6 +703,5 @@ function createSleepChart() {
 				},
 			},
 		},
-	};
-	new Chart(sleepChart, config);
-};
+	});
+}
