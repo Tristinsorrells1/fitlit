@@ -40,7 +40,7 @@ let activityDate = document.querySelector("#activityDate");
 let stepInput = document.querySelector("#numberOfSteps");
 let minutesActiveInput = document.querySelector("#minutesActive");
 let flightsOfStairsInput = document.querySelector("#flightsOfStairs");
-let submitActivityButton = document.querySelector(".button");
+let submitActivityButton = document.querySelector(".activity-button");
 let strideLength = document.querySelector("#strideLength");
 let stepCount = document.querySelector("#stepCount1");
 let stepCountInsight = document.querySelector("#stepCountInsight1");
@@ -66,7 +66,7 @@ let onHydrationPage = document.querySelector("#hydrationPage");
 let waterConsumed = document.querySelector("#waterConsumed1");
 let averageWaterConsumed = document.querySelector("#averageWaterConsumed");
 let waterConsumedInput = document.querySelector("#waterConsumed");
-let submitHydrationButton = document.querySelector(".button");
+let submitHydrationButton = document.querySelector(".water-button");
 let hydrationDate = document.querySelector("#hydrationDate");
 
 // ------------------------eventListeners------------------------------------
@@ -236,18 +236,18 @@ function getActivityFormInfo() {
 
 function getWeeklyActivity(activityKey) {
 	let weeklyActivity = activityRepository
-		.getWeek(userInfo.userID, userInfo.date)
+		.getWeek(userInfo.userID)
 		.map((day) => {
 			return Number(day[activityKey]);
 		});
 	let activityByDay = {};
-	activityByDay.one = weeklyActivity[0];
-	activityByDay.two = weeklyActivity[1];
-	activityByDay.three = weeklyActivity[2];
+	activityByDay.one = weeklyActivity[6];
+	activityByDay.two = weeklyActivity[5];
+	activityByDay.three = weeklyActivity[4];
 	activityByDay.four = weeklyActivity[3];
-	activityByDay.five = weeklyActivity[4];
-	activityByDay.six = weeklyActivity[5];
-	activityByDay.seven = weeklyActivity[6];
+	activityByDay.five = weeklyActivity[2];
+	activityByDay.six = weeklyActivity[1];
+	activityByDay.seven = weeklyActivity[0];
 	return activityByDay;
 }
 

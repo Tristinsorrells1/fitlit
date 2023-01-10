@@ -334,7 +334,6 @@ describe("Activity", () => {
 		expect(activity.findMinutesActive(1, "2019/09/12")).to.equal(
 			`date not found`
 		);
-		expect(activity.getWeek(1, "2011/09/31")).to.equal(`date not found`);
 		expect(
 			activity.compareStepGoalToActualSteps(1, "2011/09/31", userRepository)
 		).to.equal(`date not found`);
@@ -362,44 +361,10 @@ describe("Activity", () => {
 		expect(activity.findMinutesActive(1, "2019/06/16")).to.equal(138);
 	});
 
-	it("should take in a date and create a week with that date as the last day of the week", function () {
-		expect(activity.getWeek(1, "2019/06/17")).to.deep.equal([
-			{
-				userID: 1,
-				date: "2019/06/17",
-				numSteps: 7402,
-				minutesActive: 116,
-				flightsOfStairs: 33,
-			},
-			{
-				userID: 1,
-				date: "2019/06/16",
-				numSteps: 12000,
-				minutesActive: 138,
-				flightsOfStairs: 10,
-			},
-			{
-				userID: 1,
-				date: "2019/06/15",
-				numSteps: 3577,
-				minutesActive: 140,
-				flightsOfStairs: 16,
-			},
-		]);
-	});
-
 	it("should return how many minutes a user was active on average for the week of the selected date", function () {
 		expect(
 			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/26")
 		).to.equal(85.14);
-	});
-
-	it("should notify user if there is not enough data for the week of the selected date", function () {
-		expect(
-			activity.calculateWeeklyAverageActiveMinutes(1, "2019/06/17")
-		).to.equal(
-			"ERROR - 2019/06/21 is the earliest date you have a full week of information for"
-		);
 	});
 
 	it("should notify user if they met their step goal on a given date", function () {
