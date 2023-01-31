@@ -2,7 +2,7 @@
 
 ## Overview of Project 
 ### Description
-Fitlit was a two part group project assigned to a group of three students in Mod 2 of Turing's front-end engineering bootcamp. In part 1, students were given a week to present a useful dashboard for a user to view and see their latest activity data, goals, and milestones using data from three different APIs. The details of part 1 of the project are outlined in [this project spec](http://frontend.turing.io/projects/fitlit.html). In part 2, students had to implement the fetch API for accessing the data from a local server and add functionality that enables the user to submit new sleep, hydration, or activity data through a POST request. Students also needed to include proper error handling for users to ensure they GET data and submit their POST requests successfully. Finally, students were expected to make the application accessible by following WCAG 2.1 guidelines. The details of part 2 of the project are outlined in [this project spec](https://frontend.turing.edu/projects/Fitlit-part-two.html).
+FitLit was a two part group project assigned to a group of three students in Mod 2 of the Turing School of Software and Design's Front-End Engineering bootcamp. Students were challenged to create an application similar to Fitbit for users to track and display their fitness information. In the first phase, we designed a dashboard for users to access their most recent metrics and goals by integrating data from three RESTful APIs and presenting it in a user-friendly interface. The details of part 1 of the project are outlined in [this project spec](http://frontend.turing.io/projects/fitlit.html). In the second phase, we added functionality for users to input new sleep, hydration, or activity information via a POST request, and have their dashboard dynamically update to reflect the new data. We included proper error handling message to inform users if the POST request successfully added the new data they input in the form. Our application was designed with complete accessibility in mind and fully conforms to the WCAG 2.1 standards and received a 100% accessibility score from Google's Lighthouse Accessibility Audit. The details of part 2 of the project are outlined in [this project spec](https://frontend.turing.edu/projects/Fitlit-part-two.html).
 
 ### Goals
 - Implement ES6 classes that communicate to each other as needed.
@@ -24,7 +24,7 @@ Fitlit was a two part group project assigned to a group of three students in Mod
 - GitHub project board
 - ARIA
 - WAVE Evaluation Tool
-- Lighthouse
+- Google Lighthouse
 
 ## Installation Instructions:
 ### Run the local server
@@ -40,8 +40,10 @@ Fitlit was a two part group project assigned to a group of three students in Mod
 - Copy the local host URL given and paste it in your browswer to view the website.
 - To stop the local server from running in your terminal use `command + c`.
 
-## App Preview
-https://user-images.githubusercontent.com/109977562/211330468-d9a2ab79-bad1-46fc-b024-d88dae595db2.mp4
+## App Demo
+Here is a short video demonstration of our application:
+
+https://user-images.githubusercontent.com/109977562/215620656-add247dd-b273-46ad-a6af-226f83ed8777.mp4
 
 ## Reflection
 
@@ -56,7 +58,7 @@ https://user-images.githubusercontent.com/109977562/211330468-d9a2ab79-bad1-46fc
 ### Challenges 
 - We could have improved our project board by using issue labels.
 - We struggled to update our charts after a user submits new information.
-- We had issues using multiple HTML files. All of our querySelectors are in the same JS file, but this caused issues when navigating to a HTML page that did not contain an element with the class or ID we queried. 
+- We had several errors that were caused by having a multiple page application because the Webpack starter kit was configured for a single page application and we did not enable multiple entry points in the webpack configuration file (webpack.config.js). We didn't realize that was the cause of several of our bugs until we had already mitigated them and completed the project, but we could have either enabled multiple entry points in the webpack configuration file or displayed all of the information on a single page. 
 
 ### Future Considerations
 - In the future, we would like to enable the user to choose which week's data is displayed on their chart.
